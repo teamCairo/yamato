@@ -37,6 +37,7 @@ class QuestionHeaders extends Table {
   IntColumn get compulsoryType => integer()();
   IntColumn get answerType => integer()();
   TextColumn get questionText => text()();
+  IntColumn get numberAnswer => integer()();
 
   @override
   Set<Column> get primaryKey => {businessYear,period,questionNo};
