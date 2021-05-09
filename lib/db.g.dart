@@ -937,13 +937,15 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
   final int subjectId;
   final int compulsoryType;
   final int answerType;
+  final String questionText;
   QuestionHeader(
       {@required this.businessYear,
       @required this.period,
       @required this.questionNo,
       @required this.subjectId,
       @required this.compulsoryType,
-      @required this.answerType});
+      @required this.answerType,
+      @required this.questionText});
   factory QuestionHeader.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -962,6 +964,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           .mapFromDatabaseResponse(data['${effectivePrefix}compulsory_type']),
       answerType: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}answer_type']),
+      questionText: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}question_text']),
     );
   }
   @override
@@ -985,6 +989,9 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
     if (!nullToAbsent || answerType != null) {
       map['answer_type'] = Variable<int>(answerType);
     }
+    if (!nullToAbsent || questionText != null) {
+      map['question_text'] = Variable<String>(questionText);
+    }
     return map;
   }
 
@@ -1007,6 +1014,9 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
       answerType: answerType == null && nullToAbsent
           ? const Value.absent()
           : Value(answerType),
+      questionText: questionText == null && nullToAbsent
+          ? const Value.absent()
+          : Value(questionText),
     );
   }
 
@@ -1020,6 +1030,7 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
       subjectId: serializer.fromJson<int>(json['subjectId']),
       compulsoryType: serializer.fromJson<int>(json['compulsoryType']),
       answerType: serializer.fromJson<int>(json['answerType']),
+      questionText: serializer.fromJson<String>(json['questionText']),
     );
   }
   @override
@@ -1032,6 +1043,7 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
       'subjectId': serializer.toJson<int>(subjectId),
       'compulsoryType': serializer.toJson<int>(compulsoryType),
       'answerType': serializer.toJson<int>(answerType),
+      'questionText': serializer.toJson<String>(questionText),
     };
   }
 
@@ -1041,7 +1053,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           String questionNo,
           int subjectId,
           int compulsoryType,
-          int answerType}) =>
+          int answerType,
+          String questionText}) =>
       QuestionHeader(
         businessYear: businessYear ?? this.businessYear,
         period: period ?? this.period,
@@ -1049,6 +1062,7 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
         subjectId: subjectId ?? this.subjectId,
         compulsoryType: compulsoryType ?? this.compulsoryType,
         answerType: answerType ?? this.answerType,
+        questionText: questionText ?? this.questionText,
       );
   @override
   String toString() {
@@ -1058,7 +1072,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           ..write('questionNo: $questionNo, ')
           ..write('subjectId: $subjectId, ')
           ..write('compulsoryType: $compulsoryType, ')
-          ..write('answerType: $answerType')
+          ..write('answerType: $answerType, ')
+          ..write('questionText: $questionText')
           ..write(')'))
         .toString();
   }
@@ -1070,8 +1085,10 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           period.hashCode,
           $mrjc(
               questionNo.hashCode,
-              $mrjc(subjectId.hashCode,
-                  $mrjc(compulsoryType.hashCode, answerType.hashCode))))));
+              $mrjc(
+                  subjectId.hashCode,
+                  $mrjc(compulsoryType.hashCode,
+                      $mrjc(answerType.hashCode, questionText.hashCode)))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -1081,7 +1098,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           other.questionNo == this.questionNo &&
           other.subjectId == this.subjectId &&
           other.compulsoryType == this.compulsoryType &&
-          other.answerType == this.answerType);
+          other.answerType == this.answerType &&
+          other.questionText == this.questionText);
 }
 
 class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
@@ -1091,6 +1109,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
   final Value<int> subjectId;
   final Value<int> compulsoryType;
   final Value<int> answerType;
+  final Value<String> questionText;
   const QuestionHeadersCompanion({
     this.businessYear = const Value.absent(),
     this.period = const Value.absent(),
@@ -1098,6 +1117,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
     this.subjectId = const Value.absent(),
     this.compulsoryType = const Value.absent(),
     this.answerType = const Value.absent(),
+    this.questionText = const Value.absent(),
   });
   QuestionHeadersCompanion.insert({
     @required int businessYear,
@@ -1106,12 +1126,14 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
     @required int subjectId,
     @required int compulsoryType,
     @required int answerType,
+    @required String questionText,
   })  : businessYear = Value(businessYear),
         period = Value(period),
         questionNo = Value(questionNo),
         subjectId = Value(subjectId),
         compulsoryType = Value(compulsoryType),
-        answerType = Value(answerType);
+        answerType = Value(answerType),
+        questionText = Value(questionText);
   static Insertable<QuestionHeader> custom({
     Expression<int> businessYear,
     Expression<int> period,
@@ -1119,6 +1141,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
     Expression<int> subjectId,
     Expression<int> compulsoryType,
     Expression<int> answerType,
+    Expression<String> questionText,
   }) {
     return RawValuesInsertable({
       if (businessYear != null) 'business_year': businessYear,
@@ -1127,6 +1150,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
       if (subjectId != null) 'subject_id': subjectId,
       if (compulsoryType != null) 'compulsory_type': compulsoryType,
       if (answerType != null) 'answer_type': answerType,
+      if (questionText != null) 'question_text': questionText,
     });
   }
 
@@ -1136,7 +1160,8 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
       Value<String> questionNo,
       Value<int> subjectId,
       Value<int> compulsoryType,
-      Value<int> answerType}) {
+      Value<int> answerType,
+      Value<String> questionText}) {
     return QuestionHeadersCompanion(
       businessYear: businessYear ?? this.businessYear,
       period: period ?? this.period,
@@ -1144,6 +1169,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
       subjectId: subjectId ?? this.subjectId,
       compulsoryType: compulsoryType ?? this.compulsoryType,
       answerType: answerType ?? this.answerType,
+      questionText: questionText ?? this.questionText,
     );
   }
 
@@ -1168,6 +1194,9 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
     if (answerType.present) {
       map['answer_type'] = Variable<int>(answerType.value);
     }
+    if (questionText.present) {
+      map['question_text'] = Variable<String>(questionText.value);
+    }
     return map;
   }
 
@@ -1179,7 +1208,8 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
           ..write('questionNo: $questionNo, ')
           ..write('subjectId: $subjectId, ')
           ..write('compulsoryType: $compulsoryType, ')
-          ..write('answerType: $answerType')
+          ..write('answerType: $answerType, ')
+          ..write('questionText: $questionText')
           ..write(')'))
         .toString();
   }
@@ -1266,9 +1296,30 @@ class $QuestionHeadersTable extends QuestionHeaders
     );
   }
 
+  final VerificationMeta _questionTextMeta =
+      const VerificationMeta('questionText');
+  GeneratedTextColumn _questionText;
   @override
-  List<GeneratedColumn> get $columns =>
-      [businessYear, period, questionNo, subjectId, compulsoryType, answerType];
+  GeneratedTextColumn get questionText =>
+      _questionText ??= _constructQuestionText();
+  GeneratedTextColumn _constructQuestionText() {
+    return GeneratedTextColumn(
+      'question_text',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        businessYear,
+        period,
+        questionNo,
+        subjectId,
+        compulsoryType,
+        answerType,
+        questionText
+      ];
   @override
   $QuestionHeadersTable get asDslTable => this;
   @override
@@ -1323,6 +1374,14 @@ class $QuestionHeadersTable extends QuestionHeaders
               data['answer_type'], _answerTypeMeta));
     } else if (isInserting) {
       context.missing(_answerTypeMeta);
+    }
+    if (data.containsKey('question_text')) {
+      context.handle(
+          _questionTextMeta,
+          questionText.isAcceptableOrUnknown(
+              data['question_text'], _questionTextMeta));
+    } else if (isInserting) {
+      context.missing(_questionTextMeta);
     }
     return context;
   }
@@ -2411,6 +2470,575 @@ class $QuestionFilesTable extends QuestionFiles
   }
 }
 
+class QuestionTrying extends DataClass implements Insertable<QuestionTrying> {
+  final int id;
+  final int businessYear;
+  final int period;
+  final String questionNo;
+  final bool endFlg;
+  final int correctType;
+  final String singleAnswer;
+  final String multipleAnswer;
+  final int numberAnswer;
+  QuestionTrying(
+      {@required this.id,
+      @required this.businessYear,
+      @required this.period,
+      @required this.questionNo,
+      @required this.endFlg,
+      @required this.correctType,
+      @required this.singleAnswer,
+      @required this.multipleAnswer,
+      @required this.numberAnswer});
+  factory QuestionTrying.fromData(
+      Map<String, dynamic> data, GeneratedDatabase db,
+      {String prefix}) {
+    final effectivePrefix = prefix ?? '';
+    final intType = db.typeSystem.forDartType<int>();
+    final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
+    return QuestionTrying(
+      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
+      businessYear: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}business_year']),
+      period: intType.mapFromDatabaseResponse(data['${effectivePrefix}period']),
+      questionNo: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}question_no']),
+      endFlg:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}end_flg']),
+      correctType: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}correct_type']),
+      singleAnswer: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}single_answer']),
+      multipleAnswer: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}multiple_answer']),
+      numberAnswer: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}number_answer']),
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int>(id);
+    }
+    if (!nullToAbsent || businessYear != null) {
+      map['business_year'] = Variable<int>(businessYear);
+    }
+    if (!nullToAbsent || period != null) {
+      map['period'] = Variable<int>(period);
+    }
+    if (!nullToAbsent || questionNo != null) {
+      map['question_no'] = Variable<String>(questionNo);
+    }
+    if (!nullToAbsent || endFlg != null) {
+      map['end_flg'] = Variable<bool>(endFlg);
+    }
+    if (!nullToAbsent || correctType != null) {
+      map['correct_type'] = Variable<int>(correctType);
+    }
+    if (!nullToAbsent || singleAnswer != null) {
+      map['single_answer'] = Variable<String>(singleAnswer);
+    }
+    if (!nullToAbsent || multipleAnswer != null) {
+      map['multiple_answer'] = Variable<String>(multipleAnswer);
+    }
+    if (!nullToAbsent || numberAnswer != null) {
+      map['number_answer'] = Variable<int>(numberAnswer);
+    }
+    return map;
+  }
+
+  QuestionTryingsCompanion toCompanion(bool nullToAbsent) {
+    return QuestionTryingsCompanion(
+      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
+      businessYear: businessYear == null && nullToAbsent
+          ? const Value.absent()
+          : Value(businessYear),
+      period:
+          period == null && nullToAbsent ? const Value.absent() : Value(period),
+      questionNo: questionNo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(questionNo),
+      endFlg:
+          endFlg == null && nullToAbsent ? const Value.absent() : Value(endFlg),
+      correctType: correctType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(correctType),
+      singleAnswer: singleAnswer == null && nullToAbsent
+          ? const Value.absent()
+          : Value(singleAnswer),
+      multipleAnswer: multipleAnswer == null && nullToAbsent
+          ? const Value.absent()
+          : Value(multipleAnswer),
+      numberAnswer: numberAnswer == null && nullToAbsent
+          ? const Value.absent()
+          : Value(numberAnswer),
+    );
+  }
+
+  factory QuestionTrying.fromJson(Map<String, dynamic> json,
+      {ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return QuestionTrying(
+      id: serializer.fromJson<int>(json['id']),
+      businessYear: serializer.fromJson<int>(json['businessYear']),
+      period: serializer.fromJson<int>(json['period']),
+      questionNo: serializer.fromJson<String>(json['questionNo']),
+      endFlg: serializer.fromJson<bool>(json['endFlg']),
+      correctType: serializer.fromJson<int>(json['correctType']),
+      singleAnswer: serializer.fromJson<String>(json['singleAnswer']),
+      multipleAnswer: serializer.fromJson<String>(json['multipleAnswer']),
+      numberAnswer: serializer.fromJson<int>(json['numberAnswer']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'businessYear': serializer.toJson<int>(businessYear),
+      'period': serializer.toJson<int>(period),
+      'questionNo': serializer.toJson<String>(questionNo),
+      'endFlg': serializer.toJson<bool>(endFlg),
+      'correctType': serializer.toJson<int>(correctType),
+      'singleAnswer': serializer.toJson<String>(singleAnswer),
+      'multipleAnswer': serializer.toJson<String>(multipleAnswer),
+      'numberAnswer': serializer.toJson<int>(numberAnswer),
+    };
+  }
+
+  QuestionTrying copyWith(
+          {int id,
+          int businessYear,
+          int period,
+          String questionNo,
+          bool endFlg,
+          int correctType,
+          String singleAnswer,
+          String multipleAnswer,
+          int numberAnswer}) =>
+      QuestionTrying(
+        id: id ?? this.id,
+        businessYear: businessYear ?? this.businessYear,
+        period: period ?? this.period,
+        questionNo: questionNo ?? this.questionNo,
+        endFlg: endFlg ?? this.endFlg,
+        correctType: correctType ?? this.correctType,
+        singleAnswer: singleAnswer ?? this.singleAnswer,
+        multipleAnswer: multipleAnswer ?? this.multipleAnswer,
+        numberAnswer: numberAnswer ?? this.numberAnswer,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('QuestionTrying(')
+          ..write('id: $id, ')
+          ..write('businessYear: $businessYear, ')
+          ..write('period: $period, ')
+          ..write('questionNo: $questionNo, ')
+          ..write('endFlg: $endFlg, ')
+          ..write('correctType: $correctType, ')
+          ..write('singleAnswer: $singleAnswer, ')
+          ..write('multipleAnswer: $multipleAnswer, ')
+          ..write('numberAnswer: $numberAnswer')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          businessYear.hashCode,
+          $mrjc(
+              period.hashCode,
+              $mrjc(
+                  questionNo.hashCode,
+                  $mrjc(
+                      endFlg.hashCode,
+                      $mrjc(
+                          correctType.hashCode,
+                          $mrjc(
+                              singleAnswer.hashCode,
+                              $mrjc(multipleAnswer.hashCode,
+                                  numberAnswer.hashCode)))))))));
+  @override
+  bool operator ==(dynamic other) =>
+      identical(this, other) ||
+      (other is QuestionTrying &&
+          other.id == this.id &&
+          other.businessYear == this.businessYear &&
+          other.period == this.period &&
+          other.questionNo == this.questionNo &&
+          other.endFlg == this.endFlg &&
+          other.correctType == this.correctType &&
+          other.singleAnswer == this.singleAnswer &&
+          other.multipleAnswer == this.multipleAnswer &&
+          other.numberAnswer == this.numberAnswer);
+}
+
+class QuestionTryingsCompanion extends UpdateCompanion<QuestionTrying> {
+  final Value<int> id;
+  final Value<int> businessYear;
+  final Value<int> period;
+  final Value<String> questionNo;
+  final Value<bool> endFlg;
+  final Value<int> correctType;
+  final Value<String> singleAnswer;
+  final Value<String> multipleAnswer;
+  final Value<int> numberAnswer;
+  const QuestionTryingsCompanion({
+    this.id = const Value.absent(),
+    this.businessYear = const Value.absent(),
+    this.period = const Value.absent(),
+    this.questionNo = const Value.absent(),
+    this.endFlg = const Value.absent(),
+    this.correctType = const Value.absent(),
+    this.singleAnswer = const Value.absent(),
+    this.multipleAnswer = const Value.absent(),
+    this.numberAnswer = const Value.absent(),
+  });
+  QuestionTryingsCompanion.insert({
+    this.id = const Value.absent(),
+    @required int businessYear,
+    @required int period,
+    @required String questionNo,
+    @required bool endFlg,
+    @required int correctType,
+    @required String singleAnswer,
+    @required String multipleAnswer,
+    @required int numberAnswer,
+  })  : businessYear = Value(businessYear),
+        period = Value(period),
+        questionNo = Value(questionNo),
+        endFlg = Value(endFlg),
+        correctType = Value(correctType),
+        singleAnswer = Value(singleAnswer),
+        multipleAnswer = Value(multipleAnswer),
+        numberAnswer = Value(numberAnswer);
+  static Insertable<QuestionTrying> custom({
+    Expression<int> id,
+    Expression<int> businessYear,
+    Expression<int> period,
+    Expression<String> questionNo,
+    Expression<bool> endFlg,
+    Expression<int> correctType,
+    Expression<String> singleAnswer,
+    Expression<String> multipleAnswer,
+    Expression<int> numberAnswer,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (businessYear != null) 'business_year': businessYear,
+      if (period != null) 'period': period,
+      if (questionNo != null) 'question_no': questionNo,
+      if (endFlg != null) 'end_flg': endFlg,
+      if (correctType != null) 'correct_type': correctType,
+      if (singleAnswer != null) 'single_answer': singleAnswer,
+      if (multipleAnswer != null) 'multiple_answer': multipleAnswer,
+      if (numberAnswer != null) 'number_answer': numberAnswer,
+    });
+  }
+
+  QuestionTryingsCompanion copyWith(
+      {Value<int> id,
+      Value<int> businessYear,
+      Value<int> period,
+      Value<String> questionNo,
+      Value<bool> endFlg,
+      Value<int> correctType,
+      Value<String> singleAnswer,
+      Value<String> multipleAnswer,
+      Value<int> numberAnswer}) {
+    return QuestionTryingsCompanion(
+      id: id ?? this.id,
+      businessYear: businessYear ?? this.businessYear,
+      period: period ?? this.period,
+      questionNo: questionNo ?? this.questionNo,
+      endFlg: endFlg ?? this.endFlg,
+      correctType: correctType ?? this.correctType,
+      singleAnswer: singleAnswer ?? this.singleAnswer,
+      multipleAnswer: multipleAnswer ?? this.multipleAnswer,
+      numberAnswer: numberAnswer ?? this.numberAnswer,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (businessYear.present) {
+      map['business_year'] = Variable<int>(businessYear.value);
+    }
+    if (period.present) {
+      map['period'] = Variable<int>(period.value);
+    }
+    if (questionNo.present) {
+      map['question_no'] = Variable<String>(questionNo.value);
+    }
+    if (endFlg.present) {
+      map['end_flg'] = Variable<bool>(endFlg.value);
+    }
+    if (correctType.present) {
+      map['correct_type'] = Variable<int>(correctType.value);
+    }
+    if (singleAnswer.present) {
+      map['single_answer'] = Variable<String>(singleAnswer.value);
+    }
+    if (multipleAnswer.present) {
+      map['multiple_answer'] = Variable<String>(multipleAnswer.value);
+    }
+    if (numberAnswer.present) {
+      map['number_answer'] = Variable<int>(numberAnswer.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('QuestionTryingsCompanion(')
+          ..write('id: $id, ')
+          ..write('businessYear: $businessYear, ')
+          ..write('period: $period, ')
+          ..write('questionNo: $questionNo, ')
+          ..write('endFlg: $endFlg, ')
+          ..write('correctType: $correctType, ')
+          ..write('singleAnswer: $singleAnswer, ')
+          ..write('multipleAnswer: $multipleAnswer, ')
+          ..write('numberAnswer: $numberAnswer')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $QuestionTryingsTable extends QuestionTryings
+    with TableInfo<$QuestionTryingsTable, QuestionTrying> {
+  final GeneratedDatabase _db;
+  final String _alias;
+  $QuestionTryingsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  GeneratedIntColumn _id;
+  @override
+  GeneratedIntColumn get id => _id ??= _constructId();
+  GeneratedIntColumn _constructId() {
+    return GeneratedIntColumn(
+      'id',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _businessYearMeta =
+      const VerificationMeta('businessYear');
+  GeneratedIntColumn _businessYear;
+  @override
+  GeneratedIntColumn get businessYear =>
+      _businessYear ??= _constructBusinessYear();
+  GeneratedIntColumn _constructBusinessYear() {
+    return GeneratedIntColumn(
+      'business_year',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _periodMeta = const VerificationMeta('period');
+  GeneratedIntColumn _period;
+  @override
+  GeneratedIntColumn get period => _period ??= _constructPeriod();
+  GeneratedIntColumn _constructPeriod() {
+    return GeneratedIntColumn(
+      'period',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _questionNoMeta = const VerificationMeta('questionNo');
+  GeneratedTextColumn _questionNo;
+  @override
+  GeneratedTextColumn get questionNo => _questionNo ??= _constructQuestionNo();
+  GeneratedTextColumn _constructQuestionNo() {
+    return GeneratedTextColumn(
+      'question_no',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _endFlgMeta = const VerificationMeta('endFlg');
+  GeneratedBoolColumn _endFlg;
+  @override
+  GeneratedBoolColumn get endFlg => _endFlg ??= _constructEndFlg();
+  GeneratedBoolColumn _constructEndFlg() {
+    return GeneratedBoolColumn(
+      'end_flg',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _correctTypeMeta =
+      const VerificationMeta('correctType');
+  GeneratedIntColumn _correctType;
+  @override
+  GeneratedIntColumn get correctType =>
+      _correctType ??= _constructCorrectType();
+  GeneratedIntColumn _constructCorrectType() {
+    return GeneratedIntColumn(
+      'correct_type',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _singleAnswerMeta =
+      const VerificationMeta('singleAnswer');
+  GeneratedTextColumn _singleAnswer;
+  @override
+  GeneratedTextColumn get singleAnswer =>
+      _singleAnswer ??= _constructSingleAnswer();
+  GeneratedTextColumn _constructSingleAnswer() {
+    return GeneratedTextColumn(
+      'single_answer',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _multipleAnswerMeta =
+      const VerificationMeta('multipleAnswer');
+  GeneratedTextColumn _multipleAnswer;
+  @override
+  GeneratedTextColumn get multipleAnswer =>
+      _multipleAnswer ??= _constructMultipleAnswer();
+  GeneratedTextColumn _constructMultipleAnswer() {
+    return GeneratedTextColumn(
+      'multiple_answer',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _numberAnswerMeta =
+      const VerificationMeta('numberAnswer');
+  GeneratedIntColumn _numberAnswer;
+  @override
+  GeneratedIntColumn get numberAnswer =>
+      _numberAnswer ??= _constructNumberAnswer();
+  GeneratedIntColumn _constructNumberAnswer() {
+    return GeneratedIntColumn(
+      'number_answer',
+      $tableName,
+      false,
+    );
+  }
+
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        businessYear,
+        period,
+        questionNo,
+        endFlg,
+        correctType,
+        singleAnswer,
+        multipleAnswer,
+        numberAnswer
+      ];
+  @override
+  $QuestionTryingsTable get asDslTable => this;
+  @override
+  String get $tableName => _alias ?? 'question_tryings';
+  @override
+  final String actualTableName = 'question_tryings';
+  @override
+  VerificationContext validateIntegrity(Insertable<QuestionTrying> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+    }
+    if (data.containsKey('business_year')) {
+      context.handle(
+          _businessYearMeta,
+          businessYear.isAcceptableOrUnknown(
+              data['business_year'], _businessYearMeta));
+    } else if (isInserting) {
+      context.missing(_businessYearMeta);
+    }
+    if (data.containsKey('period')) {
+      context.handle(_periodMeta,
+          period.isAcceptableOrUnknown(data['period'], _periodMeta));
+    } else if (isInserting) {
+      context.missing(_periodMeta);
+    }
+    if (data.containsKey('question_no')) {
+      context.handle(
+          _questionNoMeta,
+          questionNo.isAcceptableOrUnknown(
+              data['question_no'], _questionNoMeta));
+    } else if (isInserting) {
+      context.missing(_questionNoMeta);
+    }
+    if (data.containsKey('end_flg')) {
+      context.handle(_endFlgMeta,
+          endFlg.isAcceptableOrUnknown(data['end_flg'], _endFlgMeta));
+    } else if (isInserting) {
+      context.missing(_endFlgMeta);
+    }
+    if (data.containsKey('correct_type')) {
+      context.handle(
+          _correctTypeMeta,
+          correctType.isAcceptableOrUnknown(
+              data['correct_type'], _correctTypeMeta));
+    } else if (isInserting) {
+      context.missing(_correctTypeMeta);
+    }
+    if (data.containsKey('single_answer')) {
+      context.handle(
+          _singleAnswerMeta,
+          singleAnswer.isAcceptableOrUnknown(
+              data['single_answer'], _singleAnswerMeta));
+    } else if (isInserting) {
+      context.missing(_singleAnswerMeta);
+    }
+    if (data.containsKey('multiple_answer')) {
+      context.handle(
+          _multipleAnswerMeta,
+          multipleAnswer.isAcceptableOrUnknown(
+              data['multiple_answer'], _multipleAnswerMeta));
+    } else if (isInserting) {
+      context.missing(_multipleAnswerMeta);
+    }
+    if (data.containsKey('number_answer')) {
+      context.handle(
+          _numberAnswerMeta,
+          numberAnswer.isAcceptableOrUnknown(
+              data['number_answer'], _numberAnswerMeta));
+    } else if (isInserting) {
+      context.missing(_numberAnswerMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  QuestionTrying map(Map<String, dynamic> data, {String tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
+    return QuestionTrying.fromData(data, _db, prefix: effectivePrefix);
+  }
+
+  @override
+  $QuestionTryingsTable createAlias(String alias) {
+    return $QuestionTryingsTable(_db, alias);
+  }
+}
+
 abstract class _$MyDatabase extends GeneratedDatabase {
   _$MyDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   $ParametersTable _parameters;
@@ -2428,6 +3056,15 @@ abstract class _$MyDatabase extends GeneratedDatabase {
   $QuestionFilesTable _questionFiles;
   $QuestionFilesTable get questionFiles =>
       _questionFiles ??= $QuestionFilesTable(this);
+  $QuestionTryingsTable _questionTryings;
+  $QuestionTryingsTable get questionTryings =>
+      _questionTryings ??= $QuestionTryingsTable(this);
+  Selectable<Parameter> _selectParameterByCode(String _code) {
+    return customSelect('SELECT * FROM parameters WHERE code = :_code',
+        variables: [Variable<String>(_code)],
+        readsFrom: {parameters}).map(parameters.mapFromRow);
+  }
+
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -2437,6 +3074,7 @@ abstract class _$MyDatabase extends GeneratedDatabase {
         questionHeaders,
         subjects,
         questionOptions,
-        questionFiles
+        questionFiles,
+        questionTryings
       ];
 }

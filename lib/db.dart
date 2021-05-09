@@ -36,6 +36,7 @@ class QuestionHeaders extends Table {
   IntColumn get subjectId => integer()();
   IntColumn get compulsoryType => integer()();
   IntColumn get answerType => integer()();
+  TextColumn get questionText => text()();
 
   @override
   Set<Column> get primaryKey => {businessYear,period,questionNo};
@@ -74,7 +75,26 @@ class QuestionFiles extends Table {
   @override
   Set<Column> get primaryKey => {businessYear,period,questionNo,questionAnswerType,fileNo};
 }
-@UseMoor(tables: [Parameters,StudyStatus,QuestionHeaders,Subjects,QuestionOptions,QuestionFiles])//add Table name
+
+
+class QuestionTryings extends Table {
+  IntColumn get id => integer()();
+  IntColumn get businessYear => integer()();
+  IntColumn get period => integer()();
+  TextColumn get questionNo => text()();
+  BoolColumn get endFlg => boolean()();
+  IntColumn get correctType => integer()();
+  TextColumn get singleAnswer => text()();
+  TextColumn get multipleAnswer => text()();
+  IntColumn get numberAnswer => integer()();
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+@UseMoor(
+  tables: [Parameters,StudyStatus,QuestionHeaders,Subjects,QuestionOptions,QuestionFiles,QuestionTryings],
+  queries: {   '_selectParameterByCode': 'SELECT * FROM parameters WHERE code = :_code '}
+)//add Table name
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(FlutterQueryExecutor.inDatabaseFolder(path: 'db.sqlite',
       logStatements: true));
@@ -122,4 +142,52 @@ class MyDatabase extends _$MyDatabase {
   Future insertquestionfile(QuestionFile questionfile)=> into(questionFiles).insert(questionfile);
   Future updatequestionfile(QuestionFile questionfile)=> update(questionFiles).replace(questionfile);
   Future deletequestionfile(QuestionFile questionfile)=> delete(questionFiles).delete(questionfile);
+
+
+
+  Future <List<QuestionTrying>> getAllquestiontrying()=> select(questionTryings).get();
+  Stream <List<QuestionTrying>> watchAllquestiontrying()=> select(questionTryings).watch();
+  Future insertquestiontrying(QuestionTrying questiontrying)=> into(questionTryings).insert(questiontrying);
+  Future updatequestiontrying(QuestionTrying questiontrying)=> update(questionTryings).replace(questiontrying);
+  Future deletequestiontrying(QuestionTrying questiontrying)=> delete(questionTryings).delete(questiontrying);
+
+  @override
+  MigrationStrategy get migration {
+    return MigrationStrategy(
+      beforeOpen: (details) async {
+      // populate data
+        await into(parameters).insert(Parameter(
+          code: 'serialcdStartedFlg:202101',
+          numberValue: null,
+          textValue: 'N3SG81P2',
+          booleanValue: false,
+        ));
+
+
+        // populate data
+        await into(parameters).insert(Parameter(
+          code: 'serialcdStartedFlg:202102',
+          numberValue: null,
+          textValue: 'KANKS78S',
+          booleanValue: false,
+        ));
+
+        // populate data
+        await into(parameters).insert(Parameter(
+          code: 'serialcdStartedFlg:202103',
+          numberValue: null,
+          textValue: 'KAML92KJ',
+          booleanValue: false,
+        ));
+
+        // populate data
+        await into(parameters).insert(Parameter(
+          code: 'serialcdStartedFlg:202104',
+          numberValue: null,
+          textValue: 'GH676JNQ',
+          booleanValue: false,
+        ));
+      }
+    );
+  }
 }
