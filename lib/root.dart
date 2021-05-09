@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:yamato/search.dart';
 
 class RootWidget extends StatefulWidget{
   RootWidget({Key key}) : super(key: key);
@@ -58,7 +59,13 @@ class _RootWidgetState extends State<RootWidget> {
                child: SizedBox(
                 width: 280,
                 height: 60,
-                child: ElevatedButton(onPressed: () {},
+                child: ElevatedButton(onPressed: () {
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Search()),
+                    );
+                },
 
                   child: Text("問題検索", style: TextStyle(fontSize: 20,),),
                   //style: ElevatedButton.styleFrom(
