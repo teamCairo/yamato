@@ -152,43 +152,5 @@ class MyDatabase extends _$MyDatabase {
   Future updatequestiontrying(QuestionTrying questiontrying)=> update(questionTryings).replace(questiontrying);
   Future deletequestiontrying(QuestionTrying questiontrying)=> delete(questionTryings).delete(questiontrying);
 
-  @override
-  MigrationStrategy get migration {
-    return MigrationStrategy(
-      beforeOpen: (details) async {
-      // populate data
-        await into(parameters).insert(Parameter(
-          code: 'serialcdStartedFlg:202101',
-          numberValue: null,
-          textValue: 'N3SG81P2',
-          booleanValue: false,
-        ));
 
-
-        // populate data
-        await into(parameters).insert(Parameter(
-          code: 'serialcdStartedFlg:202102',
-          numberValue: null,
-          textValue: 'KANKS78S',
-          booleanValue: false,
-        ));
-
-        // populate data
-        await into(parameters).insert(Parameter(
-          code: 'serialcdStartedFlg:202103',
-          numberValue: null,
-          textValue: 'KAML92KJ',
-          booleanValue: false,
-        ));
-
-        // populate data
-        await into(parameters).insert(Parameter(
-          code: 'serialcdStartedFlg:202104',
-          numberValue: null,
-          textValue: 'GH676JNQ',
-          booleanValue: false,
-        ));
-      }
-    );
-  }
 }
