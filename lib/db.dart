@@ -94,7 +94,9 @@ class QuestionTryings extends Table {
 }
 @UseMoor(
   tables: [Parameters,StudyStatus,QuestionHeaders,Subjects,QuestionOptions,QuestionFiles,QuestionTryings],
-  queries: {   '_selectParameterByCode': 'SELECT * FROM parameters WHERE code = :_code '}
+    queries: {
+      '_selectParameterByCode': 'SELECT * FROM parameters WHERE code = :_code '
+  }
 )//add Table name
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(FlutterQueryExecutor.inDatabaseFolder(path: 'db.sqlite',
@@ -109,16 +111,15 @@ class MyDatabase extends _$MyDatabase {
   Future updateparameter(Parameter parameter)=> update(parameters).replace(parameter);
   Future deleteparameter(Parameter parameter)=> delete(parameters).delete(parameter);
 
-
-  Future <List<StudyStatu>> getAllstudystatu()=> select(studyStatus).get();
-  Stream <List<StudyStatu>> watchAllstudystatu()=> select(studyStatus).watch();
+  Future <List<StudyStatu>> getAllstudystatus()=> select(studyStatus).get();
+  Stream <List<StudyStatu>> watchAllstudystatus()=> select(studyStatus).watch();
   Future insertstudystatu(StudyStatu studystatu)=> into(studyStatus).insert(studystatu);
   Future updatestudystatu(StudyStatu studystatu)=> update(studyStatus).replace(studystatu);
   Future deletestudystatu(StudyStatu studystatu)=> delete(studyStatus).delete(studystatu);
 
 
-  Future <List<QuestionHeader>> getAllquestionheader()=> select(questionHeaders).get();
-  Stream <List<QuestionHeader>> watchAllquestionheader()=> select(questionHeaders).watch();
+  Future <List<QuestionHeader>> getAllquestionheaders()=> select(questionHeaders).get();
+  Stream <List<QuestionHeader>> watchAllquestionheaders()=> select(questionHeaders).watch();
   Future insertquestionheader(QuestionHeader questionheader)=> into(questionHeaders).insert(questionheader);
   Future updatequestionheader(QuestionHeader questionheader)=> update(questionHeaders).replace(questionheader);
   Future deletequestionheader(QuestionHeader questionheader)=> delete(questionHeaders).delete(questionheader);
@@ -131,64 +132,26 @@ class MyDatabase extends _$MyDatabase {
   Future deletesubject(Subject subject)=> delete(subjects).delete(subject);
 
 
-  Future <List<QuestionOption>> getAllquestionoption()=> select(questionOptions).get();
-  Stream <List<QuestionOption>> watchAllquestionoption()=> select(questionOptions).watch();
+  Future <List<QuestionOption>> getAllquestionoptions()=> select(questionOptions).get();
+  Stream <List<QuestionOption>> watchAllquestionoptions()=> select(questionOptions).watch();
   Future insertquestionoption(QuestionOption questionoption)=> into(questionOptions).insert(questionoption);
   Future updatequestionoption(QuestionOption questionoption)=> update(questionOptions).replace(questionoption);
   Future deletequestionoption(QuestionOption questionoption)=> delete(questionOptions).delete(questionoption);
 
 
-  Future <List<QuestionFile>> getAllquestionfile()=> select(questionFiles).get();
-  Stream <List<QuestionFile>> watchAllquestionfile()=> select(questionFiles).watch();
+  Future <List<QuestionFile>> getAllquestionfiles()=> select(questionFiles).get();
+  Stream <List<QuestionFile>> watchAllquestionfiles()=> select(questionFiles).watch();
   Future insertquestionfile(QuestionFile questionfile)=> into(questionFiles).insert(questionfile);
   Future updatequestionfile(QuestionFile questionfile)=> update(questionFiles).replace(questionfile);
   Future deletequestionfile(QuestionFile questionfile)=> delete(questionFiles).delete(questionfile);
 
 
 
-  Future <List<QuestionTrying>> getAllquestiontrying()=> select(questionTryings).get();
-  Stream <List<QuestionTrying>> watchAllquestiontrying()=> select(questionTryings).watch();
+  Future <List<QuestionTrying>> getAllquestiontryings()=> select(questionTryings).get();
+  Stream <List<QuestionTrying>> watchAllquestiontryings()=> select(questionTryings).watch();
   Future insertquestiontrying(QuestionTrying questiontrying)=> into(questionTryings).insert(questiontrying);
   Future updatequestiontrying(QuestionTrying questiontrying)=> update(questionTryings).replace(questiontrying);
   Future deletequestiontrying(QuestionTrying questiontrying)=> delete(questionTryings).delete(questiontrying);
 
-  @override
-  MigrationStrategy get migration {
-    return MigrationStrategy(
-      beforeOpen: (details) async {
-      // populate data
-        await into(parameters).insert(Parameter(
-          code: 'serialcdStartedFlg:202101',
-          numberValue: null,
-          textValue: 'N3SG81P2',
-          booleanValue: false,
-        ));
 
-
-        // populate data
-        await into(parameters).insert(Parameter(
-          code: 'serialcdStartedFlg:202102',
-          numberValue: null,
-          textValue: 'KANKS78S',
-          booleanValue: false,
-        ));
-
-        // populate data
-        await into(parameters).insert(Parameter(
-          code: 'serialcdStartedFlg:202103',
-          numberValue: null,
-          textValue: 'KAML92KJ',
-          booleanValue: false,
-        ));
-
-        // populate data
-        await into(parameters).insert(Parameter(
-          code: 'serialcdStartedFlg:202104',
-          numberValue: null,
-          textValue: 'GH676JNQ',
-          booleanValue: false,
-        ));
-      }
-    );
-  }
 }

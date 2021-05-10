@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:yamato/search.dart';
+import 'package:yamato/db.dart';
+import 'package:yamato/history.dart';
+import 'package:yamato/incorrectcheck.dart';
+
 
 class RootWidget extends StatefulWidget{
   RootWidget({Key key}) : super(key: key);
@@ -12,6 +16,7 @@ class RootWidget extends StatefulWidget{
 class _RootWidgetState extends State<RootWidget> {
 
 
+  var _textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +88,7 @@ class _RootWidgetState extends State<RootWidget> {
                 child: SizedBox(
                 width: 280,
                 height: 60,
-                child: ElevatedButton(onPressed: () {},
+                child: ElevatedButton(
                   child: Text("学習履歴", style: TextStyle(fontSize:  20,),),
                   //style: ElevatedButton.styleFrom(
                     //side: BorderSide(
@@ -91,6 +96,15 @@ class _RootWidgetState extends State<RootWidget> {
                       //width: 3,
                   //  ),
                  // ),
+                  onPressed: () => {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder:(context)=> History(
+                            )
+                        )
+                    )
+                  },
                  ),
                 ),
               ),
@@ -100,7 +114,50 @@ class _RootWidgetState extends State<RootWidget> {
                 child: SizedBox(
                 width: 280,
                 height: 60,
-              child: ElevatedButton(onPressed: () {},
+              child: ElevatedButton(onPressed: () {
+                _textController.text='';
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => new AlertDialog(
+                    title: new Text("シリアルコード"),
+                    content: Container(
+                      height:100,
+                      child:Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children:<Widget>[new Text("模試解答に記載されたシリアルコードを入力してください"),
+                          TextField(
+                            decoration: InputDecoration(hintText: "ここに入力"),
+                            controller: _textController,
+                          ),],),
+                    ),
+                    // ボタンの配置
+                    actions: <Widget>[
+                      new TextButton(
+                          child: const Text('キャンセル'),
+                          onPressed: () {
+                            Navigator.pop(context, _DialogActionType.cancel);
+                          }),
+                      new TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            checkSerial();
+                          })
+                    ],
+                  ),
+                ).then<void>((value) {
+                  // ボタンタップ時の処理
+                  switch (value) {
+                    case _DialogActionType.cancel:
+                      print("cancel...");
+                      break;
+                    case _DialogActionType.ok:
+                      print("OK!!");
+                      break;
+                    default:
+                      print("default");
+                  }
+                });
+              },
                   child: Text("シリアルコード", style: TextStyle(fontSize: 20,),),
                 //style: ElevatedButton.styleFrom(
                   //side: BorderSide(
@@ -121,4 +178,98 @@ class _RootWidgetState extends State<RootWidget> {
     );
 
   }
+
+  void checkSerial() async {
+    List<Parameter> parametersList = await MyDatabase().getAllparameters();
+
+    Parameter targetParameter;
+    bool foundFlg = false;
+// forEach
+    for(var parameter in parametersList){
+      if(parameter.code.substring(0,18)=='serialcdStartedFlg' && parameter.textValue ==_textController.text) {
+        foundFlg=true;
+        targetParameter=parameter;
+      }
+    }
+
+    if(foundFlg==false){
+
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text("確認"),
+            content: Text("シリアルコードが間違っています"),
+            actions: <Widget>[
+              // ボタン領域
+              TextButton(
+                child: Text("OK"),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
+
+    }else if (targetParameter.booleanValue==true){
+
+
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text("確認"),
+            content: Text("入力されたシリアルコードはすでに入力済みです"),
+            actions: <Widget>[
+              // ボタン領域
+              TextButton(
+                child: Text("OK"),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
+
+
+    }else{
+
+
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text("確認"),
+            content: Text("シリアルコードが確認できました！"+"\n"+"模試で間違えた問題をチェックしてください"),
+            actions: <Widget>[
+              // ボタン領域
+              TextButton(
+                child: Text("OK"),
+                onPressed: (){Navigator.of(context).popUntil((route) => route.isFirst);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:(context)=> IncorrectCheck(serialData:targetParameter
+                      )
+                    )
+                  );
+
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+
 }
+
+
+enum _DialogActionType {
+  cancel,
+  ok,
+}
+
+
