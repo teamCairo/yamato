@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:yamato/search.dart';
 import 'package:yamato/db.dart';
 import 'package:yamato/history.dart';
+import 'package:yamato/incorrectcheck.dart';
 
 
 class RootWidget extends StatefulWidget{
@@ -114,6 +115,7 @@ class _RootWidgetState extends State<RootWidget> {
                 width: 280,
                 height: 60,
               child: ElevatedButton(onPressed: () {
+                _textController.text='';
                 showDialog(
                   context: context,
                   builder: (BuildContext context) => new AlertDialog(
@@ -190,9 +192,28 @@ class _RootWidgetState extends State<RootWidget> {
       }
     }
 
-    if (targetParameter.booleanValue==true){
+    if(foundFlg==false){
 
-    }else{
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text("確認"),
+            content: Text("シリアルコードが間違っています"),
+            actions: <Widget>[
+              // ボタン領域
+              TextButton(
+                child: Text("OK"),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
+
+    }else if (targetParameter.booleanValue==true){
+
+
       showDialog(
         context: context,
         builder: (_) {
@@ -204,6 +225,36 @@ class _RootWidgetState extends State<RootWidget> {
               TextButton(
                 child: Text("OK"),
                 onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
+
+
+    }else{
+
+
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text("確認"),
+            content: Text("シリアルコードが確認できました！"+"\n"+"模試で間違えた問題をチェックしてください"),
+            actions: <Widget>[
+              // ボタン領域
+              TextButton(
+                child: Text("OK"),
+                onPressed: (){Navigator.of(context).popUntil((route) => route.isFirst);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:(context)=> IncorrectCheck(serialData:targetParameter
+                      )
+                    )
+                  );
+
+                },
               ),
             ],
           );
