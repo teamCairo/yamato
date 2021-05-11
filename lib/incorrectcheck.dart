@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:yamato/result.dart';
-import 'package:yamato/root.dart';
 import 'package:yamato/db.dart';
 
 class IncorrectCheck extends StatefulWidget {
@@ -20,10 +17,11 @@ class _IncorrectCheckState extends State<IncorrectCheck> {
 
   @override
   Widget build(BuildContext context) {
+    QuestionList ql =QuestionList();
     return Scaffold(
 
       appBar: AppBar(
-        title: Text("誤答のチェック"),
+        title: Text("誤答をチェックしてください"),
         backgroundColor: Colors.lightBlue[400],
         actions: [],
       ),
@@ -34,135 +32,15 @@ class _IncorrectCheckState extends State<IncorrectCheck> {
         margin:EdgeInsets.only(bottom: 100.0),
       ),
 
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: <Widget>[
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp, color: Colors.blue),
-              title: Text("消化器　＜X問＞", style: TextStyle(fontWeight: FontWeight.bold),),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("循環器　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("呼吸器　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("腎臓　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("内分泌代謝　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("神経　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-
-        ],
-      ),
+      body: SingleChildScrollView(child: ql),
       bottomNavigationBar: BottomAppBar(
         elevation:0,
         color: Theme.of(context).canvasColor,
         notchMargin:0,
         child:ElevatedButton(onPressed: () {
-          print('AAAAAA'+widget.serialData.code);
+          for(var value in ql.checkedList){
+            print(value);//★★★★★★★★データ登録処理を追加する★★★★★★★★★★
+          }
           Parameter para = Parameter(code:widget.serialData.code
               ,numberValue:widget.serialData.numberValue
               ,textValue:widget.serialData.textValue
@@ -185,24 +63,71 @@ class _IncorrectCheckState extends State<IncorrectCheck> {
                 ],
               );
             },
-          );
-          /*Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder:(context)=> RootWidget(
-                  )
-              )
-          );*/},
+          );},
               child: Text("保存", style: TextStyle(fontSize: 20,),),
 
-              //style: ElevatedButton.styleFrom(
-              //side: BorderSide(
-              //primary: Colors.indigo[900],
-              //width: 3,
-              //),
-              //),
             ),
       ),
+    );
+  }
+}
+
+
+class QuestionList extends StatefulWidget {
+  @override
+  _QuestionListstate createState() => _QuestionListstate();
+  List<bool> checkedList =  [];
+}
+
+class _QuestionListstate extends State<QuestionList> {
+  TextEditingController productNameController = TextEditingController();
+
+  TextEditingController priceController = TextEditingController();
+  bool isloading = false;
+
+
+
+  @override
+  Widget build(BuildContext context) {
+
+    var _isCheckboxChecked=false;
+    return Column(
+      children: <Widget>[
+        Container(
+          height: 700,
+          width: double.infinity,
+          child: StreamBuilder(
+            stream: MyDatabase().watchAllquestionheaders(),
+            builder: (context, AsyncSnapshot<List<QuestionHeader>> snapshot) {
+              return snapshot == null
+                  ? Container()
+                  : ListView.builder(
+                itemBuilder: (_, index) {
+                  widget.checkedList.add(false);
+                  return
+                    Card(
+                      child: CheckboxListTile(
+
+                        value: widget.checkedList[index],
+                        onChanged: (value) {
+                          setState(() => widget.checkedList[index] = value);
+                        },
+                        title: Text(snapshot.data[index].questionNo, style: TextStyle(fontWeight: FontWeight.bold),),
+                        subtitle: Text(snapshot.data[index].questionText),
+                        secondary: Icon(Icons.stop_sharp, color: Colors.blue),
+                        activeColor: Colors.blue,
+                        selected: _isCheckboxChecked,
+                          controlAffinity:ListTileControlAffinity.trailing
+                      ),
+                    );
+                },
+                itemCount: snapshot.data?.length ?? 0,//null対応済
+
+              );
+            },
+          ),
+        )
+      ],
     );
   }
 }
