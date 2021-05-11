@@ -97,13 +97,7 @@ class _RootWidgetState extends State<RootWidget> {
                   //  ),
                  // ),
                   onPressed: () => {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder:(context)=> History(
-                            )
-                        )
-                    )
+                    moveToStudyStatus()
                   },
                  ),
                 ),
@@ -177,6 +171,55 @@ class _RootWidgetState extends State<RootWidget> {
 
     );
 
+  }
+
+  void moveToStudyStatus()async{
+    print('AAAAstart');
+    List <Parameter> paraList=[];
+    paraList = await selectSerial();
+    print('AAAAsecond');
+    if(paraList.length==0){
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text("確認"),
+            content: Text("シリアルコードが一度も入力されていません"),
+            actions: <Widget>[
+              // ボタン領域
+              TextButton(
+                child: Text("OK"),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
+    }else{
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder:(context)=> History(
+              )
+          )
+      );
+    }
+
+  }
+
+  Future< List<Parameter>> selectSerial() async {
+    List<Parameter> parametersList = await MyDatabase().getAllparameters();
+    List<Parameter> targetParameterList=[];
+// forEach
+    for (var parameter in parametersList) {
+      if (parameter.code.substring(0, 18) == 'serialcdStartedFlg' &&
+          parameter.booleanValue ==true) {
+        targetParameterList.add(parameter);
+        print('AAAAADDD');
+      }
+    }
+    return targetParameterList;
   }
 
   void checkSerial() async {

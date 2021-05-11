@@ -15,6 +15,10 @@ class IncorrectCheck extends StatefulWidget {
 
 class _IncorrectCheckState extends State<IncorrectCheck> {
 
+  StudyStatu ss=StudyStatu();
+  int correctType;
+  MyDatabase db = MyDatabase();
+
   @override
   Widget build(BuildContext context) {
     QuestionList ql =QuestionList();
@@ -27,6 +31,7 @@ class _IncorrectCheckState extends State<IncorrectCheck> {
       ),
 
       floatingActionButton: Container(
+
         height: 100.0,
         width: 100.0,
         margin:EdgeInsets.only(bottom: 100.0),
@@ -38,8 +43,24 @@ class _IncorrectCheckState extends State<IncorrectCheck> {
         color: Theme.of(context).canvasColor,
         notchMargin:0,
         child:ElevatedButton(onPressed: () {
-          for(var value in ql.checkedList){
-            print(value);//★★★★★★★★データ登録処理を追加する★★★★★★★★★★
+          for (int i = 0; i < ql.checkedList.length; i++){
+            if(ql.checkedList[i]==true){
+              correctType=1;
+            }else{
+              correctType=0;
+            }
+            final now = DateTime.now();
+            ss = StudyStatu(
+              businessYear:ql.qhList[i].businessYear
+                ,period:ql.qhList[i].period
+                ,questionNo:ql.qhList[i].questionNo
+                ,studyType:1
+                ,correctType: correctType
+                ,singleAnswer:''
+                ,multipleAnswer:''
+                ,numberAnswer:0
+                ,answerDateTime:now);
+            db.insertstudystatu(ss);
           }
           Parameter para = Parameter(code:widget.serialData.code
               ,numberValue:widget.serialData.numberValue
@@ -76,6 +97,7 @@ class _IncorrectCheckState extends State<IncorrectCheck> {
 class QuestionList extends StatefulWidget {
   @override
   _QuestionListstate createState() => _QuestionListstate();
+  List<QuestionHeader> qhList =  [];
   List<bool> checkedList =  [];
 }
 
@@ -103,20 +125,25 @@ class _QuestionListstate extends State<QuestionList> {
                   ? Container()
                   : ListView.builder(
                 itemBuilder: (_, index) {
-                  widget.checkedList.add(false);
+                  if(widget.qhList.length <= index){
+                    widget.qhList.add(snapshot.data[index]);
+                    widget.checkedList.add(false);
+                  }else{
+                  }
                   return
                     Card(
+
                       child: CheckboxListTile(
 
-                        value: widget.checkedList[index],
-                        onChanged: (value) {
-                          setState(() => widget.checkedList[index] = value);
-                        },
-                        title: Text(snapshot.data[index].questionNo, style: TextStyle(fontWeight: FontWeight.bold),),
-                        subtitle: Text(snapshot.data[index].questionText),
-                        secondary: Icon(Icons.stop_sharp, color: Colors.blue),
-                        activeColor: Colors.blue,
-                        selected: _isCheckboxChecked,
+                          value: widget.checkedList[index],
+                          onChanged: (value) {
+                            setState(() => widget.checkedList[index] = value);
+                          },
+                          title: Text(snapshot.data[index].questionNo, style: TextStyle(fontWeight: FontWeight.bold),),
+                          subtitle: Text(snapshot.data[index].questionText),
+                          secondary: Icon(Icons.stop_sharp, color: Colors.blue),
+                          activeColor: Colors.blue,
+                          selected: _isCheckboxChecked,
                           controlAffinity:ListTileControlAffinity.trailing
                       ),
                     );
