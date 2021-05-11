@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//import 'package:flutter/services.dart';
 import 'package:yamato/result.dart';
 
 class Search extends StatefulWidget {
@@ -31,13 +31,28 @@ class _SearchState extends State<Search> {
                 child: Icon(Icons.search, size: 40),
                   onPressed: () {
                    showDialog(context: context, builder: (_) => AlertDialog(
+                     shape: RoundedRectangleBorder(
+                       borderRadius:
+                         BorderRadius.all((Radius.circular(10.0)),),
+                     ),
+                     content: Builder(
+                       builder: (context) {
+                         var height = MediaQuery.of(context).size.height;
+                         var width = MediaQuery.of(context).size.width;
+
+                         return Container(
+                           height: height - 400,
+                           width: width -400,
+                         );
+                       }
+                     ),
                      title: Text('SEARCH!'),
-                     content: Text('検索画面の仮置き'),
+                     //content: Text('検索画面の仮置き'),
                      actions: <Widget>[
                        ElevatedButton(
                          child: Text("遷移"),
                          onPressed: () {
-                           Navigator.push(
+                           Navigator.pushReplacement(
                              context,
                              MaterialPageRoute(builder: (context) => Result()),
                            );

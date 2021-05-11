@@ -83,7 +83,7 @@ class _ResultState extends State<Result> {
                 ElevatedButton(
                   child: Text("遷移"),
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (context) => Result()),
                     );
