@@ -70,42 +70,43 @@ class _QuestionListstate extends State<QuestionList> {
 
   TextEditingController priceController = TextEditingController();
   bool isloading = false;
-  MyDatabase db = MyDatabase();
 
+  List<QuestionHeader>hqList =[];
+  var _isCheckboxChecked=false;
 
   @override
   Widget build(BuildContext context) {
+    MyDatabase db = MyDatabase();
 
-    var _isCheckboxChecked=false;
-    return Column(
+    if(hqList.length==0) {
+    Future<List<QuestionHeader>> fQHList = db.getAllquestionheaders();
+
+    fQHList.then((value) {
+        setState(() {
+          hqList = value;
+        });
+
+    });
+
+    }
+    return
+    Column(
       children: <Widget>[
         Container(
-          height: 700,
-          width: double.infinity,
-          child: StreamBuilder(
-            stream: MyDatabase().watchAllquestionheaders(),
-            //★★★★★★★スクロールしたら読み込むStreamでなくFutureですべてこのタイミングでよみこんでくるひつようがある。★★★★★★
-            //そうしないと下の方の問題にチェックをデフォルトでONできない。
-            builder: (context, AsyncSnapshot<List<QuestionHeader>> snapshot) {
-              return snapshot == null
-                  ? Container()
-                  : ListView.builder(
+            height: 700,
+            width: double.infinity,
+            child:
+            ListView.builder(
                 itemBuilder: (_, index) {
-                  if(widget.qhList.length <= index){
-                    widget.qhList.add(snapshot.data[index]);
-                    widget.checkedList.add(false);
-                  }else{
-                  }
+                  print("101");
                   return
                     Card(
-
                       child: CheckboxListTile(
-
-                          value: widget.checkedList[index],
+                          value: false,//widget.checkedList[index],
                           onChanged: (value) {
                             setState(() => widget.checkedList[index] = value);
                           },
-                          title: Text(snapshot.data[index].questionNo+"                          ○　✕　○", style: TextStyle(fontWeight: FontWeight.bold),),
+                          title: Text(hqList[index].questionNo+"                          ○　?　○", style: TextStyle(fontWeight: FontWeight.bold),),
                           //subtitle: Text(snapshot.data[index].questionText,
                           //  textAlign: TextAlign.right,),
                           secondary: Icon(Icons.stop_sharp, color: Colors.blue),
@@ -114,14 +115,13 @@ class _QuestionListstate extends State<QuestionList> {
                           controlAffinity:ListTileControlAffinity.trailing
                       ),
                     );
-                },
-                itemCount: snapshot.data?.length ?? 0,//null対応済
+                }
+                ,itemCount:hqList.length
 
-              );
-            },
-          ),
+            )
         )
       ],
     );
+
   }
 }
