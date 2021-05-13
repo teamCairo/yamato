@@ -93,10 +93,7 @@ class QuestionTryings extends Table {
   Set<Column> get primaryKey => {id};
 }
 @UseMoor(
-  tables: [Parameters,StudyStatus,QuestionHeaders,Subjects,QuestionOptions,QuestionFiles,QuestionTryings],
-    queries: {
-      '_selectParameterByCode': 'SELECT * FROM parameters WHERE code = :_code '
-  }
+  tables: [Parameters,StudyStatus,QuestionHeaders,Subjects,QuestionOptions,QuestionFiles,QuestionTryings]
 )//add Table name
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(FlutterQueryExecutor.inDatabaseFolder(path: 'db.sqlite',
@@ -116,6 +113,57 @@ class MyDatabase extends _$MyDatabase {
   Future insertstudystatu(StudyStatu studystatu)=> into(studyStatus).insert(studystatu);
   Future updatestudystatu(StudyStatu studystatu)=> update(studyStatus).replace(studystatu);
   Future deletestudystatu(StudyStatu studystatu)=> delete(studyStatus).delete(studystatu);
+
+
+  Future<List<int>> amountOfStudyStatu(int businessYear,int period, String questionNo) {
+    return
+      customSelect(
+        'SELECT correct_Type FROM study_Status '
+            +'WHERE business_Year = ? '
+            +'AND period = ? '
+            +'AND question_No = ?'
+        +'ORDER BY id DESC',
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withString(questionNo)],
+        readsFrom: {studyStatus},
+      ).map((row) => row.readInt('correct_Type')).get();
+  }
+
+/*
+/成功例
+  Future<List<int>> amountOfStudyStatu() {
+    final query = 'SELECT id FROM Subjects';
+    return customSelect(query)
+        .map((row) => row.readInt('id'))
+        .get();
+  }
+
+
+  Future<List<int>> amountOfStudyStatu(int businessYear) {
+    return
+      customSelect(
+        'SELECT COUNT(*) AS c FROM study_Status WHERE business_Year = ?',
+        variables: [Variable.withInt(businessYear)],
+        readsFrom: {studyStatus},
+      ).map((row) => row.readInt('c')).get();
+  }
+
+
+  Future<List<int>> amountOfStudyStatu() {
+    final query = 'SELECT id FROM Study_Status';
+    return customSelect(query)
+        .map((row) => row.readInt('id'))
+        .get();
+  }
+
+  Future<List<int>> amountOfStudyStatu(int businessYear) {
+    return
+
+      CustomSelectStatement(
+      'SELECT COUNT(*) AS c FROM studyStatus WHERE businessYear = ?',
+      variables: [Variable.withInt(businessYear)],
+      readsFrom: {studyStatus},
+    ).map((row) => row.readInt('c')).get();
+  }*/
 
 
   Future <List<QuestionHeader>> getAllquestionheaders()=> select(questionHeaders).get();
@@ -152,6 +200,7 @@ class MyDatabase extends _$MyDatabase {
   Future insertquestiontrying(QuestionTrying questiontrying)=> into(questionTryings).insert(questiontrying);
   Future updatequestiontrying(QuestionTrying questiontrying)=> update(questionTryings).replace(questiontrying);
   Future deletequestiontrying(QuestionTrying questiontrying)=> delete(questionTryings).delete(questiontrying);
+
 
 
 }

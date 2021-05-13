@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:yamato/search.dart';
 import 'package:yamato/db.dart';
 import 'package:yamato/history.dart';
+import 'package:yamato/custombutton.dart';
 import 'package:yamato/incorrectcheck.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 class RootWidget extends StatefulWidget{
@@ -23,7 +25,14 @@ class _RootWidgetState extends State<RootWidget> {
 
     final screenWidth = MediaQuery.of(context).size.width;
 
+    final outlineColor=Colors.lightBlueAccent;
+    final primaryColor=Colors.lightBlueAccent;
+    final backColor=Colors.white;
+    final double elev=0;
+    //Color(0xFFFAFAFA)
+
     return Scaffold(
+      backgroundColor: Color(0xFFFAFAFA),
       body:
       Center(
 
@@ -35,80 +44,87 @@ class _RootWidgetState extends State<RootWidget> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(3),
                    margin: EdgeInsets.all(20),
-                   child: Image.network('https://msp.c.yimg.jp/images/v2/FUTi93tXq405grZVGgDqG_ORuY3auNKO_SGC79HkaeLLiJlOV258tTKjNtwKxI1RkCFf5EU7Dh3Ng8lSLG7sxwKxm-QmB1GJ0jqhMkRetaRT9IYTihNFldNsafAjn0g_KRuSqMqzACO4FViJGJOSzpXO5rdzgyOgMDCeAKIr_pdYVXTT5_BiRdSWfoWP9ynIUv8LWsQpZfZ47i_g79x9Cri10Hn-_a30nvfbQhrXuVwslkBXyddUrxHUAKGmqEqaw_OZVHhhIr65RXCw3Dfv1Yz0-kdKhTK1vGzBC7f8wUA=/montore_visual.jpg',),
-                height: 200.0,
+                child: Image.asset('assets/image/montore_visual.jpg',
+                    fit: BoxFit.contain),
+                height: 350.0,
                 width: 500.0,
               ),
             Container(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(5),
               margin: EdgeInsets.all(4),
               child: SizedBox(
-                width: 280,
+                width: 300,
                 height: 60,
-                child:ElevatedButton(onPressed: () {},
-                  child: Text("続きから解く", style: TextStyle(fontSize: 20,),),
-                  //style: ElevatedButton.styleFrom(
-                    //side: BorderSide(
-                      //primary: Colors.indigo[900],
-                      //width: 3,
-                    //),
-                  //),
+                child:OutlinedButton.icon(onPressed: () {},
+                  label: Text("続きから解く", style: TextStyle(fontSize: 17,fontWeight: FontWeight.w100,fontFamily: "Hiragino Sans", locale: Locale("ja", "JP"),),),
+                  icon:Icon(Icons.replay),
+                  style: OutlinedButton.styleFrom(
+                    elevation:elev,
+                    primary: primaryColor,
+                    backgroundColor: backColor,
+                    side: BorderSide(color: outlineColor, width: 1),
+                    shape:RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),)
+                  ),
                 ),
               ),
             ),
              Container(
-               padding: const EdgeInsets.all(20),
+               padding: const EdgeInsets.all(5),
                margin: EdgeInsets.all(4),
                child: SizedBox(
-                width: 280,
-                height: 60,
-                child: ElevatedButton(onPressed: () {
+                 width: 300,
+                 height: 60,
+                child: OutlinedButton.icon(onPressed: () {
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Search()),
-                    );
-                },
-
-                  child: Text("問題検索", style: TextStyle(fontSize: 20,),),
-                  //style: ElevatedButton.styleFrom(
-                    //side: BorderSide(
-                      //primary :Colors.indigo[900],
-                      //width: 3,
-                //    ),
-                  //),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Search()),
+                  );},
+                  label: Text("問題検索", style: TextStyle(fontSize: 17,fontWeight: FontWeight.w100),),
+                  icon:Icon(Icons.search),
+                  style: OutlinedButton.styleFrom(
+                      elevation:elev,
+                      primary: primaryColor,
+                      backgroundColor: backColor,
+                      side: BorderSide(color: outlineColor, width: 1),
+                      shape:RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),)
+                  ),
                 ),
                ),
              ),
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(5),
                 margin: EdgeInsets.all(4),
                 child: SizedBox(
-                width: 280,
-                height: 60,
-                child: ElevatedButton(
-                  child: Text("学習履歴", style: TextStyle(fontSize:  20,),),
-                  //style: ElevatedButton.styleFrom(
-                    //side: BorderSide(
-                      //primary :Colors.indigo[900],
-                      //width: 3,
-                  //  ),
-                 // ),
-                  onPressed: () => {
-                    moveToStudyStatus()
-                  },
-                 ),
+                  width: 300,
+                  height: 60,
+                child: OutlinedButton.icon(onPressed: () {
+                  moveToStudyStatus();
+                },
+                  label: Text("学習履歴", style: TextStyle(fontSize: 17,fontWeight: FontWeight.w100),),
+                  icon:Icon(Icons.leaderboard ),
+                  style: OutlinedButton.styleFrom(
+                      elevation:elev,
+                      primary: primaryColor,
+                      backgroundColor: backColor,
+                      side: BorderSide(color: outlineColor, width: 1),
+                      shape:RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),)
+                  ),
+                ),
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(5),
                 margin: EdgeInsets.all(4),
                 child: SizedBox(
-                width: 280,
-                height: 60,
-              child: ElevatedButton(onPressed: () {
+                  width: 300,
+                  height: 60,
+              child: OutlinedButton.icon(onPressed: () {
                 _textController.text='';
                 showDialog(
                   context: context,
@@ -152,16 +168,19 @@ class _RootWidgetState extends State<RootWidget> {
                   }
                 });
               },
-                  child: Text("シリアルコード", style: TextStyle(fontSize: 20,),),
-                //style: ElevatedButton.styleFrom(
-                  //side: BorderSide(
-                    //primary :Colors.indigo[900],
-                    //width: 3,
-                  //),
+                label: Text("シリアルコード", style: TextStyle(fontSize: 17,fontWeight: FontWeight.w100),),
+                icon:Icon(Icons.qr_code_scanner ),
+                style: OutlinedButton.styleFrom(
+                    elevation:elev,
+                  primary: primaryColor,
+                  backgroundColor: backColor,
+                  side: BorderSide(color: outlineColor, width: 1),
+                  shape:RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),)
                 ),
                 ),
                ),
-             // ),
+            ),
             ],
           ),
       ),
