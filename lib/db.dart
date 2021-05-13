@@ -15,20 +15,6 @@ class Parameters extends Table {
   Set<Column> get primaryKey => {code};
 }
 
-
-class StudyStatus extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  IntColumn get businessYear => integer()();
-  IntColumn get period => integer()();
-  TextColumn get questionNo => text()();
-  IntColumn get studyType => integer()();
-  IntColumn get correctType => integer()();
-  TextColumn get singleAnswer => text()();
-  TextColumn get multipleAnswer => text()();
-  IntColumn get numberAnswer => integer()();
-  DateTimeColumn get answerDateTime => dateTime()();
-}
-
 class QuestionHeaders extends Table {
   IntColumn get businessYear => integer()();
   IntColumn get period => integer()();
@@ -38,6 +24,9 @@ class QuestionHeaders extends Table {
   IntColumn get answerType => integer()();
   TextColumn get questionText => text()();
   IntColumn get numberAnswer => integer()();
+  IntColumn get correctType1 => integer()();
+  IntColumn get correctType2 => integer()();
+  IntColumn get correctType3 => integer()();
 
   @override
   Set<Column> get primaryKey => {businessYear,period,questionNo};
@@ -49,7 +38,6 @@ class Subjects extends Table {
   TextColumn get subjectName => text()();
 
 }
-
 
 class QuestionOptions extends Table {
   IntColumn get businessYear => integer()();
@@ -93,11 +81,23 @@ class QuestionTryings extends Table {
   Set<Column> get primaryKey => {id};
 }
 @UseMoor(
-  tables: [Parameters,StudyStatus,QuestionHeaders,Subjects,QuestionOptions,QuestionFiles,QuestionTryings]
+  tables: [Parameters,QuestionHeaders,Subjects,QuestionOptions,QuestionFiles,QuestionTryings]
 )//add Table name
 class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(FlutterQueryExecutor.inDatabaseFolder(path: 'db.sqlite',
       logStatements: true));
+
+  @override
+  MigrationStrategy get migration => destructiveFallback;
+  /*
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onUpgrade: (m, from, to) async {
+      if (from <= 3) {
+        await m.drop(studyStatus);
+      }
+    },
+  );*/
 
   @override
   int get schemaVersion => 1;
@@ -107,64 +107,6 @@ class MyDatabase extends _$MyDatabase {
   Future insertparameter(Parameter parameter)=> into(parameters).insert(parameter);
   Future updateparameter(Parameter parameter)=> update(parameters).replace(parameter);
   Future deleteparameter(Parameter parameter)=> delete(parameters).delete(parameter);
-
-  Future <List<StudyStatu>> getAllstudystatus()=> select(studyStatus).get();
-  Stream <List<StudyStatu>> watchAllstudystatus()=> select(studyStatus).watch();
-  Future insertstudystatu(StudyStatu studystatu)=> into(studyStatus).insert(studystatu);
-  Future updatestudystatu(StudyStatu studystatu)=> update(studyStatus).replace(studystatu);
-  Future deletestudystatu(StudyStatu studystatu)=> delete(studyStatus).delete(studystatu);
-
-
-  Future<List<int>> amountOfStudyStatu(int businessYear,int period, String questionNo) {
-    return
-      customSelect(
-        'SELECT correct_Type FROM study_Status '
-            +'WHERE business_Year = ? '
-            +'AND period = ? '
-            +'AND question_No = ?'
-        +'ORDER BY id DESC',
-        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withString(questionNo)],
-        readsFrom: {studyStatus},
-      ).map((row) => row.readInt('correct_Type')).get();
-  }
-
-/*
-/成功例
-  Future<List<int>> amountOfStudyStatu() {
-    final query = 'SELECT id FROM Subjects';
-    return customSelect(query)
-        .map((row) => row.readInt('id'))
-        .get();
-  }
-
-
-  Future<List<int>> amountOfStudyStatu(int businessYear) {
-    return
-      customSelect(
-        'SELECT COUNT(*) AS c FROM study_Status WHERE business_Year = ?',
-        variables: [Variable.withInt(businessYear)],
-        readsFrom: {studyStatus},
-      ).map((row) => row.readInt('c')).get();
-  }
-
-
-  Future<List<int>> amountOfStudyStatu() {
-    final query = 'SELECT id FROM Study_Status';
-    return customSelect(query)
-        .map((row) => row.readInt('id'))
-        .get();
-  }
-
-  Future<List<int>> amountOfStudyStatu(int businessYear) {
-    return
-
-      CustomSelectStatement(
-      'SELECT COUNT(*) AS c FROM studyStatus WHERE businessYear = ?',
-      variables: [Variable.withInt(businessYear)],
-      readsFrom: {studyStatus},
-    ).map((row) => row.readInt('c')).get();
-  }*/
-
 
   Future <List<QuestionHeader>> getAllquestionheaders()=> select(questionHeaders).get();
   Stream <List<QuestionHeader>> watchAllquestionheaders()=> select(questionHeaders).watch();
@@ -200,7 +142,5 @@ class MyDatabase extends _$MyDatabase {
   Future insertquestiontrying(QuestionTrying questiontrying)=> into(questionTryings).insert(questiontrying);
   Future updatequestiontrying(QuestionTrying questiontrying)=> update(questionTryings).replace(questiontrying);
   Future deletequestiontrying(QuestionTrying questiontrying)=> delete(questionTryings).delete(questiontrying);
-
-
 
 }

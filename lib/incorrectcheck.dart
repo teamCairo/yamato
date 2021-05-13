@@ -15,7 +15,6 @@ class IncorrectCheck extends StatefulWidget {
 
 class _IncorrectCheckState extends State<IncorrectCheck> {
 
-  StudyStatu ss=StudyStatu();
   int correctType;
   MyDatabase db = MyDatabase();
 
@@ -50,17 +49,8 @@ class _IncorrectCheckState extends State<IncorrectCheck> {
               correctType=0;
             }
             final now = DateTime.now();
-            ss = StudyStatu(
-              businessYear:ql.qhList[i].businessYear
-                ,period:ql.qhList[i].period
-                ,questionNo:ql.qhList[i].questionNo
-                ,studyType:1
-                ,correctType: correctType
-                ,singleAnswer:''
-                ,multipleAnswer:''
-                ,numberAnswer:0
-                ,answerDateTime:now);
-            db.insertstudystatu(ss);
+
+            //TODO:ヘッダのステータス情報更新
           }
           Parameter para = Parameter(code:widget.serialData.code
               ,numberValue:widget.serialData.numberValue
