@@ -25,6 +25,7 @@ class _QuestionState extends State<Question> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         title: Text("?/???　問題番号???"),
         backgroundColor: Colors.lightBlue[400],
@@ -59,7 +60,9 @@ class _QuestionState extends State<Question> {
              ),
           ),
           Expanded(
-           child: Column(
+            child:Padding(
+              padding: EdgeInsets.fromLTRB(25,0,25,0),
+              child: Column(
 
                children: <Widget>[
                 RadioListTile<Alternative>(
@@ -68,6 +71,8 @@ class _QuestionState extends State<Question> {
                   groupValue: _alternative,
                   onChanged: _onChanged,
                   activeColor: Colors.lightBlue,
+                  tileColor: Colors.white,
+                  selectedTileColor: Colors.indigo[900],
                 ),
                 RadioListTile<Alternative>(
                   title: Text("b:~~~~~~", style: TextStyle(fontSize: 18,),),
@@ -75,6 +80,8 @@ class _QuestionState extends State<Question> {
                   groupValue: _alternative,
                   onChanged: _onChanged,
                   activeColor: Colors.lightBlue,
+                  tileColor: Colors.white,
+                  selectedTileColor: Colors.indigo[900],
                 ),
                 RadioListTile<Alternative>(
                   title: Text("c:~~~~~~"),
@@ -82,6 +89,8 @@ class _QuestionState extends State<Question> {
                   groupValue: _alternative,
                   onChanged: _onChanged,
                   activeColor: Colors.indigo.shade300,
+                  tileColor: Colors.white,
+                  selectedTileColor: Colors.indigo[900],
                 ),
                 RadioListTile<Alternative>(
                   title: Text("d:~~~~~~"),
@@ -89,9 +98,12 @@ class _QuestionState extends State<Question> {
                   groupValue: _alternative,
                   onChanged: _onChanged,
                   activeColor: Colors.indigo,
+                  tileColor: Colors.white,
+                  selectedTileColor: Colors.indigo[900],
                 ),
               ],
           ),
+           ),
           ),
 
           Container(
@@ -100,43 +112,35 @@ class _QuestionState extends State<Question> {
             child: SizedBox(
               width: 220,
               height: 60,
-                child: ElevatedButton(onPressed: () {
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(primary: Colors.indigo[900]),
+                  onPressed: () {
                   Navigator.push(
                     context,
                    MaterialPageRoute(builder: (context) => Answer())
                    );
                    },
-                  child: Text("解答する", style: TextStyle(fontSize: 18,),),),
+
+                  child: Text("解答する", style: TextStyle(fontSize: 18,
+                    color: Colors.yellow,
+                    ), ),),
     ),
     ),
 
           Row(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children:<Widget>[
               Container(
                 padding: const EdgeInsets.all(10),
                 margin: EdgeInsets.all(10),
                 child: SizedBox(
-                 width: 140,
-                 height: 40,
-                 child: ElevatedButton(onPressed: () {}, child: Text("解答履歴"),),
+                 width: 110,
+                 height: 30,
+                 child: ElevatedButton(onPressed: () {}, child: Text("解説を見る"),),
                ),
               ),
-              Container(
-                padding: const EdgeInsets.all(10),
-                margin: EdgeInsets.all(6),
-                child: SizedBox(
-                 width: 150,
-                 height: 50,
-                 child:  ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context,
-                  MaterialPageRoute(builder: (context) => Answer())
-                    );},
-                   child: Text("解説を見る"),),
-           ),
-          ),
+
           ],
           ),
 
@@ -160,39 +164,64 @@ class _QuestionState extends State<Question> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
-                width: 150,
+                width: 100,
                 height: 37,
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     shape:
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.red)
+                        side: BorderSide(color: Colors.blue)
                     ),
                     elevation: 10,
-                    shadowColor: Colors.red,
-                        primary: Colors.indigo[900],
+                    shadowColor: Colors.blue,
+                        primary: Colors.white,
                   ),
 
                   onPressed: () {Navigator.of(context).pop();},
-                  icon: Icon(Icons.arrow_left_rounded,size: 30,),
-                  label: Text('前の問題'),
+                  icon: Icon(Icons.arrow_left_rounded,size: 40,color: Colors.lightBlue,),
+                  label: Text('前の問題', style: TextStyle(
+                    color: Colors.blue,
+                  ),),
                 )
               ),
               Container(
-                width: 150,
+                  width: 80,
+                  height: 37,
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      shape:
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: BorderSide(color: Colors.blue)
+                      ),
+                      elevation: 10,
+                      shadowColor: Colors.blue,
+                      primary: Colors.white,
+                    ),
+
+                    onPressed: () {Navigator.of(context).pop();},
+                    icon: Icon(Icons.list,size: 40,color: Colors.lightBlue,),
+                    label: Text("一覧へ", style: TextStyle(
+                      color: Colors.blue,
+                    ),),
+                  )
+              ),
+              Container(
+                width: 100,
+                height: 37,
                 child: ElevatedButton(
 
                   style: ElevatedButton.styleFrom(
                     shape:
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
-                            side: BorderSide(color: Colors.red)
+                            side: BorderSide(color: Colors.blue)
                         ),
 
                     elevation: 10,
-                    shadowColor: Colors.red,
-                    primary: Colors.indigo[900],
+                    shadowColor: Colors.blue,
+                    primary: Colors.white,
                   ),
 
                   onPressed: () {Navigator.push(
@@ -205,8 +234,8 @@ class _QuestionState extends State<Question> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text('次の問題'),
-                            Icon(Icons.arrow_right_rounded,size: 30,),
+                            Text('次の問題', style: TextStyle(color: Colors.blue),),
+                            Icon(Icons.arrow_right_rounded,size: 40, color: Colors.lightBlue,),
                     ],
                   ),
                     ),

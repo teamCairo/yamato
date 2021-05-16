@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 //import 'package:flutter/services.dart';
 import 'package:yamato/result.dart';
 
+import 'ctile.dart';
+import 'filter.dart';
+
 class Search extends StatefulWidget {
 
 
@@ -16,11 +19,25 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+        backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         title: Text("問題一覧"),
         backgroundColor: Colors.lightBlue[400],
-        actions: [],
+        actions: [
+          Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () => {Navigator.push(
+                context, MaterialPageRoute(
+              builder: (context) => Filter(),
+              //以下を追加
+              fullscreenDialog: true,
+            )
+            )},
+          ),
+        ),
+        ],
       ),
 
       floatingActionButton: Container(
@@ -69,123 +86,29 @@ class _SearchState extends State<Search> {
       body: ListView(
         padding: const EdgeInsets.all(8),
         children: <Widget>[
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp, color: Colors.blue),
-              title: Text("消化器　＜X問＞", style: TextStyle(fontWeight: FontWeight.bold),),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-          child: ListTile(
-            leading: Icon(Icons.stop_sharp),
-            title: Text("循環器　＜X問＞"),
-            trailing: Icon(Icons.arrow_circle_down_rounded),
-            subtitle: Text("書くことあれば欄"),
-            onTap: () {},
-          ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("呼吸器　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("腎臓　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("内分泌代謝　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("神経　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
-          Card(
-            child: ListTile(
-              leading: Icon(Icons.stop_sharp),
-              title: Text("血液　＜X問＞"),
-              trailing: Icon(Icons.arrow_circle_down_rounded),
-              subtitle: Text("書くことあれば欄"),
-              onTap: () {},
-            ),
-          ),
+         Ctile(number:"20", name:"呼吸器"),
+          Ctile(number: "30", name: "循環器",),
+         Ctile(number: "", name: "消化器",),
+        Ctile(number: "", name: "腎臓",),
+        Ctile(number: "", name: "内代",),
+        Ctile(number: "", name: "神経",),
+        Ctile(number: "", name: "血液",),
+          Ctile(number: "", name: "免疫",),
+          Ctile(number: "", name: "感染",),
+          Ctile(number: "", name: "中毒・異常症",),
+          Ctile(number: "", name: "救急",),
+          Ctile(number: "", name: "小児",),
+          Ctile(number: "", name: "産科",),
+
+
+
+
+
+
+
+
+
+
 
         ],
       ),

@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:yamato/question.dart';
 
 
 
 class Qtile extends StatelessWidget {
-  double code;
+  String code;
   String category;
   String contents;
 
 
-  Qtile({double code, String category, String contents}) {
+  Qtile({String code, String category, String contents}) {
     this.code = code;
     this.category = category;
     this.contents = contents;
@@ -22,17 +23,17 @@ class Qtile extends StatelessWidget {
         child: ListTile(
           //leading: ,
           title: Text(
-             "仮置き"
+             this.contents
         //this.code+category
          ),
-          subtitle: Text(this.contents),
-          //onTap: () {
-            //Navigator.push(
-            //  context,MaterialPageRoute(
-            //  builder: (context) =>???()
-           // )
-           // );
-         // },
+          subtitle: Text(this.code+"/"+this.category),
+          onTap: () {
+            Navigator.push(
+              context,MaterialPageRoute(
+             builder: (context) =>Question()
+            )
+            );
+          },
         ),
       ),
     );
