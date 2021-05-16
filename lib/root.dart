@@ -26,9 +26,10 @@ class _RootWidgetState extends State<RootWidget> {
     final primaryColor = Colors.blueAccent;
     final headeryColor = Colors.blueAccent;
     final backColor = Colors.white;
-    final double elev = 10;
+    final double elev = 8;
     final double iconsize = 35;
     final double radius = 0;
+    final double fontSize = 18;
     //Color(0xFFFAFAFA)
 
     return Scaffold(
@@ -113,7 +114,7 @@ class _RootWidgetState extends State<RootWidget> {
                   label: Text(
                     "続きから解く",
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: fontSize,
                       fontWeight: FontWeight.w100,
                       fontFamily: "Hiragino Sans",
                       locale: Locale("ja", "JP"),
@@ -146,7 +147,7 @@ class _RootWidgetState extends State<RootWidget> {
                   },
                   label: Text(
                     "問題検索",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w100),
+                    style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w100),
                   ),
                   icon: Icon(Icons.search,size:iconsize),
                   style: OutlinedButton.styleFrom(
@@ -172,7 +173,7 @@ class _RootWidgetState extends State<RootWidget> {
                   },
                   label: Text(
                     "学習履歴",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w100),
+                    style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w100),
                   ),
                   icon: Icon(Icons.leaderboard,size:iconsize),
                   style: OutlinedButton.styleFrom(
@@ -243,7 +244,7 @@ class _RootWidgetState extends State<RootWidget> {
                   },
                   label: Text(
                     "シリアルコード",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w100),
+                    style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w100),
                   ),
                   icon: Icon(Icons.qr_code_scanner,size:iconsize),
                   style: OutlinedButton.styleFrom(
