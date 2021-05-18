@@ -18,7 +18,7 @@ class Parameters extends Table {
 class QuestionHeaders extends Table {
   IntColumn get businessYear => integer()();
   IntColumn get period => integer()();
-  TextColumn get questionNo => text()();
+  IntColumn get questionNo => integer()();
   IntColumn get subjectId => integer()();
   IntColumn get compulsoryType => integer()();
   IntColumn get answerType => integer()();
@@ -42,7 +42,7 @@ class Subjects extends Table {
 class QuestionOptions extends Table {
   IntColumn get businessYear => integer()();
   IntColumn get period => integer()();
-  TextColumn get questionNo => text()();
+  IntColumn get questionNo => integer()();
   TextColumn get optionCd => text()();
   TextColumn get optionText => text()();
   IntColumn get correctCype => integer()();
@@ -70,7 +70,7 @@ class QuestionTryings extends Table {
   IntColumn get id => integer()();
   IntColumn get businessYear => integer()();
   IntColumn get period => integer()();
-  TextColumn get questionNo => text()();
+  IntColumn get questionNo => integer()();
   BoolColumn get endFlg => boolean()();
   IntColumn get correctType => integer()();
   TextColumn get singleAnswer => text()();
@@ -100,7 +100,7 @@ class MyDatabase extends _$MyDatabase {
   );*/
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   Future <List<Parameter>> getAllparameters()=> select(parameters).get();
   Stream <List<Parameter>> watchAllparameters()=> select(parameters).watch();

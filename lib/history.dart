@@ -144,7 +144,6 @@ class QuestionList extends StatefulWidget {
   @override
   _QuestionListstate createState() => _QuestionListstate();
   List<QuestionHeader> qhList = [];
-  List<bool> checkedList = [];
 }
 
 class _QuestionListstate extends State<QuestionList> {
@@ -166,7 +165,6 @@ class _QuestionListstate extends State<QuestionList> {
     */
 
     print(hqList.length.toString() + "dafafa");
-    print(widget.checkedList.length.toString() + "チェックドリスト");
 
     if (hqList.length == 0) {
       Future<List<QuestionHeader>> fQHList = db.getAllquestionheaders();
@@ -205,7 +203,7 @@ class _QuestionListstate extends State<QuestionList> {
                         width: 90,
                         child: Center(
                             child: Text(
-                          hqList[index].questionNo,
+                          hqList[index].questionNo.toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 28,
