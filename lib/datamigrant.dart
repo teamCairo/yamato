@@ -44,7 +44,7 @@ class DataMigrant {
     QuestionHeader qh1 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'1'
+        ,questionNo:1
         ,subjectId:1
         ,compulsoryType:0
         ,answerType:1
@@ -57,7 +57,7 @@ class DataMigrant {
     QuestionHeader qh2 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'2'
+        ,questionNo:2
         ,subjectId:1
         ,compulsoryType:0
         ,answerType:1
@@ -70,7 +70,7 @@ class DataMigrant {
     QuestionHeader qh3 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'3'
+        ,questionNo:3
         ,subjectId:2
         ,compulsoryType:1
         ,answerType:1
@@ -83,7 +83,7 @@ class DataMigrant {
     QuestionHeader qh4 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'4'
+        ,questionNo:4
         ,subjectId:3
         ,compulsoryType:1
         ,answerType:1
@@ -96,7 +96,7 @@ class DataMigrant {
     QuestionHeader qh5 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'5'
+        ,questionNo:5
         ,subjectId:3
         ,compulsoryType:0
         ,answerType:1
@@ -109,7 +109,7 @@ class DataMigrant {
     QuestionHeader qh6 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'6'
+        ,questionNo:6
         ,subjectId:5
         ,compulsoryType:0
         ,answerType:2
@@ -122,7 +122,7 @@ class DataMigrant {
     QuestionHeader qh7 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'7'
+        ,questionNo:7
         ,subjectId:6
         ,compulsoryType:1
         ,answerType:2
@@ -135,7 +135,7 @@ class DataMigrant {
     QuestionHeader qh8 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'8'
+        ,questionNo:8
         ,subjectId:7
         ,compulsoryType:1
         ,answerType:1
@@ -148,7 +148,7 @@ class DataMigrant {
     QuestionHeader qh9 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'9'
+        ,questionNo:9
         ,subjectId:12
         ,compulsoryType:0
         ,answerType:1
@@ -161,7 +161,7 @@ class DataMigrant {
     QuestionHeader qh10 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'10'
+        ,questionNo:10
         ,subjectId:9
         ,compulsoryType:0
         ,answerType:2
@@ -174,7 +174,7 @@ class DataMigrant {
     QuestionHeader qh11 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'11'
+        ,questionNo:11
         ,subjectId:2
         ,compulsoryType:1
         ,answerType:2
@@ -187,7 +187,7 @@ class DataMigrant {
     QuestionHeader qh12 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'12'
+        ,questionNo:12
         ,subjectId:11
         ,compulsoryType:1
         ,answerType:1
@@ -200,7 +200,7 @@ class DataMigrant {
     QuestionHeader qh13 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'13'
+        ,questionNo:13
         ,subjectId:3
         ,compulsoryType:0
         ,answerType:3
@@ -213,7 +213,7 @@ class DataMigrant {
     QuestionHeader qh14 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'14'
+        ,questionNo:14
         ,subjectId:5
         ,compulsoryType:0
         ,answerType:3
@@ -226,7 +226,7 @@ class DataMigrant {
     QuestionHeader qh15 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'15'
+        ,questionNo:15
         ,subjectId:7
         ,compulsoryType:1
         ,answerType:1
@@ -239,7 +239,7 @@ class DataMigrant {
     QuestionHeader qh16 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'16'
+        ,questionNo:16
         ,subjectId:15
         ,compulsoryType:1
         ,answerType:1
@@ -252,7 +252,7 @@ class DataMigrant {
     QuestionHeader qh17 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'17'
+        ,questionNo:17
         ,subjectId:4
         ,compulsoryType:0
         ,answerType:1
@@ -265,7 +265,7 @@ class DataMigrant {
     QuestionHeader qh18 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'18'
+        ,questionNo:18
         ,subjectId:8
         ,compulsoryType:0
         ,answerType:1
@@ -278,7 +278,7 @@ class DataMigrant {
     QuestionHeader qh19 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'19'
+        ,questionNo:19
         ,subjectId:4
         ,compulsoryType:1
         ,answerType:1
@@ -291,7 +291,7 @@ class DataMigrant {
     QuestionHeader qh20 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'20'
+        ,questionNo:20
         ,subjectId:2
         ,compulsoryType:1
         ,answerType:1
@@ -304,7 +304,7 @@ class DataMigrant {
     QuestionHeader qh21 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'21'
+        ,questionNo:21
         ,subjectId:3
         ,compulsoryType:0
         ,answerType:1
@@ -317,7 +317,7 @@ class DataMigrant {
     QuestionHeader qh22 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'22'
+        ,questionNo:22
         ,subjectId:3
         ,compulsoryType:0
         ,answerType:1
@@ -330,7 +330,7 @@ class DataMigrant {
     QuestionHeader qh23 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'23'
+        ,questionNo:23
         ,subjectId:5
         ,compulsoryType:1
         ,answerType:1
@@ -343,7 +343,7 @@ class DataMigrant {
     QuestionHeader qh24 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'24'
+        ,questionNo:24
         ,subjectId:6
         ,compulsoryType:1
         ,answerType:1
@@ -356,7 +356,7 @@ class DataMigrant {
     QuestionHeader qh25 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'25'
+        ,questionNo:25
         ,subjectId:7
         ,compulsoryType:0
         ,answerType:1
@@ -369,7 +369,7 @@ class DataMigrant {
     QuestionHeader qh26 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'26'
+        ,questionNo:26
         ,subjectId:12
         ,compulsoryType:0
         ,answerType:1
@@ -382,7 +382,7 @@ class DataMigrant {
     QuestionHeader qh27 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'27'
+        ,questionNo:27
         ,subjectId:9
         ,compulsoryType:1
         ,answerType:1
@@ -395,7 +395,7 @@ class DataMigrant {
     QuestionHeader qh28 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'28'
+        ,questionNo:28
         ,subjectId:2
         ,compulsoryType:1
         ,answerType:1
@@ -408,7 +408,7 @@ class DataMigrant {
     QuestionHeader qh29 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'29'
+        ,questionNo:29
         ,subjectId:11
         ,compulsoryType:0
         ,answerType:1
@@ -421,7 +421,7 @@ class DataMigrant {
     QuestionHeader qh30 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'30'
+        ,questionNo:30
         ,subjectId:3
         ,compulsoryType:0
         ,answerType:1
@@ -434,7 +434,7 @@ class DataMigrant {
     QuestionHeader qh31 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'31'
+        ,questionNo:31
         ,subjectId:5
         ,compulsoryType:1
         ,answerType:1
@@ -447,7 +447,7 @@ class DataMigrant {
     QuestionHeader qh32 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'32'
+        ,questionNo:32
         ,subjectId:7
         ,compulsoryType:1
         ,answerType:1
@@ -460,7 +460,7 @@ class DataMigrant {
     QuestionHeader qh33 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'33'
+        ,questionNo:33
         ,subjectId:15
         ,compulsoryType:0
         ,answerType:1
@@ -473,7 +473,7 @@ class DataMigrant {
     QuestionHeader qh34 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'34'
+        ,questionNo:34
         ,subjectId:4
         ,compulsoryType:0
         ,answerType:1
@@ -486,7 +486,7 @@ class DataMigrant {
     QuestionHeader qh35 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'35'
+        ,questionNo:35
         ,subjectId:8
         ,compulsoryType:1
         ,answerType:1
@@ -499,7 +499,7 @@ class DataMigrant {
     QuestionHeader qh36 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'36'
+        ,questionNo:36
         ,subjectId:4
         ,compulsoryType:1
         ,answerType:1
@@ -512,7 +512,7 @@ class DataMigrant {
     QuestionHeader qh37 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'37'
+        ,questionNo:37
         ,subjectId:2
         ,compulsoryType:0
         ,answerType:1
@@ -525,7 +525,7 @@ class DataMigrant {
     QuestionHeader qh38 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'38'
+        ,questionNo:38
         ,subjectId:3
         ,compulsoryType:0
         ,answerType:1
@@ -538,7 +538,7 @@ class DataMigrant {
     QuestionHeader qh39 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'39'
+        ,questionNo:39
         ,subjectId:3
         ,compulsoryType:1
         ,answerType:1
@@ -551,7 +551,7 @@ class DataMigrant {
     QuestionHeader qh40 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'40'
+        ,questionNo:40
         ,subjectId:5
         ,compulsoryType:1
         ,answerType:1
@@ -564,7 +564,7 @@ class DataMigrant {
     QuestionHeader qh41 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'41'
+        ,questionNo:41
         ,subjectId:6
         ,compulsoryType:0
         ,answerType:1
@@ -577,7 +577,7 @@ class DataMigrant {
     QuestionHeader qh42 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'42'
+        ,questionNo:42
         ,subjectId:7
         ,compulsoryType:0
         ,answerType:1
@@ -590,7 +590,7 @@ class DataMigrant {
     QuestionHeader qh43 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'43'
+        ,questionNo:43
         ,subjectId:12
         ,compulsoryType:1
         ,answerType:1
@@ -603,7 +603,7 @@ class DataMigrant {
     QuestionHeader qh44 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'44'
+        ,questionNo:44
         ,subjectId:9
         ,compulsoryType:1
         ,answerType:1
@@ -616,7 +616,7 @@ class DataMigrant {
     QuestionHeader qh45 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'45'
+        ,questionNo:45
         ,subjectId:2
         ,compulsoryType:0
         ,answerType:1
@@ -629,7 +629,7 @@ class DataMigrant {
     QuestionHeader qh46 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'46'
+        ,questionNo:46
         ,subjectId:11
         ,compulsoryType:0
         ,answerType:1
@@ -642,7 +642,7 @@ class DataMigrant {
     QuestionHeader qh47 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'47'
+        ,questionNo:47
         ,subjectId:3
         ,compulsoryType:1
         ,answerType:1
@@ -655,7 +655,7 @@ class DataMigrant {
     QuestionHeader qh48 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'48'
+        ,questionNo:48
         ,subjectId:5
         ,compulsoryType:1
         ,answerType:1
@@ -668,7 +668,7 @@ class DataMigrant {
     QuestionHeader qh49 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'49'
+        ,questionNo:49
         ,subjectId:7
         ,compulsoryType:0
         ,answerType:1
@@ -681,7 +681,7 @@ class DataMigrant {
     QuestionHeader qh50 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'50'
+        ,questionNo:50
         ,subjectId:15
         ,compulsoryType:0
         ,answerType:1
@@ -694,7 +694,7 @@ class DataMigrant {
     QuestionHeader qh51 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'51'
+        ,questionNo:51
         ,subjectId:4
         ,compulsoryType:0
         ,answerType:1
@@ -707,7 +707,7 @@ class DataMigrant {
     QuestionHeader qh52 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'52'
+        ,questionNo:52
         ,subjectId:8
         ,compulsoryType:1
         ,answerType:1
@@ -720,7 +720,7 @@ class DataMigrant {
     QuestionHeader qh53 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'53'
+        ,questionNo:53
         ,subjectId:4
         ,compulsoryType:1
         ,answerType:1
@@ -733,7 +733,7 @@ class DataMigrant {
     QuestionHeader qh54 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'54'
+        ,questionNo:54
         ,subjectId:2
         ,compulsoryType:0
         ,answerType:1
@@ -746,7 +746,7 @@ class DataMigrant {
     QuestionHeader qh55 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'55'
+        ,questionNo:55
         ,subjectId:3
         ,compulsoryType:0
         ,answerType:1
@@ -759,7 +759,7 @@ class DataMigrant {
     QuestionHeader qh56 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'56'
+        ,questionNo:56
         ,subjectId:3
         ,compulsoryType:1
         ,answerType:1
@@ -772,7 +772,7 @@ class DataMigrant {
     QuestionHeader qh57 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'57'
+        ,questionNo:57
         ,subjectId:5
         ,compulsoryType:1
         ,answerType:1
@@ -785,7 +785,7 @@ class DataMigrant {
     QuestionHeader qh58 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'58'
+        ,questionNo:58
         ,subjectId:6
         ,compulsoryType:0
         ,answerType:1
@@ -798,7 +798,7 @@ class DataMigrant {
     QuestionHeader qh59 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'59'
+        ,questionNo:59
         ,subjectId:7
         ,compulsoryType:0
         ,answerType:1
@@ -811,7 +811,7 @@ class DataMigrant {
     QuestionHeader qh60 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'60'
+        ,questionNo:60
         ,subjectId:12
         ,compulsoryType:1
         ,answerType:1
@@ -824,7 +824,7 @@ class DataMigrant {
     QuestionHeader qh61 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'61'
+        ,questionNo:61
         ,subjectId:9
         ,compulsoryType:1
         ,answerType:1
@@ -837,7 +837,7 @@ class DataMigrant {
     QuestionHeader qh62 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'62'
+        ,questionNo:62
         ,subjectId:2
         ,compulsoryType:0
         ,answerType:1
@@ -850,7 +850,7 @@ class DataMigrant {
     QuestionHeader qh63 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'63'
+        ,questionNo:63
         ,subjectId:11
         ,compulsoryType:0
         ,answerType:1
@@ -863,7 +863,7 @@ class DataMigrant {
     QuestionHeader qh64 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'64'
+        ,questionNo:64
         ,subjectId:3
         ,compulsoryType:1
         ,answerType:1
@@ -876,7 +876,7 @@ class DataMigrant {
     QuestionHeader qh65 = QuestionHeader(
         businessYear:2021
         ,period:1
-        ,questionNo:'65'
+        ,questionNo:65
         ,subjectId:5
         ,compulsoryType:1
         ,answerType:1
@@ -886,6 +886,7 @@ class DataMigrant {
         ,correctType2:9
         ,correctType3:9);
     db.insertquestionheader(qh65);
+
 
 
     Subject subject1 = Subject(
