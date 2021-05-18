@@ -45,13 +45,16 @@ class _FilterState extends State<Filter> {
   List<String> _filters = <String>[];
 
 
+
+
+
   Iterable<Widget> get categoryWidgets sync* {
     for (final CategoryFilter category  in _genre) {
       yield Padding(
         padding: EdgeInsets.all(4),
 
         child:Transform(
-          transform: Matrix4.identity()..scale(1.1),
+          transform: Matrix4.identity()..scale(1.3),
           child: FilterChip(
             showCheckmark: false,
             backgroundColor: Colors.white,
@@ -113,36 +116,82 @@ class _FilterState extends State<Filter> {
       ),
         body:Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
                   //constraints: BoxConstraints.expand(),
-                  child: Column(children:<Widget>[
+                  height: 500,
+                  width: 400,
+                  decoration: BoxDecoration(
+                  border: const Border(
+                    bottom: const BorderSide(
+                      color: Colors.black,
+                      width: 1,
+                    ),
+                  ),
+                ),
+                  child: Column( mainAxisAlignment: MainAxisAlignment.start,
+                      children:<Widget>[
                   Text('＜カテゴリー選択＞', style: TextStyle(fontSize: 16,)),
                   Container(
-                    height: 250,
-                    width: 500,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    margin: EdgeInsets.fromLTRB(0, 0, 6, 0),
-                    decoration: BoxDecoration(
-                      border: const Border(
-                        bottom: const BorderSide(
-                          color: Colors.black,
-                          width: 1,
-                        ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          height: 40,
+                          width: 80,
+                          child:ElevatedButton(onPressed: (){
+
+                          }, child: Text('全選択', style: TextStyle(fontSize: 14, color: Colors.white)),
+                    style: OutlinedButton.styleFrom(
+                        primary: Colors.lightBlue,
+                        backgroundColor: Colors.lightBlue,
+                        side: BorderSide(color: Colors.blue, width: 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        )),
                       ),
+                ),
+                        SizedBox(
+                          height: 40,
+                          width: 20,
+                        ),
+                        Container(
+                          height: 40,
+                          width: 80,
+                          child:ElevatedButton(onPressed: (){}, child: Text('クリア', style: TextStyle(fontSize: 14, color: Colors.white)),
+                          style: OutlinedButton.styleFrom(
+                              primary: Colors.lightBlue,
+                              backgroundColor: Colors.lightBlue,
+                              side: BorderSide(color: Colors.blue, width: 1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40),
+                              )),
+                        ),),
+                      ],
                     ),
-                    child: Padding(padding: EdgeInsets.all(8),
+                  ),
+                  Container(
+                    height: 200,
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+
+                    child: Padding(padding: EdgeInsets.all(0),
                       child: Wrap(
+                        spacing: 25.0,
+                        runSpacing: 3.5,
                         children: categoryWidgets.toList(),
                       ),
                     ),
                   ),
                 ]),),
-                Container(
+                Container(child:Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                    children:<Widget>[
+                  Container(
                   height: 90,
-                  width: 500,
+                  width: 200,
                   decoration: BoxDecoration(
                     border: const Border(
                       bottom: const BorderSide(
@@ -158,7 +207,7 @@ class _FilterState extends State<Filter> {
                       children: <Widget>[
                         Container(
 
-                          child: OutlinedButton(child: Text('必修',  style: TextStyle(fontSize: 18, color: Colors.blue)),
+                          child: OutlinedButton(child: Text('必修',  style: TextStyle(fontSize: 14, color: Colors.blue)),
                           style: OutlinedButton.styleFrom(
                               primary: Colors.white,
                               backgroundColor: Colors.white,
@@ -168,10 +217,10 @@ class _FilterState extends State<Filter> {
                               )),
                         ),
                         ),
-                        SizedBox(width: 20),
+                        //SizedBox(width: 20),
                         Container(
 
-                          child: OutlinedButton(child: Text('必修以外',  style: TextStyle(fontSize: 18, color: Colors.blue)),
+                          child: OutlinedButton(child: Text('必修以外',  style: TextStyle(fontSize: 14, color: Colors.blue)),
                             style: OutlinedButton.styleFrom(
                                 primary: Colors.white,
                                 backgroundColor: Colors.white,
@@ -181,147 +230,177 @@ class _FilterState extends State<Filter> {
                                 )),
                           ),
                         ),
-                      ],
-                    ),
-                  ]),
+                          ]),
+
+                      ]),
+
                 ),
-                Container(
-                  height: 90,
-                  width: 500,
-                  decoration: BoxDecoration(
-                    border: const Border(
-                      bottom: const BorderSide(
-                        color: Colors.black,
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: Column(children:<Widget>[
-                    Text('＜クリップ＞'),
-                   Row(
-                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
                       Container(
-
-                        child: OutlinedButton(child: Text('クリップ有', style: TextStyle(fontSize: 18, color: Colors.blue)),
-                        style: OutlinedButton.styleFrom(
-                            primary: Colors.white,
-                            backgroundColor: Colors.white,
-                            side: BorderSide(color: Colors.blue, width: 1),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(40),
-                            )),
-                      ),),
-                      SizedBox(width: 20),
-                      Container(
-
-                        child: OutlinedButton(child: Text('クリップ無', style: TextStyle(fontSize: 18, color: Colors.blue)),
-                          style: OutlinedButton.styleFrom(
-                              primary: Colors.white,
-                              side: BorderSide(color: Colors.blue, width: 1),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40),
-                              )),),
-                      ),
-                    ],
-                   ),
-                  ]),
-                ),
-
-                Container(
-                  height: 90,
-                  width: 500,
-                  decoration: BoxDecoration(
-                    border: const Border(
-                      bottom: const BorderSide(
-                        color: Colors.black,
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: Column(children:<Widget>[
-                    Text('＜模試の正誤＞'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-
-                          child: OutlinedButton(child: Text('模試：誤', style: TextStyle(fontSize: 18, color: Colors.blue),),
-                          style: OutlinedButton.styleFrom(
-                              primary: Colors.white,
-                              backgroundColor: Colors.white,
-                              side: BorderSide(color: Colors.blue, width: 1),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40),
-                              )),
-                        ),),
-                        SizedBox(width: 20),
-                        Container(
-
-                          child: OutlinedButton(child: Text('模試：正', style: TextStyle(fontSize: 18, color: Colors.blue),),
-                            style: OutlinedButton.styleFrom(
-                                primary: Colors.white,
-                                backgroundColor: Colors.white,
-                                side: BorderSide(color: Colors.blue, width: 1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40),
-                                )),
+                        height: 90,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          border: const Border(
+                            bottom: const BorderSide(
+                              color: Colors.black,
+                              width: 1,
+                            ),
                           ),
                         ),
-                      ],
-                    ),
-                  ]),
-                ),
-                Container(
-                  height: 90,
-                  width: 500,
-                  decoration: BoxDecoration(
-                    border: const Border(
-                      bottom: const BorderSide(
-                        color: Colors.black,
-                        width: 1,
-                      ),
-                    ),
-                  ),
-                  child: Column(children:<Widget>[
-                    Text('＜出題回＞'),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                        child: Column(children:<Widget>[
+                          Text('＜クリップ＞'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
 
-                      children: <Widget>[
-                        Container(child: OutlinedButton(child: Text('最新回' , style: TextStyle(fontSize: 18, color: Colors.blue),),
-                          style: OutlinedButton.styleFrom(
-                              primary: Colors.white,
-                              backgroundColor: Colors.white,
-                              side: BorderSide(color: Colors.blue, width: 1),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40),
-                              )),),),
-                        SizedBox(width: 20),
-                        Container(
-                          child: OutlinedButton(child: Text('最新２回', style: TextStyle(fontSize: 18, color: Colors.blue)),
-                            style: OutlinedButton.styleFrom(
-                                primary: Colors.white,
-                                backgroundColor: Colors.white,
-                                side: BorderSide(color: Colors.blue, width: 1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40),
-                                )),),
+                            children: <Widget>[
+                              Container(
+
+                                child: OutlinedButton.icon(label: Text('有', style: TextStyle(fontSize: 14, color: Colors.blue)),
+                                  icon: Icon(Icons.star, size:20),
+                                  style: OutlinedButton.styleFrom(
+                                      primary: Colors.white,
+                                      backgroundColor: Colors.white,
+                                      side: BorderSide(color: Colors.blue, width: 1),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(40),
+                                      )),
+                                ),),
+                              SizedBox(width: 20),
+                              Container(
+
+                                child: OutlinedButton.icon(label: Text('無', style: TextStyle(fontSize: 14, color: Colors.blue),),
+                                  icon: Icon(Icons.star, size:20),
+                                  style: OutlinedButton.styleFrom(
+                                      primary: Colors.white,
+                                      side: BorderSide(color: Colors.blue, width: 1),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(40),
+                                      )),),
+                              ),
+                            ],
+                          ),
+                        ]),
+                      ),
+
+                ]),),
+                Container(
+                  height: 120,
+                  width: 400,
+                  child:Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    children:<Widget>[
+
+                      Container(
+                        height: 120,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          border: const Border(
+                            bottom: const BorderSide(
+                              color: Colors.black,
+                              width: 1,
+                            ),
+                          ),
                         ),
-                        SizedBox(width: 20),
-                        Container(
-                          child: OutlinedButton(child: Text('最新３回',style: TextStyle(fontSize: 18, color: Colors.blue)),
-                            style: OutlinedButton.styleFrom(
-                                primary: Colors.white,
-                                backgroundColor: Colors.white,
-                                side: BorderSide(color: Colors.blue, width: 1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(40),
-                                )),),
-                        )],
-                    ),
-                  ]),
-                ),
+                        child: Column(children:<Widget>[
+                          Text('＜模試の正誤＞'),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+
+                                child: OutlinedButton(child: Text('全ての問題', style: TextStyle(fontSize: 14, color: Colors.blue),),
+                                  style: OutlinedButton.styleFrom(
+                                      primary: Colors.white,
+                                      backgroundColor: Colors.white,
+                                      side: BorderSide(color: Colors.blue, width: 1),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(40),
+                                      )),
+                                ),),
+
+                              Container(
+
+                                child: OutlinedButton(child: Text('間違えた問題のみ', style: TextStyle(fontSize: 14, color: Colors.blue),),
+                                  style: OutlinedButton.styleFrom(
+                                      primary: Colors.white,
+                                      backgroundColor: Colors.white,
+                                      side: BorderSide(color: Colors.blue, width: 1),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(40),
+                                      )),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ]),
+                      ),
+
+                      Container(
+                        height: 120,
+                        width: 200,
+                        decoration: BoxDecoration(
+                          border: const Border(
+                            bottom: const BorderSide(
+                              color: Colors.black,
+                              width: 1,
+                            ),
+                          ),
+                        ),
+                        child: Column(children:<Widget>[
+                          Text('＜出題回＞'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+
+                            children: <Widget>[
+                              Container(child: OutlinedButton(child: Text('第１回' , style: TextStyle(fontSize: 14, color: Colors.blue),),
+                                style: OutlinedButton.styleFrom(
+                                    primary: Colors.white,
+                                    backgroundColor: Colors.white,
+                                    side: BorderSide(color: Colors.blue, width: 1),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(40),
+                                    )),),),
+                              //SizedBox(width: 20),
+                              Container(
+                                child: OutlinedButton(child: Text('第２回', style: TextStyle(fontSize: 14, color: Colors.blue)),
+                                  style: OutlinedButton.styleFrom(
+                                      primary: Colors.white,
+                                      backgroundColor: Colors.white,
+                                      side: BorderSide(color: Colors.blue, width: 1),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(40),
+                                      )),),
+                              ),
+        ]),
+                              //SizedBox(width: 20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                Container(
+                                child: OutlinedButton(child: Text('第３回',style: TextStyle(fontSize: 14, color: Colors.blue)),
+                                  style: OutlinedButton.styleFrom(
+                                      primary: Colors.white,
+                                      backgroundColor: Colors.white,
+                                      side: BorderSide(color: Colors.blue, width: 1),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(40),
+                                      )),),
+                              ),
+                                 Container(
+                                   child: OutlinedButton(child: Text('第４回',style: TextStyle(fontSize: 14, color: Colors.blue)),
+                                  style: OutlinedButton.styleFrom(
+                                      primary: Colors.white,
+                                      backgroundColor: Colors.white,
+                                      side: BorderSide(color: Colors.blue, width: 1),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(40),
+                                      )),),
+                              )],
+                          ),
+                        ]),
+                      ),
+
+                ]),),
+
 
 
                 Container(child: Row(
@@ -336,7 +415,7 @@ class _FilterState extends State<Filter> {
                         style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40),
                         ),),
-                        child: Text('クリア',),),),
+                        child: Text('クリア', style: TextStyle(fontSize: 16),),),),
                     Container(
                       height: 60,
                       width: 150,
@@ -344,7 +423,7 @@ class _FilterState extends State<Filter> {
                         style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40),
                         ),),
-                        child: Text('検索',),),),
+                        child: Text('検索', style: TextStyle(fontSize: 16),),),),
                   ],
                 ),
 
