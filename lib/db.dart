@@ -85,11 +85,15 @@ class MyDatabase extends _$MyDatabase {
   MyDatabase() : super(FlutterQueryExecutor.inDatabaseFolder(path: 'db.sqlite',
       logStatements: true));
 
+  MyDatabase db;
+
   @override
   MigrationStrategy get migration => destructiveFallback;
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 1;
+
+
 
   Future <List<Parameter>> getAllparameters()=> select(parameters).get();
   Stream <List<Parameter>> watchAllparameters()=> select(parameters).watch();
@@ -102,7 +106,82 @@ class MyDatabase extends _$MyDatabase {
   Future insertquestionheader(QuestionHeader questionheader)=> into(questionHeaders).insert(questionheader);
   Future updatequestionheader(QuestionHeader questionheader)=> update(questionHeaders).replace(questionheader);
   Future deletequestionheader(QuestionHeader questionheader)=> delete(questionHeaders).delete(questionheader);
+/*
+  Future<List<QuestionHeader>> selectQuestionHeaderByKey(int businessYear,int period, int questionNo) {
+    return
+      customSelect(
+        'SELECT *'
+            +'From question_Headers '
+            +'WHERE business_Year = ? '
+            +'AND period = ? '
+            +'AND question_No = ?;',
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo)],
+        readsFrom: {questionHeaders},
+      ).get().map((rows) {
+        return rows
+            .map((row) => QuestionHeader(
+            businessYear:row.readInt('businessYear')
+            ,period:row.readInt('period')
+            ,questionNo:row.readInt('questionNo')
+            ,subjectId:row.readInt('subjectId')
+            ,compulsoryType:row.readInt('compulsoryType')
+            ,answerType:row.readInt('answerType')
+            ,questionText:row.readString('questionText')
+            ,numberAnswer:row.readInt('numberAnswer')
+            ,correctType1:row.readInt('correctType1')
+            ,correctType2:row.readInt('correctType2')
+            ,correctType3:row.readInt('correctType3')
+            ,favorite:row.readBool('favorite')
+        )).toList();
+      });
+  }
+ */
+  /*
+  Future<List<QuestionHeader>> selectQuestionHeaderByKey(int businessYear,int period, int questionNo) {
+    return
+      customSelect(
+        'SELECT *'
+            +'From question_Headers '
+            +'WHERE business_Year = ? '
+            +'AND period = ? '
+            +'AND question_No = ?;',
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo)],
+        readsFrom: {questionHeaders}).map((row) {
+        return QuestionHeader.fromData(row.data, db);
+      }).get();
+  }*/
 
+  /*
+
+  Stream<List<QuestionHeader>> selectQuestionHeaderByKey(int businessYear,int period, int questionNo) {
+    return
+      customSelect(
+        'SELECT *'
+            +'From question_Headers '
+            +'WHERE business_Year = ? '
+            +'AND period = ? '
+            +'AND question_No = ?;',
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo)],
+        readsFrom: {questionHeaders},
+      ).watch().map((rows) {
+        return rows
+            .map((row) => QuestionHeader(
+            businessYear:row.readInt('businessYear')
+            ,period:row.readInt('period')
+            ,questionNo:row.readInt('questionNo')
+            ,subjectId:row.readInt('subjectId')
+            ,compulsoryType:row.readInt('compulsoryType')
+            ,answerType:row.readInt('answerType')
+            ,questionText:row.readString('questionText')
+            ,numberAnswer:row.readInt('numberAnswer')
+            ,correctType1:row.readInt('correctType1')
+            ,correctType2:row.readInt('correctType2')
+            ,correctType3:row.readInt('correctType3')
+            ,favorite:row.readBool('favorite')
+        )).toList();
+      });
+  }
+   */
 
   Future <List<Subject>> getAllsubjects()=> select(subjects).get();
   Stream <List<Subject>> watchAllsubjects()=> select(subjects).watch();

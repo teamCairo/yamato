@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'answer.dart';
+import 'db.dart';
 
 enum Alternative { a, b, c, d }
 
@@ -286,7 +287,9 @@ class _QuestionState extends State<Question> {
 
   void loadAsset() async {
 
-    //this.questionNo
+    List<QuestionHeader> qh =  await MyDatabase().selectQuestionHeaderByKey(businessYear,period,questionNo);
+    print("ああああああああ" + qh.length.toString());
+
     //UTF8
     String value =
         await rootBundle.loadString('assets/text/2021_2_1_022_question_01.txt');
