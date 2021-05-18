@@ -17,6 +17,10 @@ class _QuestionState extends State<Question> {
   final double elev = 20;
   String outputtext = '';
   List<Image> outputimgList = [];
+  int businessYear = 2021;
+  int period = 1;
+  int questionNo = 26;
+  int tryingListNo = 26;
 
   void _onChanged(Alternative value) {
     setState(() {
@@ -33,7 +37,7 @@ class _QuestionState extends State<Question> {
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
-        title: Text("1/86　21年 第2回 No.26"),
+        title: Text("1/86　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
         leading: Icon(Icons.home_sharp),
         elevation: elev,
         automaticallyImplyLeading: false,
@@ -281,6 +285,8 @@ class _QuestionState extends State<Question> {
   }
 
   void loadAsset() async {
+
+    //this.questionNo
     //UTF8
     String value =
         await rootBundle.loadString('assets/text/2021_2_1_022_question_01.txt');
