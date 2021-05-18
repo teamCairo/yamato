@@ -27,6 +27,7 @@ class QuestionHeaders extends Table {
   IntColumn get correctType1 => integer()();
   IntColumn get correctType2 => integer()();
   IntColumn get correctType3 => integer()();
+  BoolColumn get favorite => boolean()();
 
   @override
   Set<Column> get primaryKey => {businessYear,period,questionNo};
@@ -45,7 +46,7 @@ class QuestionOptions extends Table {
   IntColumn get questionNo => integer()();
   TextColumn get optionCd => text()();
   TextColumn get optionText => text()();
-  IntColumn get correctCype => integer()();
+  IntColumn get correctType => integer()();
 
   @override
   Set<Column> get primaryKey => {businessYear,period,questionNo,optionCd};
@@ -55,14 +56,14 @@ class QuestionOptions extends Table {
 class QuestionFiles extends Table {
   IntColumn get businessYear => integer()();
   IntColumn get period => integer()();
-  TextColumn get questionNo => text()();
+  IntColumn get questionNo => integer()();
   IntColumn get questionAnswerType => integer()();
   IntColumn get fileNo => integer()();
-  TextColumn get filepPath => text()();
-  IntColumn get filetype => integer()();
+  TextColumn get filePath => text()();
+  IntColumn get fileType => integer()();
 
   @override
-  Set<Column> get primaryKey => {businessYear,period,questionNo,questionAnswerType,fileNo};
+  Set<Column> get primaryKey => {businessYear,period,questionNo,questionAnswerType,fileNo,fileType};
 }
 
 
@@ -89,18 +90,9 @@ class MyDatabase extends _$MyDatabase {
 
   @override
   MigrationStrategy get migration => destructiveFallback;
-  /*
-  @override
-  MigrationStrategy get migration => MigrationStrategy(
-    onUpgrade: (m, from, to) async {
-      if (from <= 3) {
-        await m.drop(studyStatus);
-      }
-    },
-  );*/
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 6;
 
   Future <List<Parameter>> getAllparameters()=> select(parameters).get();
   Stream <List<Parameter>> watchAllparameters()=> select(parameters).watch();

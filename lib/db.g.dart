@@ -323,6 +323,7 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
   final int correctType1;
   final int correctType2;
   final int correctType3;
+  final bool favorite;
   QuestionHeader(
       {@required this.businessYear,
       @required this.period,
@@ -334,13 +335,15 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
       @required this.numberAnswer,
       @required this.correctType1,
       @required this.correctType2,
-      @required this.correctType3});
+      @required this.correctType3,
+      @required this.favorite});
   factory QuestionHeader.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
     final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
     return QuestionHeader(
       businessYear: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}business_year']),
@@ -363,6 +366,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           .mapFromDatabaseResponse(data['${effectivePrefix}correct_type2']),
       correctType3: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}correct_type3']),
+      favorite:
+          boolType.mapFromDatabaseResponse(data['${effectivePrefix}favorite']),
     );
   }
   @override
@@ -401,6 +406,9 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
     if (!nullToAbsent || correctType3 != null) {
       map['correct_type3'] = Variable<int>(correctType3);
     }
+    if (!nullToAbsent || favorite != null) {
+      map['favorite'] = Variable<bool>(favorite);
+    }
     return map;
   }
 
@@ -438,6 +446,9 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
       correctType3: correctType3 == null && nullToAbsent
           ? const Value.absent()
           : Value(correctType3),
+      favorite: favorite == null && nullToAbsent
+          ? const Value.absent()
+          : Value(favorite),
     );
   }
 
@@ -456,6 +467,7 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
       correctType1: serializer.fromJson<int>(json['correctType1']),
       correctType2: serializer.fromJson<int>(json['correctType2']),
       correctType3: serializer.fromJson<int>(json['correctType3']),
+      favorite: serializer.fromJson<bool>(json['favorite']),
     );
   }
   @override
@@ -473,6 +485,7 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
       'correctType1': serializer.toJson<int>(correctType1),
       'correctType2': serializer.toJson<int>(correctType2),
       'correctType3': serializer.toJson<int>(correctType3),
+      'favorite': serializer.toJson<bool>(favorite),
     };
   }
 
@@ -487,7 +500,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           int numberAnswer,
           int correctType1,
           int correctType2,
-          int correctType3}) =>
+          int correctType3,
+          bool favorite}) =>
       QuestionHeader(
         businessYear: businessYear ?? this.businessYear,
         period: period ?? this.period,
@@ -500,6 +514,7 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
         correctType1: correctType1 ?? this.correctType1,
         correctType2: correctType2 ?? this.correctType2,
         correctType3: correctType3 ?? this.correctType3,
+        favorite: favorite ?? this.favorite,
       );
   @override
   String toString() {
@@ -514,7 +529,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           ..write('numberAnswer: $numberAnswer, ')
           ..write('correctType1: $correctType1, ')
           ..write('correctType2: $correctType2, ')
-          ..write('correctType3: $correctType3')
+          ..write('correctType3: $correctType3, ')
+          ..write('favorite: $favorite')
           ..write(')'))
         .toString();
   }
@@ -538,8 +554,10 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
                                   numberAnswer.hashCode,
                                   $mrjc(
                                       correctType1.hashCode,
-                                      $mrjc(correctType2.hashCode,
-                                          correctType3.hashCode)))))))))));
+                                      $mrjc(
+                                          correctType2.hashCode,
+                                          $mrjc(correctType3.hashCode,
+                                              favorite.hashCode))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -554,7 +572,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           other.numberAnswer == this.numberAnswer &&
           other.correctType1 == this.correctType1 &&
           other.correctType2 == this.correctType2 &&
-          other.correctType3 == this.correctType3);
+          other.correctType3 == this.correctType3 &&
+          other.favorite == this.favorite);
 }
 
 class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
@@ -569,6 +588,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
   final Value<int> correctType1;
   final Value<int> correctType2;
   final Value<int> correctType3;
+  final Value<bool> favorite;
   const QuestionHeadersCompanion({
     this.businessYear = const Value.absent(),
     this.period = const Value.absent(),
@@ -581,6 +601,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
     this.correctType1 = const Value.absent(),
     this.correctType2 = const Value.absent(),
     this.correctType3 = const Value.absent(),
+    this.favorite = const Value.absent(),
   });
   QuestionHeadersCompanion.insert({
     @required int businessYear,
@@ -594,6 +615,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
     @required int correctType1,
     @required int correctType2,
     @required int correctType3,
+    @required bool favorite,
   })  : businessYear = Value(businessYear),
         period = Value(period),
         questionNo = Value(questionNo),
@@ -604,7 +626,8 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
         numberAnswer = Value(numberAnswer),
         correctType1 = Value(correctType1),
         correctType2 = Value(correctType2),
-        correctType3 = Value(correctType3);
+        correctType3 = Value(correctType3),
+        favorite = Value(favorite);
   static Insertable<QuestionHeader> custom({
     Expression<int> businessYear,
     Expression<int> period,
@@ -617,6 +640,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
     Expression<int> correctType1,
     Expression<int> correctType2,
     Expression<int> correctType3,
+    Expression<bool> favorite,
   }) {
     return RawValuesInsertable({
       if (businessYear != null) 'business_year': businessYear,
@@ -630,6 +654,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
       if (correctType1 != null) 'correct_type1': correctType1,
       if (correctType2 != null) 'correct_type2': correctType2,
       if (correctType3 != null) 'correct_type3': correctType3,
+      if (favorite != null) 'favorite': favorite,
     });
   }
 
@@ -644,7 +669,8 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
       Value<int> numberAnswer,
       Value<int> correctType1,
       Value<int> correctType2,
-      Value<int> correctType3}) {
+      Value<int> correctType3,
+      Value<bool> favorite}) {
     return QuestionHeadersCompanion(
       businessYear: businessYear ?? this.businessYear,
       period: period ?? this.period,
@@ -657,6 +683,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
       correctType1: correctType1 ?? this.correctType1,
       correctType2: correctType2 ?? this.correctType2,
       correctType3: correctType3 ?? this.correctType3,
+      favorite: favorite ?? this.favorite,
     );
   }
 
@@ -696,6 +723,9 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
     if (correctType3.present) {
       map['correct_type3'] = Variable<int>(correctType3.value);
     }
+    if (favorite.present) {
+      map['favorite'] = Variable<bool>(favorite.value);
+    }
     return map;
   }
 
@@ -712,7 +742,8 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
           ..write('numberAnswer: $numberAnswer, ')
           ..write('correctType1: $correctType1, ')
           ..write('correctType2: $correctType2, ')
-          ..write('correctType3: $correctType3')
+          ..write('correctType3: $correctType3, ')
+          ..write('favorite: $favorite')
           ..write(')'))
         .toString();
   }
@@ -869,6 +900,18 @@ class $QuestionHeadersTable extends QuestionHeaders
     );
   }
 
+  final VerificationMeta _favoriteMeta = const VerificationMeta('favorite');
+  GeneratedBoolColumn _favorite;
+  @override
+  GeneratedBoolColumn get favorite => _favorite ??= _constructFavorite();
+  GeneratedBoolColumn _constructFavorite() {
+    return GeneratedBoolColumn(
+      'favorite',
+      $tableName,
+      false,
+    );
+  }
+
   @override
   List<GeneratedColumn> get $columns => [
         businessYear,
@@ -881,7 +924,8 @@ class $QuestionHeadersTable extends QuestionHeaders
         numberAnswer,
         correctType1,
         correctType2,
-        correctType3
+        correctType3,
+        favorite
       ];
   @override
   $QuestionHeadersTable get asDslTable => this;
@@ -977,6 +1021,12 @@ class $QuestionHeadersTable extends QuestionHeaders
               data['correct_type3'], _correctType3Meta));
     } else if (isInserting) {
       context.missing(_correctType3Meta);
+    }
+    if (data.containsKey('favorite')) {
+      context.handle(_favoriteMeta,
+          favorite.isAcceptableOrUnknown(data['favorite'], _favoriteMeta));
+    } else if (isInserting) {
+      context.missing(_favoriteMeta);
     }
     return context;
   }
@@ -1195,14 +1245,14 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
   final int questionNo;
   final String optionCd;
   final String optionText;
-  final int correctCype;
+  final int correctType;
   QuestionOption(
       {@required this.businessYear,
       @required this.period,
       @required this.questionNo,
       @required this.optionCd,
       @required this.optionText,
-      @required this.correctCype});
+      @required this.correctType});
   factory QuestionOption.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -1219,8 +1269,8 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
           .mapFromDatabaseResponse(data['${effectivePrefix}option_cd']),
       optionText: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}option_text']),
-      correctCype: intType
-          .mapFromDatabaseResponse(data['${effectivePrefix}correct_cype']),
+      correctType: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}correct_type']),
     );
   }
   @override
@@ -1241,8 +1291,8 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
     if (!nullToAbsent || optionText != null) {
       map['option_text'] = Variable<String>(optionText);
     }
-    if (!nullToAbsent || correctCype != null) {
-      map['correct_cype'] = Variable<int>(correctCype);
+    if (!nullToAbsent || correctType != null) {
+      map['correct_type'] = Variable<int>(correctType);
     }
     return map;
   }
@@ -1263,9 +1313,9 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
       optionText: optionText == null && nullToAbsent
           ? const Value.absent()
           : Value(optionText),
-      correctCype: correctCype == null && nullToAbsent
+      correctType: correctType == null && nullToAbsent
           ? const Value.absent()
-          : Value(correctCype),
+          : Value(correctType),
     );
   }
 
@@ -1278,7 +1328,7 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
       questionNo: serializer.fromJson<int>(json['questionNo']),
       optionCd: serializer.fromJson<String>(json['optionCd']),
       optionText: serializer.fromJson<String>(json['optionText']),
-      correctCype: serializer.fromJson<int>(json['correctCype']),
+      correctType: serializer.fromJson<int>(json['correctType']),
     );
   }
   @override
@@ -1290,7 +1340,7 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
       'questionNo': serializer.toJson<int>(questionNo),
       'optionCd': serializer.toJson<String>(optionCd),
       'optionText': serializer.toJson<String>(optionText),
-      'correctCype': serializer.toJson<int>(correctCype),
+      'correctType': serializer.toJson<int>(correctType),
     };
   }
 
@@ -1300,14 +1350,14 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
           int questionNo,
           String optionCd,
           String optionText,
-          int correctCype}) =>
+          int correctType}) =>
       QuestionOption(
         businessYear: businessYear ?? this.businessYear,
         period: period ?? this.period,
         questionNo: questionNo ?? this.questionNo,
         optionCd: optionCd ?? this.optionCd,
         optionText: optionText ?? this.optionText,
-        correctCype: correctCype ?? this.correctCype,
+        correctType: correctType ?? this.correctType,
       );
   @override
   String toString() {
@@ -1317,7 +1367,7 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
           ..write('questionNo: $questionNo, ')
           ..write('optionCd: $optionCd, ')
           ..write('optionText: $optionText, ')
-          ..write('correctCype: $correctCype')
+          ..write('correctType: $correctType')
           ..write(')'))
         .toString();
   }
@@ -1330,7 +1380,7 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
           $mrjc(
               questionNo.hashCode,
               $mrjc(optionCd.hashCode,
-                  $mrjc(optionText.hashCode, correctCype.hashCode))))));
+                  $mrjc(optionText.hashCode, correctType.hashCode))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -1340,7 +1390,7 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
           other.questionNo == this.questionNo &&
           other.optionCd == this.optionCd &&
           other.optionText == this.optionText &&
-          other.correctCype == this.correctCype);
+          other.correctType == this.correctType);
 }
 
 class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
@@ -1349,14 +1399,14 @@ class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
   final Value<int> questionNo;
   final Value<String> optionCd;
   final Value<String> optionText;
-  final Value<int> correctCype;
+  final Value<int> correctType;
   const QuestionOptionsCompanion({
     this.businessYear = const Value.absent(),
     this.period = const Value.absent(),
     this.questionNo = const Value.absent(),
     this.optionCd = const Value.absent(),
     this.optionText = const Value.absent(),
-    this.correctCype = const Value.absent(),
+    this.correctType = const Value.absent(),
   });
   QuestionOptionsCompanion.insert({
     @required int businessYear,
@@ -1364,20 +1414,20 @@ class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
     @required int questionNo,
     @required String optionCd,
     @required String optionText,
-    @required int correctCype,
+    @required int correctType,
   })  : businessYear = Value(businessYear),
         period = Value(period),
         questionNo = Value(questionNo),
         optionCd = Value(optionCd),
         optionText = Value(optionText),
-        correctCype = Value(correctCype);
+        correctType = Value(correctType);
   static Insertable<QuestionOption> custom({
     Expression<int> businessYear,
     Expression<int> period,
     Expression<int> questionNo,
     Expression<String> optionCd,
     Expression<String> optionText,
-    Expression<int> correctCype,
+    Expression<int> correctType,
   }) {
     return RawValuesInsertable({
       if (businessYear != null) 'business_year': businessYear,
@@ -1385,7 +1435,7 @@ class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
       if (questionNo != null) 'question_no': questionNo,
       if (optionCd != null) 'option_cd': optionCd,
       if (optionText != null) 'option_text': optionText,
-      if (correctCype != null) 'correct_cype': correctCype,
+      if (correctType != null) 'correct_type': correctType,
     });
   }
 
@@ -1395,14 +1445,14 @@ class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
       Value<int> questionNo,
       Value<String> optionCd,
       Value<String> optionText,
-      Value<int> correctCype}) {
+      Value<int> correctType}) {
     return QuestionOptionsCompanion(
       businessYear: businessYear ?? this.businessYear,
       period: period ?? this.period,
       questionNo: questionNo ?? this.questionNo,
       optionCd: optionCd ?? this.optionCd,
       optionText: optionText ?? this.optionText,
-      correctCype: correctCype ?? this.correctCype,
+      correctType: correctType ?? this.correctType,
     );
   }
 
@@ -1424,8 +1474,8 @@ class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
     if (optionText.present) {
       map['option_text'] = Variable<String>(optionText.value);
     }
-    if (correctCype.present) {
-      map['correct_cype'] = Variable<int>(correctCype.value);
+    if (correctType.present) {
+      map['correct_type'] = Variable<int>(correctType.value);
     }
     return map;
   }
@@ -1438,7 +1488,7 @@ class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
           ..write('questionNo: $questionNo, ')
           ..write('optionCd: $optionCd, ')
           ..write('optionText: $optionText, ')
-          ..write('correctCype: $correctCype')
+          ..write('correctType: $correctType')
           ..write(')'))
         .toString();
   }
@@ -1511,15 +1561,15 @@ class $QuestionOptionsTable extends QuestionOptions
     );
   }
 
-  final VerificationMeta _correctCypeMeta =
-      const VerificationMeta('correctCype');
-  GeneratedIntColumn _correctCype;
+  final VerificationMeta _correctTypeMeta =
+      const VerificationMeta('correctType');
+  GeneratedIntColumn _correctType;
   @override
-  GeneratedIntColumn get correctCype =>
-      _correctCype ??= _constructCorrectCype();
-  GeneratedIntColumn _constructCorrectCype() {
+  GeneratedIntColumn get correctType =>
+      _correctType ??= _constructCorrectType();
+  GeneratedIntColumn _constructCorrectType() {
     return GeneratedIntColumn(
-      'correct_cype',
+      'correct_type',
       $tableName,
       false,
     );
@@ -1527,7 +1577,7 @@ class $QuestionOptionsTable extends QuestionOptions
 
   @override
   List<GeneratedColumn> get $columns =>
-      [businessYear, period, questionNo, optionCd, optionText, correctCype];
+      [businessYear, period, questionNo, optionCd, optionText, correctType];
   @override
   $QuestionOptionsTable get asDslTable => this;
   @override
@@ -1575,13 +1625,13 @@ class $QuestionOptionsTable extends QuestionOptions
     } else if (isInserting) {
       context.missing(_optionTextMeta);
     }
-    if (data.containsKey('correct_cype')) {
+    if (data.containsKey('correct_type')) {
       context.handle(
-          _correctCypeMeta,
-          correctCype.isAcceptableOrUnknown(
-              data['correct_cype'], _correctCypeMeta));
+          _correctTypeMeta,
+          correctType.isAcceptableOrUnknown(
+              data['correct_type'], _correctTypeMeta));
     } else if (isInserting) {
-      context.missing(_correctCypeMeta);
+      context.missing(_correctTypeMeta);
     }
     return context;
   }
@@ -1604,19 +1654,19 @@ class $QuestionOptionsTable extends QuestionOptions
 class QuestionFile extends DataClass implements Insertable<QuestionFile> {
   final int businessYear;
   final int period;
-  final String questionNo;
+  final int questionNo;
   final int questionAnswerType;
   final int fileNo;
-  final String filepPath;
-  final int filetype;
+  final String filePath;
+  final int fileType;
   QuestionFile(
       {@required this.businessYear,
       @required this.period,
       @required this.questionNo,
       @required this.questionAnswerType,
       @required this.fileNo,
-      @required this.filepPath,
-      @required this.filetype});
+      @required this.filePath,
+      @required this.fileType});
   factory QuestionFile.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -1626,16 +1676,16 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
       businessYear: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}business_year']),
       period: intType.mapFromDatabaseResponse(data['${effectivePrefix}period']),
-      questionNo: stringType
+      questionNo: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}question_no']),
       questionAnswerType: intType.mapFromDatabaseResponse(
           data['${effectivePrefix}question_answer_type']),
       fileNo:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}file_no']),
-      filepPath: stringType
-          .mapFromDatabaseResponse(data['${effectivePrefix}filep_path']),
-      filetype:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}filetype']),
+      filePath: stringType
+          .mapFromDatabaseResponse(data['${effectivePrefix}file_path']),
+      fileType:
+          intType.mapFromDatabaseResponse(data['${effectivePrefix}file_type']),
     );
   }
   @override
@@ -1648,7 +1698,7 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
       map['period'] = Variable<int>(period);
     }
     if (!nullToAbsent || questionNo != null) {
-      map['question_no'] = Variable<String>(questionNo);
+      map['question_no'] = Variable<int>(questionNo);
     }
     if (!nullToAbsent || questionAnswerType != null) {
       map['question_answer_type'] = Variable<int>(questionAnswerType);
@@ -1656,11 +1706,11 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
     if (!nullToAbsent || fileNo != null) {
       map['file_no'] = Variable<int>(fileNo);
     }
-    if (!nullToAbsent || filepPath != null) {
-      map['filep_path'] = Variable<String>(filepPath);
+    if (!nullToAbsent || filePath != null) {
+      map['file_path'] = Variable<String>(filePath);
     }
-    if (!nullToAbsent || filetype != null) {
-      map['filetype'] = Variable<int>(filetype);
+    if (!nullToAbsent || fileType != null) {
+      map['file_type'] = Variable<int>(fileType);
     }
     return map;
   }
@@ -1680,12 +1730,12 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
           : Value(questionAnswerType),
       fileNo:
           fileNo == null && nullToAbsent ? const Value.absent() : Value(fileNo),
-      filepPath: filepPath == null && nullToAbsent
+      filePath: filePath == null && nullToAbsent
           ? const Value.absent()
-          : Value(filepPath),
-      filetype: filetype == null && nullToAbsent
+          : Value(filePath),
+      fileType: fileType == null && nullToAbsent
           ? const Value.absent()
-          : Value(filetype),
+          : Value(fileType),
     );
   }
 
@@ -1695,11 +1745,11 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
     return QuestionFile(
       businessYear: serializer.fromJson<int>(json['businessYear']),
       period: serializer.fromJson<int>(json['period']),
-      questionNo: serializer.fromJson<String>(json['questionNo']),
+      questionNo: serializer.fromJson<int>(json['questionNo']),
       questionAnswerType: serializer.fromJson<int>(json['questionAnswerType']),
       fileNo: serializer.fromJson<int>(json['fileNo']),
-      filepPath: serializer.fromJson<String>(json['filepPath']),
-      filetype: serializer.fromJson<int>(json['filetype']),
+      filePath: serializer.fromJson<String>(json['filePath']),
+      fileType: serializer.fromJson<int>(json['fileType']),
     );
   }
   @override
@@ -1708,30 +1758,30 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
     return <String, dynamic>{
       'businessYear': serializer.toJson<int>(businessYear),
       'period': serializer.toJson<int>(period),
-      'questionNo': serializer.toJson<String>(questionNo),
+      'questionNo': serializer.toJson<int>(questionNo),
       'questionAnswerType': serializer.toJson<int>(questionAnswerType),
       'fileNo': serializer.toJson<int>(fileNo),
-      'filepPath': serializer.toJson<String>(filepPath),
-      'filetype': serializer.toJson<int>(filetype),
+      'filePath': serializer.toJson<String>(filePath),
+      'fileType': serializer.toJson<int>(fileType),
     };
   }
 
   QuestionFile copyWith(
           {int businessYear,
           int period,
-          String questionNo,
+          int questionNo,
           int questionAnswerType,
           int fileNo,
-          String filepPath,
-          int filetype}) =>
+          String filePath,
+          int fileType}) =>
       QuestionFile(
         businessYear: businessYear ?? this.businessYear,
         period: period ?? this.period,
         questionNo: questionNo ?? this.questionNo,
         questionAnswerType: questionAnswerType ?? this.questionAnswerType,
         fileNo: fileNo ?? this.fileNo,
-        filepPath: filepPath ?? this.filepPath,
-        filetype: filetype ?? this.filetype,
+        filePath: filePath ?? this.filePath,
+        fileType: fileType ?? this.fileType,
       );
   @override
   String toString() {
@@ -1741,8 +1791,8 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
           ..write('questionNo: $questionNo, ')
           ..write('questionAnswerType: $questionAnswerType, ')
           ..write('fileNo: $fileNo, ')
-          ..write('filepPath: $filepPath, ')
-          ..write('filetype: $filetype')
+          ..write('filePath: $filePath, ')
+          ..write('fileType: $fileType')
           ..write(')'))
         .toString();
   }
@@ -1757,7 +1807,7 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
               $mrjc(
                   questionAnswerType.hashCode,
                   $mrjc(fileNo.hashCode,
-                      $mrjc(filepPath.hashCode, filetype.hashCode)))))));
+                      $mrjc(filePath.hashCode, fileType.hashCode)))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -1767,50 +1817,50 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
           other.questionNo == this.questionNo &&
           other.questionAnswerType == this.questionAnswerType &&
           other.fileNo == this.fileNo &&
-          other.filepPath == this.filepPath &&
-          other.filetype == this.filetype);
+          other.filePath == this.filePath &&
+          other.fileType == this.fileType);
 }
 
 class QuestionFilesCompanion extends UpdateCompanion<QuestionFile> {
   final Value<int> businessYear;
   final Value<int> period;
-  final Value<String> questionNo;
+  final Value<int> questionNo;
   final Value<int> questionAnswerType;
   final Value<int> fileNo;
-  final Value<String> filepPath;
-  final Value<int> filetype;
+  final Value<String> filePath;
+  final Value<int> fileType;
   const QuestionFilesCompanion({
     this.businessYear = const Value.absent(),
     this.period = const Value.absent(),
     this.questionNo = const Value.absent(),
     this.questionAnswerType = const Value.absent(),
     this.fileNo = const Value.absent(),
-    this.filepPath = const Value.absent(),
-    this.filetype = const Value.absent(),
+    this.filePath = const Value.absent(),
+    this.fileType = const Value.absent(),
   });
   QuestionFilesCompanion.insert({
     @required int businessYear,
     @required int period,
-    @required String questionNo,
+    @required int questionNo,
     @required int questionAnswerType,
     @required int fileNo,
-    @required String filepPath,
-    @required int filetype,
+    @required String filePath,
+    @required int fileType,
   })  : businessYear = Value(businessYear),
         period = Value(period),
         questionNo = Value(questionNo),
         questionAnswerType = Value(questionAnswerType),
         fileNo = Value(fileNo),
-        filepPath = Value(filepPath),
-        filetype = Value(filetype);
+        filePath = Value(filePath),
+        fileType = Value(fileType);
   static Insertable<QuestionFile> custom({
     Expression<int> businessYear,
     Expression<int> period,
-    Expression<String> questionNo,
+    Expression<int> questionNo,
     Expression<int> questionAnswerType,
     Expression<int> fileNo,
-    Expression<String> filepPath,
-    Expression<int> filetype,
+    Expression<String> filePath,
+    Expression<int> fileType,
   }) {
     return RawValuesInsertable({
       if (businessYear != null) 'business_year': businessYear,
@@ -1819,27 +1869,27 @@ class QuestionFilesCompanion extends UpdateCompanion<QuestionFile> {
       if (questionAnswerType != null)
         'question_answer_type': questionAnswerType,
       if (fileNo != null) 'file_no': fileNo,
-      if (filepPath != null) 'filep_path': filepPath,
-      if (filetype != null) 'filetype': filetype,
+      if (filePath != null) 'file_path': filePath,
+      if (fileType != null) 'file_type': fileType,
     });
   }
 
   QuestionFilesCompanion copyWith(
       {Value<int> businessYear,
       Value<int> period,
-      Value<String> questionNo,
+      Value<int> questionNo,
       Value<int> questionAnswerType,
       Value<int> fileNo,
-      Value<String> filepPath,
-      Value<int> filetype}) {
+      Value<String> filePath,
+      Value<int> fileType}) {
     return QuestionFilesCompanion(
       businessYear: businessYear ?? this.businessYear,
       period: period ?? this.period,
       questionNo: questionNo ?? this.questionNo,
       questionAnswerType: questionAnswerType ?? this.questionAnswerType,
       fileNo: fileNo ?? this.fileNo,
-      filepPath: filepPath ?? this.filepPath,
-      filetype: filetype ?? this.filetype,
+      filePath: filePath ?? this.filePath,
+      fileType: fileType ?? this.fileType,
     );
   }
 
@@ -1853,7 +1903,7 @@ class QuestionFilesCompanion extends UpdateCompanion<QuestionFile> {
       map['period'] = Variable<int>(period.value);
     }
     if (questionNo.present) {
-      map['question_no'] = Variable<String>(questionNo.value);
+      map['question_no'] = Variable<int>(questionNo.value);
     }
     if (questionAnswerType.present) {
       map['question_answer_type'] = Variable<int>(questionAnswerType.value);
@@ -1861,11 +1911,11 @@ class QuestionFilesCompanion extends UpdateCompanion<QuestionFile> {
     if (fileNo.present) {
       map['file_no'] = Variable<int>(fileNo.value);
     }
-    if (filepPath.present) {
-      map['filep_path'] = Variable<String>(filepPath.value);
+    if (filePath.present) {
+      map['file_path'] = Variable<String>(filePath.value);
     }
-    if (filetype.present) {
-      map['filetype'] = Variable<int>(filetype.value);
+    if (fileType.present) {
+      map['file_type'] = Variable<int>(fileType.value);
     }
     return map;
   }
@@ -1878,8 +1928,8 @@ class QuestionFilesCompanion extends UpdateCompanion<QuestionFile> {
           ..write('questionNo: $questionNo, ')
           ..write('questionAnswerType: $questionAnswerType, ')
           ..write('fileNo: $fileNo, ')
-          ..write('filepPath: $filepPath, ')
-          ..write('filetype: $filetype')
+          ..write('filePath: $filePath, ')
+          ..write('fileType: $fileType')
           ..write(')'))
         .toString();
   }
@@ -1917,11 +1967,11 @@ class $QuestionFilesTable extends QuestionFiles
   }
 
   final VerificationMeta _questionNoMeta = const VerificationMeta('questionNo');
-  GeneratedTextColumn _questionNo;
+  GeneratedIntColumn _questionNo;
   @override
-  GeneratedTextColumn get questionNo => _questionNo ??= _constructQuestionNo();
-  GeneratedTextColumn _constructQuestionNo() {
-    return GeneratedTextColumn(
+  GeneratedIntColumn get questionNo => _questionNo ??= _constructQuestionNo();
+  GeneratedIntColumn _constructQuestionNo() {
+    return GeneratedIntColumn(
       'question_no',
       $tableName,
       false,
@@ -1954,25 +2004,25 @@ class $QuestionFilesTable extends QuestionFiles
     );
   }
 
-  final VerificationMeta _filepPathMeta = const VerificationMeta('filepPath');
-  GeneratedTextColumn _filepPath;
+  final VerificationMeta _filePathMeta = const VerificationMeta('filePath');
+  GeneratedTextColumn _filePath;
   @override
-  GeneratedTextColumn get filepPath => _filepPath ??= _constructFilepPath();
-  GeneratedTextColumn _constructFilepPath() {
+  GeneratedTextColumn get filePath => _filePath ??= _constructFilePath();
+  GeneratedTextColumn _constructFilePath() {
     return GeneratedTextColumn(
-      'filep_path',
+      'file_path',
       $tableName,
       false,
     );
   }
 
-  final VerificationMeta _filetypeMeta = const VerificationMeta('filetype');
-  GeneratedIntColumn _filetype;
+  final VerificationMeta _fileTypeMeta = const VerificationMeta('fileType');
+  GeneratedIntColumn _fileType;
   @override
-  GeneratedIntColumn get filetype => _filetype ??= _constructFiletype();
-  GeneratedIntColumn _constructFiletype() {
+  GeneratedIntColumn get fileType => _fileType ??= _constructFileType();
+  GeneratedIntColumn _constructFileType() {
     return GeneratedIntColumn(
-      'filetype',
+      'file_type',
       $tableName,
       false,
     );
@@ -1985,8 +2035,8 @@ class $QuestionFilesTable extends QuestionFiles
         questionNo,
         questionAnswerType,
         fileNo,
-        filepPath,
-        filetype
+        filePath,
+        fileType
       ];
   @override
   $QuestionFilesTable get asDslTable => this;
@@ -2035,24 +2085,24 @@ class $QuestionFilesTable extends QuestionFiles
     } else if (isInserting) {
       context.missing(_fileNoMeta);
     }
-    if (data.containsKey('filep_path')) {
-      context.handle(_filepPathMeta,
-          filepPath.isAcceptableOrUnknown(data['filep_path'], _filepPathMeta));
+    if (data.containsKey('file_path')) {
+      context.handle(_filePathMeta,
+          filePath.isAcceptableOrUnknown(data['file_path'], _filePathMeta));
     } else if (isInserting) {
-      context.missing(_filepPathMeta);
+      context.missing(_filePathMeta);
     }
-    if (data.containsKey('filetype')) {
-      context.handle(_filetypeMeta,
-          filetype.isAcceptableOrUnknown(data['filetype'], _filetypeMeta));
+    if (data.containsKey('file_type')) {
+      context.handle(_fileTypeMeta,
+          fileType.isAcceptableOrUnknown(data['file_type'], _fileTypeMeta));
     } else if (isInserting) {
-      context.missing(_filetypeMeta);
+      context.missing(_fileTypeMeta);
     }
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey =>
-      {businessYear, period, questionNo, questionAnswerType, fileNo};
+      {businessYear, period, questionNo, questionAnswerType, fileNo, fileType};
   @override
   QuestionFile map(Map<String, dynamic> data, {String tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;

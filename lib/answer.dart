@@ -12,6 +12,7 @@ class Answer extends StatefulWidget {
 class _AnswerState extends State<Answer> {
   final double elev = 20;
   String outputtext = '';
+  Color backcolor=Colors.yellow[100];
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class _AnswerState extends State<Answer> {
     } else {}
 
     return Scaffold(
-      backgroundColor: Colors.cyan[100],
+      backgroundColor: backcolor,
       appBar: AppBar(
         title: Text("1/86　21年 第2回 No.26"),
         leading: Icon(Icons.home_sharp),
@@ -35,6 +36,7 @@ class _AnswerState extends State<Answer> {
         ],
       ),
       body: Container(
+        color:backcolor,
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -184,6 +186,7 @@ class _AnswerState extends State<Answer> {
     //UTF8
     String value =
     await rootBundle.loadString('assets/text/2021_2_1_021_answer_01.txt');
+
     if (value == this.outputtext) {
     } else {
       setState(() {
