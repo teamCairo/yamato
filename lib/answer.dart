@@ -20,11 +20,23 @@ class _AnswerState extends State<Answer> {
   int questionNo = 26;
   int tryingListNo = 26;
 
+  List<QuestionHeader> qh;
+  List<QuestionOption> qo;
+  List<QuestionFile> qfAnswerTxt;
+  bool favorite=false;
+
   @override
   Widget build(BuildContext context) {
+
+    MyDatabase db = MyDatabase();
     if (outputtext == '') {
-      loadAsset();
+      loadAsset(db);
     } else {}
+
+    if(qh.length==0){
+    }else{
+      favorite = qh[0].favorite;
+    }
 
     return Scaffold(
       backgroundColor: backcolor,
@@ -36,8 +48,17 @@ class _AnswerState extends State<Answer> {
         backgroundColor: Colors.lightBlue,
         actions: [
           IconButton(
-            icon: Icon(Icons.favorite, color: Colors.redAccent),
-            onPressed: () {},
+            icon: Icon(this.favorite ? Icons.star : Icons.star_border),
+            color: Colors.yellowAccent,
+            onPressed: () {
+              favorite=!favorite;
+              setState(() {
+                print('favoritettete:'+favorite.toString());
+                changeFavorite(qh[0].businessYear, qh[0].period, qh[0].questionNo,favorite,db);
+
+              });
+
+            },
           ),
         ],
       ),
@@ -189,16 +210,17 @@ class _AnswerState extends State<Answer> {
   }
 
 
-  void loadAsset() async {
+  void loadAsset(MyDatabase db) async {
 
-    MyDatabase db = MyDatabase();
-    List<QuestionHeader> qh =  await db.selectQuestionHeaderByKey(businessYear,period,questionNo);
+    this.qh =
+    await db.selectQuestionHeaderByKey(businessYear, period, questionNo);
     print(qh[0]);
 
-    List<QuestionOption> qo =  await db.selectQuestionOptionsByQInfo(businessYear,period,questionNo);
+    this.qo =
+    await db.selectQuestionOptionsByQInfo(businessYear, period, questionNo);
     print(qo[0]);
 
-    List<QuestionFile> qfAnswerTxt =  await db.selectQuestionFilesForUse(businessYear,period,questionNo,2,1);
+    this.qfAnswerTxt =  await db.selectQuestionFilesForUse(businessYear,period,questionNo,2,1);
     print(qfAnswerTxt[0]);
 
 
@@ -208,13 +230,39 @@ class _AnswerState extends State<Answer> {
     await rootBundle.loadString("assets/text/${qfAnswerTxt[0].filePath}");
 
 
-    if (value == this.outputtext) {
+    if (value == this.outputtext&&this.favorite==qh[0].favorite) {
     } else {
       setState(() {
         print('text読み込み処理' + this.outputtext);
         this.outputtext = value;
       });
     }
+  }
+
+
+  void changeFavorite(int businessYear, int period, int questionNo,bool favoriteValue,MyDatabase db) async {
+
+    List<QuestionHeader> qhforFavoriteList =  await db.selectQuestionHeaderByKey(businessYear,period,questionNo);
+    print(qhforFavoriteList[0]);
+
+    QuestionHeader qhforFavorite = QuestionHeader(
+        businessYear:qhforFavoriteList[0].businessYear
+        ,period:qhforFavoriteList[0].period
+        ,questionNo:qhforFavoriteList[0].questionNo
+        ,subjectId:qhforFavoriteList[0].subjectId
+        ,compulsoryType:qhforFavoriteList[0].compulsoryType
+        ,answerType:qhforFavoriteList[0].answerType
+        ,questionText:qhforFavoriteList[0].questionText
+        ,numberAnswer:qhforFavoriteList[0].numberAnswer
+        ,correctType1:qhforFavoriteList[0].correctType1
+        ,correctType2:qhforFavoriteList[0].correctType2
+        ,correctType3:qhforFavoriteList[0].correctType3
+        ,favorite:favoriteValue);
+
+
+    db.updatequestionheader(qhforFavorite);
+
+
   }
 
 

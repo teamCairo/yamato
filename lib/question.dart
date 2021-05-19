@@ -46,12 +46,55 @@ class _QuestionState extends State<Question> {
     } else {}
 
     List<Widget> lw =[];
-    if(qh[0].answerType == 1){
-
-    }else if(qh[0].answerType == 2){
-
-    }else{
-
+    if(qh.length==0) {}else{
+      if (qh[0].answerType == 1) {
+        for (int i = 0; i < qo.length; i++) {
+          lw.add(RadioListTile(
+            title: Text(
+              qo[i].optionCd + " : " + qo[i].optionText,
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            value: qo[i].optionCd,
+            groupValue: radioValue,
+            onChanged: _onChanged,
+            activeColor: Colors.lightBlue,
+            tileColor: Colors.white,
+            selectedTileColor: Colors.indigo[900],
+          ));
+        }
+      } else if (qh[0].answerType == 2) {
+        for (int i = 0; i < qo.length; i++)
+          lw.add(CheckboxListTile(
+            title: Text(
+              qo[i].optionCd + " : " + qo[i].optionText,
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            controlAffinity: ListTileControlAffinity.leading,
+            value: false,
+            onChanged: (bool value) {
+              setState(() {});
+            },
+            activeColor: Colors.lightBlue,
+            tileColor: Colors.white,
+            selectedTileColor: Colors.indigo[900],
+          ));
+      } else {
+        lw.add(
+            Container(
+              margin: EdgeInsets.all(20),
+              height: 80,
+              width: 200,
+              child: TextField(
+                  decoration: InputDecoration(hintText: "ここに入力"),
+                  controller: _textController,
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
+            ));
+      }
     }
 
     return Scaffold(
@@ -102,50 +145,7 @@ class _QuestionState extends State<Question> {
         Card(
           margin: EdgeInsets.all(10),
           child: Column(
-            children: <Widget>[
-              for (int i = 0; i < qo.length; i++)
-                RadioListTile(
-                  title: Text(
-                    qo[i].optionCd + " : " + qo[i].optionText,
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  value: qo[i].optionCd,
-                  groupValue: radioValue,
-                  onChanged: _onChanged,
-                  activeColor: Colors.lightBlue,
-                  tileColor: Colors.white,
-                  selectedTileColor: Colors.indigo[900],
-                ),
-              for (int i = 0; i < qo.length; i++)
-                CheckboxListTile(
-                  title: Text(
-                    qo[i].optionCd + " : " + qo[i].optionText,
-                    style: TextStyle(
-                      fontSize: 18,
-                    ),
-                  ),
-                  controlAffinity:ListTileControlAffinity.leading,
-                  value: false,
-                  onChanged: (bool value) {
-                    setState(() {});
-                  },
-                  activeColor: Colors.lightBlue,
-                  tileColor: Colors.white,
-                  selectedTileColor: Colors.indigo[900],
-                ),
-              Container(
-                margin: EdgeInsets.all(20),
-                height: 80,
-                width: 200,
-                child: TextField(
-                    decoration: InputDecoration(hintText: "ここに入力"),
-                    controller: _textController,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
-              )
-            ],
+            children: lw,
           ),
         ),
         Container(
