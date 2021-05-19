@@ -20,12 +20,14 @@ class Result extends StatefulWidget {
 class _ResultState extends State<Result> {
 
 
-  var qlist = ['対ベトナムラオスみゃんまー','井らに楽シリアドバイク','エジプトエチオ','フランスイギリスイタリアスお会あぽこぽぽぽぽぽぽぽぽぽぽぽぽぽ','アメリカメキシコカナダ地理'];
-
-  void osareta() {
-
-    qlist.shuffle();
-  }
+  var qlist = ['うっ血心不全について正しいのはどれか。','右心不全の兆候でないのはどれか。','うっ血心不全で認められる浮腫の特徴はどれか。','高拍出性心不全をきたすのはどれか。２つ選べ。','心不全に特徴的な心臓の聴診所見はどれか。'
+                '成人の胃食道逆流症の典型的な症状はどれか。２つ選べ。','胸やけの誘因となりにくいのはどれか。','胃食道逆流症＜GERD＞の増悪因子でないのはどれか。','上部消化管内視鏡像を別に示す。診断はどれか。',
+                '逆流性食道炎について正しいのはどれか。３つ選べ。','逆流性食道炎の治療に最も有用なのはどれか。','本問は、政界した受験者については採点対象に含め、不正解','54歳の男性。胸やけを主訴に来院した。来年前から',];
+  var codelist = ['108H16','103B21','106G15','102D6','106A1','107D16','112E19','106A12','109I11','87B28','99E29','104C11','108D56'];
+  var catlist = ['循環器','呼吸器','血液','免疫','中毒','循環器','呼吸器','循環器','循環器','呼吸器','呼吸器','消化器','消化器'];
+  List<bool> moshi = [false,false,true,false,true,true,false,true,true,false,true,true,true];
+  var hitulist = ['必修','必修以外','必修','必修以外','必修','必修','必修','必修以外','必修','必修','必修','必修','必修'];
+  var kailist = ['第１回','第２回','第５回','第４回','第２回','第５回','第３回','第４回','第３回','第１回','第２回','第２回','第４回'];
 
   @override
   Widget build(BuildContext context) {
@@ -65,12 +67,17 @@ class _ResultState extends State<Result> {
           padding: const EdgeInsets.all(8),
           itemCount: qlist.length,
           itemBuilder: (BuildContext context, int index){
-            return Card(
+            return InkWell(
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder:(context) => Question(),),);
+              },
+              child:Card(
               child:Container(
-                height: 90,
+                height: 110,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children:<Widget>[
+
                 Container(child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -79,20 +86,29 @@ class _ResultState extends State<Result> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                        Text('mondaicode', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.black26)),
+                          SizedBox(width: 5),
+                        Container(
+                          width: 60,
+                          child:Text(codelist[index], textAlign: TextAlign.center, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black45)),),
                         SizedBox(width: 10,),
-                        Text('カテゴリー', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blue),),
+                        Container(child:Text(catlist[index], style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue),),),
                       ],),
                     ),
-                    Flexible(child:Text(qlist[index], style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.bold, ),overflow: TextOverflow.ellipsis),),
+                    Container(
+                        width: 260,
+                        child:Row(children:<Widget>[
+                          SizedBox(width: 20,),
+                        Flexible(child:Text(qlist[index], style: TextStyle(fontSize: 16, color: Colors.indigo[900], fontWeight: FontWeight.bold, ),overflow: TextOverflow.ellipsis,  maxLines: 2,),)]),
+                          ),
                     Container(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           //Text('必修', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black54)),
+                          SizedBox(width: 5),
                           Container(
                             height: 20,
-                            width: 40,
+                            width: 60,
                               decoration: BoxDecoration(
                                 border: const Border(
                                   left: const BorderSide(
@@ -114,12 +130,12 @@ class _ResultState extends State<Result> {
                                 ),
                               ),
                             child:Padding(
-                                padding: EdgeInsets.fromLTRB(4, 2, 2, 2),
-                                child:Text('必修', style: TextStyle(fontSize: 12,color: Colors.black),)),),
+                                padding: EdgeInsets.fromLTRB(2, 2, 2, 2),
+                                child:Text(hitulist[index], textAlign: TextAlign.center,style: TextStyle(fontSize: 12,color: Colors.black),)),),
+                          SizedBox(width: 10,),
+                          Text(kailist[index], style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.black54)),
                           SizedBox(width: 5,),
-                          Text('出題回', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.black54)),
-                          SizedBox(width: 5,),
-                          Text('模試：誤', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black54)),
+                          //Text('模試：誤', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.black54)),
                         ],
                       ),
                     ),
@@ -133,8 +149,16 @@ class _ResultState extends State<Result> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('＜模試：誤＞', style: TextStyle(fontSize: 10,  color: Colors.black)),
-                      Icon(Icons.check),
+                      SizedBox(height: 5,),
+
+                       Visibility(
+                         visible: moshi[index],
+                         child:Column(children: <Widget>[
+                         Text('＜模試：誤＞', style: TextStyle(fontSize: 11,  color: Colors.black, fontWeight: FontWeight.w500)),
+                         SizedBox(height: 5,),
+                         Icon(Icons.check),
+                      ]),),
+                      SizedBox(height: 5,),
                     ],
                   ),
                 ),
@@ -145,7 +169,7 @@ class _ResultState extends State<Result> {
                 ),
             ]),
             ),
-            );
+            ),);
     }
          // children: <Widget>[
             //Qtile(code: "SA116354", category: "呼吸器", contents: "口呼吸",),
