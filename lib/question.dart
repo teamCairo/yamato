@@ -1,10 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'answer.dart';
 import 'db.dart';
-
-enum Alternative { a, b, c, d }
 
 class Question extends StatefulWidget {
   Question({Key key}) : super(key: key);
@@ -14,18 +13,29 @@ class Question extends StatefulWidget {
 }
 
 class _QuestionState extends State<Question> {
-  var _alternative = null;
   final double elev = 20;
   String outputtext = '';
+  String radioValue = '';
   List<Image> outputimgList = [];
   int businessYear = 2021;
   int period = 1;
   int questionNo = 26;
   int tryingListNo = 26;
+  var _textController = TextEditingController();
 
-  void _onChanged(Alternative value) {
+  List<QuestionHeader> qh = [];
+
+  List<QuestionOption> qo = [];
+
+  List<QuestionFile> qfQuestionTxt = [];
+
+  List<QuestionFile> qfQuestionImg = [];
+
+  List<QuestionFile> qfAnswerTxt = [];
+
+  void _onChanged(String value) {
     setState(() {
-      _alternative = value;
+      radioValue = value;
     });
   }
 
@@ -35,10 +45,20 @@ class _QuestionState extends State<Question> {
       loadAsset();
     } else {}
 
+    List<Widget> lw =[];
+    if(qh[0].answerType == 1){
+
+    }else if(qh[0].answerType == 2){
+
+    }else{
+
+    }
+
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
-        title: Text("1/86　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
+        title: Text(
+            "1/86　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
         leading: Icon(Icons.home_sharp),
         elevation: elev,
         automaticallyImplyLeading: false,
@@ -52,88 +72,79 @@ class _QuestionState extends State<Question> {
       ),
       body: Container(
           child: SingleChildScrollView(
-              child: Column(
+              child: Column(children: <Widget>[
+        Card(
+            margin: EdgeInsets.all(10),
+            child: Column(children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Card(
-                      margin: EdgeInsets.all(10),
-                      child:Column(
-                        children:[Container(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Container(
-                                padding: const EdgeInsets.all(10),
-                                child: Text(
-                                  outputtext,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      child: Text(
+                        outputtext,
+                        style: TextStyle(
+                          fontSize: 16,
                         ),
-                          for (int i = 0; i < outputimgList.length; i++)
-                            Container(
-                                padding: const EdgeInsets.all(3),
-                                margin: EdgeInsets.all(10),
-                                child: outputimgList[i]),
-
-                        ]
-                      )
+                      ),
                     ),
-
-        Padding(
-          padding: EdgeInsets.fromLTRB(25, 0, 25, 0),
+                  ],
+                ),
+              ),
+              for (int i = 0; i < outputimgList.length; i++)
+                Container(
+                    padding: const EdgeInsets.all(3),
+                    margin: EdgeInsets.all(10),
+                    child: outputimgList[i]),
+            ])),
+        Card(
+          margin: EdgeInsets.all(10),
           child: Column(
             children: <Widget>[
-              RadioListTile<Alternative>(
-                title: Text(
-                  "a:赤血球",
-                  style: TextStyle(
-                    fontSize: 18,
+              for (int i = 0; i < qo.length; i++)
+                RadioListTile(
+                  title: Text(
+                    qo[i].optionCd + " : " + qo[i].optionText,
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
                   ),
+                  value: qo[i].optionCd,
+                  groupValue: radioValue,
+                  onChanged: _onChanged,
+                  activeColor: Colors.lightBlue,
+                  tileColor: Colors.white,
+                  selectedTileColor: Colors.indigo[900],
                 ),
-                value: Alternative.a,
-                groupValue: _alternative,
-                onChanged: _onChanged,
-                activeColor: Colors.lightBlue,
-                tileColor: Colors.white,
-                selectedTileColor: Colors.indigo[900],
-              ),
-              RadioListTile<Alternative>(
-                title: Text(
-                  "b:~~~~~~",
-                  style: TextStyle(
-                    fontSize: 18,
+              for (int i = 0; i < qo.length; i++)
+                CheckboxListTile(
+                  title: Text(
+                    qo[i].optionCd + " : " + qo[i].optionText,
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
                   ),
+                  controlAffinity:ListTileControlAffinity.leading,
+                  value: false,
+                  onChanged: (bool value) {
+                    setState(() {});
+                  },
+                  activeColor: Colors.lightBlue,
+                  tileColor: Colors.white,
+                  selectedTileColor: Colors.indigo[900],
                 ),
-                value: Alternative.b,
-                groupValue: _alternative,
-                onChanged: _onChanged,
-                activeColor: Colors.lightBlue,
-                tileColor: Colors.white,
-                selectedTileColor: Colors.indigo[900],
-              ),
-              RadioListTile<Alternative>(
-                title: Text("c:~~~~~~"),
-                value: Alternative.c,
-                groupValue: _alternative,
-                onChanged: _onChanged,
-                activeColor: Colors.indigo.shade300,
-                tileColor: Colors.white,
-                selectedTileColor: Colors.indigo[900],
-              ),
-              RadioListTile<Alternative>(
-                title: Text("d:~~~~~~"),
-                value: Alternative.d,
-                groupValue: _alternative,
-                onChanged: _onChanged,
-                activeColor: Colors.indigo,
-                tileColor: Colors.white,
-                selectedTileColor: Colors.indigo[900],
-              ),
+              Container(
+                margin: EdgeInsets.all(20),
+                height: 80,
+                width: 200,
+                child: TextField(
+                    decoration: InputDecoration(hintText: "ここに入力"),
+                    controller: _textController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
+              )
             ],
           ),
         ),
@@ -286,21 +297,38 @@ class _QuestionState extends State<Question> {
   }
 
   void loadAsset() async {
+    MyDatabase db = MyDatabase();
+    this.qh =
+        await db.selectQuestionHeaderByKey(businessYear, period, questionNo);
+    print(qh[0]);
 
-    List<QuestionHeader> qh =  await MyDatabase().selectQuestionHeaderByKey(businessYear,period,questionNo);
-    print("ああああああああ" + qh.length.toString());
+    this.qo =
+        await db.selectQuestionOptionsByQInfo(businessYear, period, questionNo);
+    print(qo[0]);
+    print(qo.length.toString());
+
+    this.qfQuestionTxt = await db.selectQuestionFilesForUse(
+        businessYear, period, questionNo, 1, 1);
+    print(qfQuestionTxt[0]);
+
+    this.qfQuestionImg = await db.selectQuestionFilesForUse(
+        businessYear, period, questionNo, 1, 2);
+    print(qfQuestionImg[0]);
+
+    List<QuestionFile> qfAnswerTxt = await db.selectQuestionFilesForUse(
+        businessYear, period, questionNo, 2, 1);
+    print(qfAnswerTxt[0]);
 
     //UTF8
+    print(qfQuestionTxt[0]);
     String value =
-        await rootBundle.loadString('assets/text/2021_2_1_022_question_01.txt');
+        await rootBundle.loadString("assets/text/${qfQuestionTxt[0].filePath}");
 
-    await this.outputimgList.add(Image.asset(
-        'assets/image/2021_2_1_022_question_01.jpg',
-        fit: BoxFit.contain));
-
-    await this.outputimgList.add(Image.asset(
-        'assets/image/2021_2_1_022_question_02.jpg',
-        fit: BoxFit.contain));
+    for (int i = 0; i < qfQuestionImg.length; i++) {
+      await this.outputimgList.add(Image.asset(
+          'assets/image/' + qfQuestionImg[i].filePath,
+          fit: BoxFit.contain));
+    }
 
     if (value == this.outputtext) {
     } else {

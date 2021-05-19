@@ -106,7 +106,9 @@ class MyDatabase extends _$MyDatabase {
   Future insertquestionheader(QuestionHeader questionheader)=> into(questionHeaders).insert(questionheader);
   Future updatequestionheader(QuestionHeader questionheader)=> update(questionHeaders).replace(questionheader);
   Future deletequestionheader(QuestionHeader questionheader)=> delete(questionHeaders).delete(questionheader);
-/*
+
+
+
   Future<List<QuestionHeader>> selectQuestionHeaderByKey(int businessYear,int period, int questionNo) {
     return
       customSelect(
@@ -117,26 +119,83 @@ class MyDatabase extends _$MyDatabase {
             +'AND question_No = ?;',
         variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo)],
         readsFrom: {questionHeaders},
-      ).get().map((rows) {
-        return rows
-            .map((row) => QuestionHeader(
-            businessYear:row.readInt('businessYear')
+      ).map((row) => QuestionHeader(
+            businessYear:row.readInt('business_year')
             ,period:row.readInt('period')
-            ,questionNo:row.readInt('questionNo')
-            ,subjectId:row.readInt('subjectId')
-            ,compulsoryType:row.readInt('compulsoryType')
-            ,answerType:row.readInt('answerType')
-            ,questionText:row.readString('questionText')
-            ,numberAnswer:row.readInt('numberAnswer')
-            ,correctType1:row.readInt('correctType1')
-            ,correctType2:row.readInt('correctType2')
-            ,correctType3:row.readInt('correctType3')
+            ,questionNo:row.readInt('question_no')
+            ,subjectId:row.readInt('subject_id')
+            ,compulsoryType:row.readInt('compulsory_type')
+            ,answerType:row.readInt('answer_type')
+            ,questionText:row.readString('question_text')
+            ,numberAnswer:row.readInt('number_answer')
+            ,correctType1:row.readInt('correct_type1')
+            ,correctType2:row.readInt('correct_type2')
+            ,correctType3:row.readInt('correct_type3')
             ,favorite:row.readBool('favorite')
-        )).toList();
-      });
+        )).get();
   }
- */
+
+
+  Future<List<QuestionOption>> selectQuestionOptionsByQInfo(int businessYear,int period, int questionNo) {
+    return
+      customSelect(
+        'SELECT *'
+            +'From question_Options '
+            +'WHERE business_Year = ? '
+            +'AND period = ? '
+            +'AND question_No = ?'
+            +' ORDER BY option_Cd ASC ;',
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo)],
+        readsFrom: {questionOptions},
+      ).map((row) => QuestionOption(
+          businessYear:row.readInt('business_year')
+          ,period:row.readInt('period')
+          ,questionNo:row.readInt('question_no')
+          ,optionCd:row.readString('option_cd')
+          ,optionText:row.readString('option_text')
+          ,correctType:row.readInt('correct_type')
+      )).get();
+  }
+
+
+  Future<List<QuestionFile>> selectQuestionFilesForUse(int businessYear,int period, int questionNo,int questionAnswerType, int fileType) {
+    return
+      customSelect(
+        'SELECT *'
+            +' From question_Files '
+            +' WHERE business_Year = ? '
+            +' AND period = ? '
+            +' AND question_No = ?'
+            +' AND question_Answer_Type = ?'
+            +' AND file_Type = ?'
+            +' ORDER BY file_No ASC',
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo),Variable.withInt(questionAnswerType),Variable.withInt(fileType)],
+        readsFrom: {questionFiles},
+      ).map((row) => QuestionFile(
+          businessYear:row.readInt('business_year')
+          ,period:row.readInt('period')
+          ,questionNo:row.readInt('question_no')
+          ,questionAnswerType:row.readInt('question_answer_type')
+          ,fileNo:row.readInt('file_no')
+          ,filePath:row.readString('file_path')
+          ,fileType:row.readInt('file_type')
+      )).get();
+  }
   /*
+
+    Future<List<int>> amountOfStudyStatu(int businessYear,int period, String questionNo) {
+    return
+      customSelect(
+        'SELECT correct_Type FROM study_Status '
+            +'WHERE business_Year = ? '
+            +'AND period = ? '
+            +'AND question_No = ?'
+        +'ORDER BY id DESC',
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withString(questionNo)],
+        readsFrom: {studyStatus},
+      ).map((row) => row.readInt('correct_Type')).get();
+  }
+
   Future<List<QuestionHeader>> selectQuestionHeaderByKey(int businessYear,int period, int questionNo) {
     return
       customSelect(
@@ -149,7 +208,10 @@ class MyDatabase extends _$MyDatabase {
         readsFrom: {questionHeaders}).map((row) {
         return QuestionHeader.fromData(row.data, db);
       }).get();
-  }*/
+  }
+
+
+  */
 
   /*
 

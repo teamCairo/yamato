@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yamato/question.dart';
 
+import 'db.dart';
+
 class Answer extends StatefulWidget {
   Answer({Key key}) : super(key: key);
 
@@ -13,6 +15,10 @@ class _AnswerState extends State<Answer> {
   final double elev = 20;
   String outputtext = '';
   Color backcolor=Colors.yellow[100];
+  int businessYear = 2021;
+  int period = 1;
+  int questionNo = 26;
+  int tryingListNo = 26;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,7 @@ class _AnswerState extends State<Answer> {
     return Scaffold(
       backgroundColor: backcolor,
       appBar: AppBar(
-        title: Text("1/86　21年 第2回 No.26"),
+        title: Text("1/86　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
         leading: Icon(Icons.home_sharp),
         elevation: elev,
         automaticallyImplyLeading: false,
@@ -182,10 +188,25 @@ class _AnswerState extends State<Answer> {
     );
   }
 
+
   void loadAsset() async {
+
+    MyDatabase db = MyDatabase();
+    List<QuestionHeader> qh =  await db.selectQuestionHeaderByKey(businessYear,period,questionNo);
+    print(qh[0]);
+
+    List<QuestionOption> qo =  await db.selectQuestionOptionsByQInfo(businessYear,period,questionNo);
+    print(qo[0]);
+
+    List<QuestionFile> qfAnswerTxt =  await db.selectQuestionFilesForUse(businessYear,period,questionNo,2,1);
+    print(qfAnswerTxt[0]);
+
+
+
     //UTF8
     String value =
-    await rootBundle.loadString('assets/text/2021_2_1_021_answer_01.txt');
+    await rootBundle.loadString("assets/text/${qfAnswerTxt[0].filePath}");
+
 
     if (value == this.outputtext) {
     } else {
@@ -195,4 +216,6 @@ class _AnswerState extends State<Answer> {
       });
     }
   }
+
+
 }
