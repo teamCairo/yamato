@@ -36,7 +36,7 @@ class _RootWidgetState extends State<RootWidget> {
 
 
     return Scaffold(
-      backgroundColor: Color(0xFFFAFAFA),
+      backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         elevation:elev,
         leading:Icon(Icons.home_sharp),
