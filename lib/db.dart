@@ -181,6 +181,36 @@ class MyDatabase extends _$MyDatabase {
           ,fileType:row.readInt('file_type')
       )).get();
   }
+
+  Future<List<QuestionHeader>> selectQuestionFilesForFilter(int compulsoryType) {
+    //Variable.withInt(period),Variable.withInt(subjectId),Variable.withInt(compulsoryType),
+    return
+      customSelect(
+        'SELECT *'
+            +' From question_Headers '
+            +' WHERE  compulsory_type = ? '
+            //+' AND period = ? '
+            //+' AND subject_id = ?'
+           // +' AND correct_type1  = ?'
+           // +' AND favorite = ?'
+            +' ORDER BY question_no ASC',
+        variables: [Variable.withInt(compulsoryType)],
+        readsFrom: {questionHeaders},
+      ).map((row) => QuestionHeader(
+          businessYear:row.readInt('business_year')
+          ,period:row.readInt('period')
+          ,questionNo:row.readInt('question_no')
+          ,subjectId:row.readInt('subject_id')
+          ,compulsoryType:row.readInt('compulsory_type')
+          ,answerType:row.readInt('answer_type')
+          ,questionText:row.readString('question_text')
+          ,numberAnswer:row.readInt('number_answer')
+          ,correctType1:row.readInt('correct_type1')
+          ,correctType2:row.readInt('correct_type2')
+          ,correctType3:row.readInt('correct_type3')
+          ,favorite:row.readBool('favorite')
+      )).get();
+  }
   /*
 
     Future<List<int>> amountOfStudyStatu(int businessYear,int period, String questionNo) {

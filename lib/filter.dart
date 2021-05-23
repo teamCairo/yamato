@@ -1,6 +1,10 @@
 
 import 'package:flutter/material.dart';
 
+import 'package:yamato/db.dart';
+import 'package:yamato/result.dart';
+
+
 class CategoryFilter {
   const CategoryFilter(this.name);
   final String name;
@@ -17,38 +21,61 @@ class Filter extends StatefulWidget {
 class _FilterState extends State<Filter> {
 
   final List<CategoryFilter> _genre = <CategoryFilter>[
-    const CategoryFilter("循環",),
-    const CategoryFilter("呼吸",),
-    const CategoryFilter("消化",),
-    const CategoryFilter("腎臓",),
-    const CategoryFilter("内代",),
-    const CategoryFilter("神経",),
-    const CategoryFilter("血液",),
-    const CategoryFilter("免疫",),
-    const CategoryFilter("感染",),
-    const CategoryFilter("中毒",),
-    const CategoryFilter("救急",),
-    const CategoryFilter("小児",),
-    const CategoryFilter("産科",),
-    const CategoryFilter("婦人",),
-    const CategoryFilter("泌尿",),
-    const CategoryFilter("眼科",),
-    const CategoryFilter("耳鼻",),
-    const CategoryFilter("皮膚",),
-    const CategoryFilter("精神",),
-    const CategoryFilter("整形",),
-    const CategoryFilter("麻酔",),
-    const CategoryFilter("放射",),
-    const CategoryFilter("公衛",),
-    const CategoryFilter("医総",),
+    CategoryFilter("循環",),
+    CategoryFilter("呼吸",),
+    CategoryFilter("消化",),
+    CategoryFilter("腎臓",),
+    CategoryFilter("内代",),
+    CategoryFilter("神経",),
+    CategoryFilter("血液",),
+    CategoryFilter("免疫",),
+    CategoryFilter("感染",),
+    CategoryFilter("中毒",),
+    CategoryFilter("救急",),
+    CategoryFilter("小児",),
+    CategoryFilter("産科",),
+    CategoryFilter("婦人",),
+    CategoryFilter("泌尿",),
+    CategoryFilter("眼科",),
+    CategoryFilter("耳鼻",),
+    CategoryFilter("皮膚",),
+    CategoryFilter("精神",),
+    CategoryFilter("整形",),
+    CategoryFilter("麻酔",),
+    CategoryFilter("放射",),
+    CategoryFilter("公衛",),
+    CategoryFilter("医総",),
+    CategoryFilter("植物"),
+    CategoryFilter("動物"),
+    CategoryFilter("人類"),
+    CategoryFilter("細胞"),
+
   ];
   List<String> _filters = <String>[];
+  List<String> _filterskari = ["1","4","5","7","14"];
   List<String> _hissyu = <String>[];
+  int _hissyukari = 1;
   List<String> _clip = <String>[];
+  bool _clipkari = false;
   bool _gotou = false;
   List<String> _kai = <String>[];
+  List<String> _kaikari = ["1","3","4"];
+  //Future<List> jouken ;
+  List _joken =[];
+  List kailist2 =[];
+  List codelist2 =[];
+  List catlist2 =[];
+  List<bool> moshi2 =[];
+  List hitsu2 =[];
+  List<String> qtext2 =[];
+  var otameshi = 1|2|6;
+  int catcondition = 0;
+  int kaicondition = 0;
+  int catInt;
+  int kaiInt;
 
-  //bool _isDisabled = false;
+
+
 
 
 
@@ -66,6 +93,33 @@ class _FilterState extends State<Filter> {
     );
   }
 
+  void filcon(MyDatabase db)  async{
+
+    //jouken = (await db.selectQuestionFilesForFilter(2021)) as Future<List>;
+      _joken = await db.selectQuestionFilesForFilter(1);
+   //. kaiInt ,,_hissyukari ,_clipkari
+    if (_joken == null) {
+    } else {
+      for(var i = 0; i < _joken.length; i++) {
+        kailist2.add(_joken[i].period);
+        codelist2.add(_joken[i].questionNo);
+        hitsu2.add(_joken[i].compulsoryType);
+        catlist2.add(_joken[i].subjectId);
+        moshi2.add(_joken[i].correctType1);
+        qtext2.add(_joken[i].questionText);
+      } }
+      if(moshi2 == null){} else{
+      setState(() {
+        print(_joken[0]);
+        print(kailist2[0]);print(moshi2[0]);print(hitsu2[0]);print(catlist2[0]);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => Result(qtext2, kailist2, codelist2,catlist2, hitsu2, moshi2)),
+        );
+
+      });
+    }
+  }
 
 
 
@@ -77,7 +131,8 @@ class _FilterState extends State<Filter> {
         padding: EdgeInsets.all(4),
 
         child:Transform(
-          transform: Matrix4.identity()..scale(1.3),
+          transform: Matrix4.identity()..scale(1.2),
+          //1.3
           child: FilterChip(
             showCheckmark: false,
             backgroundColor: Colors.white,
@@ -142,22 +197,20 @@ class _FilterState extends State<Filter> {
 
 
 
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.cyan[100],
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        actions: <Widget>[
-        IconButton(
-          onPressed: () => {
-          Navigator.of(context).pop()
-          },
-          icon: Icon(Icons.close_rounded),
-          color: Colors.blue,
-        )
-      ],
-        centerTitle: true,
-        title: Text('検索条件', style: TextStyle(fontSize: 18, color: Colors.blue),),
+        elevation: 8,
+        leading:Icon(Icons.home_sharp),
+        title: Text("検索条件"),
+        backgroundColor: Colors.blueAccent,
+        actions: [
+        ],
       ),
         body:Center(
             child: Column(
@@ -225,13 +278,15 @@ class _FilterState extends State<Filter> {
                   Container(
                     height: 400,
                     alignment: Alignment.center,
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                     margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
 
                     child: Padding(padding: EdgeInsets.all(0),
                       child: Wrap(
-                        spacing: 25.0,
-                        runSpacing: 3.5,
+                        spacing: 22.0,
+                        //25.0
+                        runSpacing: 0.1,
+                        //3.5
                         children: categoryWidgets.toList(),
                       ),
                     ),
@@ -263,11 +318,11 @@ class _FilterState extends State<Filter> {
                               if(_color == Colors.blue) {
                                 _color = Colors.white;
                                 _bcolor = Colors.blue;
-                                _hissyu.add('必修');
+                                _hissyu.add('1');
                               } else {
                                 _color = Colors.blue;
                                 _bcolor = Colors.white;
-                                _hissyu.remove('必修');
+                                _hissyu.remove('1');
                               }
                             });
                           },
@@ -306,11 +361,11 @@ class _FilterState extends State<Filter> {
                               if(_color1 == Colors.blue) {
                                 _color1 = Colors.white;
                                 _bcolor1 = Colors.blue;
-                                _hissyu.add('必修以外');
+                                _hissyu.add('2');
                               } else {
                                 _color1 = Colors.blue;
                                 _bcolor1 = Colors.white;
-                                _hissyu.remove('必修以外');
+                                _hissyu.remove('2');
                               }
                             });
                           },
@@ -817,15 +872,10 @@ class _FilterState extends State<Filter> {
                       height: 60,
                       width: 180,
                       child: ElevatedButton(onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                              title :Text('a'),
-                              content: Column(children:<Widget>[Text(_hissyu[0]+_hissyu[1]+_kai[0]+_kai[1]+_clip[0]+_clip[1]),
-                              ElevatedButton(onPressed: (){
-                                if(_gotou == true){print('ok');}else if(_gotou == false){print('NO');}}, child: Text('a'))]),
-                            )
-                        );
+                        MyDatabase db = MyDatabase();
+                        filcon(db);
+                        //jouken = db.selectQuestionFilesForFilter(2021);
+
                       },
                         style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40),
@@ -840,20 +890,6 @@ class _FilterState extends State<Filter> {
             )
 
 
-          //child: Column(
-          //children: [
-          //ElevatedButton(
-          //child: Text('登録'),
-          //onPressed: () {
-          //Navigator.push(
-          //context,
-          //MaterialPageRoute(builder: (context) => SignInPage()),
-          //);
-          //},
-          //)
-
-          //]
-          //)
 
         ),
     );

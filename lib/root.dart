@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yamato/search.dart';
+
 import 'package:yamato/db.dart';
 import 'package:yamato/history.dart';
 import 'package:yamato/incorrectcheck.dart';
 import 'package:yamato/datamigrant.dart';
 import 'package:yamato/question.dart';
+
+import 'filter.dart';
 
 class RootWidget extends StatefulWidget {
   RootWidget({Key key}) : super(key: key);
@@ -146,7 +148,7 @@ class _RootWidgetState extends State<RootWidget> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Search()),
+                        MaterialPageRoute(builder: (context) => Filter()),
                       );
                     },
                     style: OutlinedButton.styleFrom(

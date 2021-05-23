@@ -69,10 +69,10 @@ class _SearchState extends State<Search> {
                        ElevatedButton(
                          child: Text("遷移"),
                          onPressed: () {
-                           Navigator.pushReplacement(
-                             context,
-                             MaterialPageRoute(builder: (context) => Result()),
-                           );
+                           //Navigator.pushReplacement(
+                             //context,
+                            // MaterialPageRoute(builder: (context) => Result()),
+                          // );
                          },
 
                        ),

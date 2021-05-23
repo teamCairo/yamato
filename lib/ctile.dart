@@ -47,11 +47,11 @@ class Ctile extends StatelessWidget {
               padding: EdgeInsets.all(0),
               icon: Icon(Icons.arrow_right_sharp, size:70,), color: Colors.indigo[900],
               onPressed: () {
-              Navigator.push(
-                  context,MaterialPageRoute(
-                  builder: (context) =>Result()
-              )
-              );
+             // Navigator.push(
+               //   context,MaterialPageRoute(
+                 // builder: (context) =>Result()
+              //)
+              //);
             }, ),
       ),
 
