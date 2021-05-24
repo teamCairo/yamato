@@ -39,45 +39,69 @@ class _IncorrectCheckState extends State<IncorrectCheck> {
       body: SingleChildScrollView(child: ql),
       bottomNavigationBar: BottomAppBar(
         elevation:0,
-        color: Theme.of(context).canvasColor,
+        color:Colors.cyan[100],
         notchMargin:0,
-        child:ElevatedButton(onPressed: () {
-          for (int i = 0; i < ql.checkedList.length; i++){
-            if(ql.checkedList[i]==true){
-              correctType=1;
-            }else{
-              correctType=0;
-            }
-            final now = DateTime.now();
+        child:      Container(
+          padding: const EdgeInsets.all(20),
+          margin: EdgeInsets.all(4),
+          child:SizedBox(
+            width: 280,
+            height: 60,
+            child: ElevatedButton(onPressed: () {
 
-            //TODO:ヘッダのステータス情報更新
-          }
-          Parameter para = Parameter(code:widget.serialData.code
-              ,numberValue:widget.serialData.numberValue
-              ,textValue:widget.serialData.textValue
-              ,booleanValue:true);
-          MyDatabase().updateparameter(para);
-          showDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text("確認"),
-                content: Text("学習状況が登録されました"),
-                actions: <Widget>[
-                  // ボタン領域
-                  TextButton(
-                    child: Text("OK"),
-                    onPressed: (){
-                      Navigator.pop(context);
-                      Navigator.pop(context);},
-                  ),
-                ],
+              print("リストの長さ"+ql.qhList.length.toString());
+
+              QuestionHeader qh;
+
+              for (int i = 0; i < ql.checkedList.length; i++){
+                if(ql.checkedList[i]==true) {
+                  correctType = 1;
+
+                  qh=QuestionHeader(businessYear:ql.qhList[i].businessYear
+                    ,period:ql.qhList[i].period
+                    ,questionNo:ql.qhList[i].questionNo
+                    ,subjectId:ql.qhList[i].subjectId
+                    ,compulsoryType:ql.qhList[i].compulsoryType
+                    ,answerType:ql.qhList[i].answerType
+                    ,questionText:ql.qhList[i].questionText
+                    ,numberAnswer:ql.qhList[i].numberAnswer
+                    ,correctType1:1
+                    ,correctType2:ql.qhList[i].correctType2
+                    ,correctType3:ql.qhList[i].correctType3
+                    ,favorite:ql.qhList[i].favorite
+                  ,);
+
+                  MyDatabase().updatequestionheader(qh);
+
+                }
+
+              }
+              Parameter para = Parameter(code:widget.serialData.code
+                  ,numberValue:widget.serialData.numberValue
+                  ,textValue:widget.serialData.textValue
+                  ,booleanValue:true);
+              MyDatabase().updateparameter(para);
+              showDialog(
+                context: context,
+                builder: (_) {
+                  return AlertDialog(
+                    title: Text("確認"),
+                    content: Text("学習状況が登録されました"),
+                    actions: <Widget>[
+                      // ボタン領域
+                      TextButton(
+                        child: Text("OK"),
+                        onPressed: (){
+                          Navigator.pop(context);
+                          Navigator.pop(context);},
+                      ),
+                    ],
+                  );
+                },
               );
-            },
-          );},
-              child: Text("保存", style: TextStyle(fontSize: 20,),),
-
-            ),
+            }, child: Text("保存", style: TextStyle(fontSize:  20,),),),
+          ),
+        ),
       ),
     );
   }
@@ -106,6 +130,7 @@ class _QuestionListstate extends State<QuestionList> {
     return Column(
       children: <Widget>[
         Container(
+          color:Colors.cyan[100],
           height: 700,
           width: double.infinity,
           child: StreamBuilder(

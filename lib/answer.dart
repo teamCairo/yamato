@@ -14,7 +14,6 @@ class Answer extends StatefulWidget {
 class _AnswerState extends State<Answer> {
   final double elev = 20;
   String outputtext = '';
-  Color backcolor=Colors.yellow[100];
   int businessYear = 2021;
   int period = 1;
   int questionNo = 26;
@@ -33,13 +32,13 @@ class _AnswerState extends State<Answer> {
       loadAsset(db);
     } else {}
 
-    if(qh.length==0){
+    if(qh==null){
     }else{
       favorite = qh[0].favorite;
     }
 
     return Scaffold(
-      backgroundColor: backcolor,
+      backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         title: Text("1/86　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
         leading: Icon(Icons.home_sharp),
@@ -63,7 +62,7 @@ class _AnswerState extends State<Answer> {
         ],
       ),
       body: Container(
-        color:backcolor,
+          color:Colors.cyan[100],
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
@@ -94,22 +93,15 @@ class _AnswerState extends State<Answer> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.all(10),
-                  child: SizedBox(
-                    width: 250,
+                  padding: const EdgeInsets.all(20),
+                  margin: EdgeInsets.all(4),
+                  child:SizedBox(
+                    width: 280,
                     height: 60,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Question()));
-                      },
-                      child: Text(
-                        "次の問題",
-                        style: TextStyle(
-                          fontSize: 15,
-                        ),
-                      ),
-                    ),
+                    child: ElevatedButton(onPressed: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => Question()));
+                    }, child: Text("次の問題", style: TextStyle(fontSize:  20,),),),
                   ),
                 ),
               ],

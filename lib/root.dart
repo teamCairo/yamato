@@ -23,10 +23,9 @@ class _RootWidgetState extends State<RootWidget> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final outlineColor = Colors.blueAccent;
-    final primaryColor = Colors.blueAccent;
-    final headeryColor = Colors.blueAccent;
-    final backColor = Colors.white;
+    final primaryColor = Colors.white;
+    final headeryColor = Colors.lightBlue;
+    final backColor = Colors.lightBlue;
     final double elev = 8;
     final double iconsize = 45;
     final double radius = 20;
@@ -119,11 +118,10 @@ class _RootWidgetState extends State<RootWidget> {
                             context,
                             MaterialPageRoute(builder: (context) => Question())
                         );},
-                      style: OutlinedButton.styleFrom(
+                      style: TextButton.styleFrom(
                           elevation: elev,
                           primary: primaryColor,
                           backgroundColor: backColor,
-                          side: BorderSide(color: outlineColor, width: 1),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(radius),
                           )),
@@ -151,11 +149,10 @@ class _RootWidgetState extends State<RootWidget> {
                         MaterialPageRoute(builder: (context) => Filter()),
                       );
                     },
-                    style: OutlinedButton.styleFrom(
+                    style: TextButton.styleFrom(
                         elevation: elev,
                         primary: primaryColor,
                         backgroundColor: backColor,
-                        side: BorderSide(color: outlineColor, width: 1),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(radius),
                         )),
@@ -186,11 +183,10 @@ class _RootWidgetState extends State<RootWidget> {
                       onPressed: () {
                         moveToStudyStatus();
                       },
-                      style: OutlinedButton.styleFrom(
+                      style: TextButton.styleFrom(
                           elevation: elev,
                           primary: primaryColor,
                           backgroundColor: backColor,
-                          side: BorderSide(color: outlineColor, width: 1),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(radius),
                           )),
@@ -260,11 +256,10 @@ class _RootWidgetState extends State<RootWidget> {
                           }
                         });
                       },
-                      style: OutlinedButton.styleFrom(
+                      style: TextButton.styleFrom(
                           elevation: elev,
                           primary: primaryColor,
                           backgroundColor: backColor,
-                          side: BorderSide(color: outlineColor, width: 1),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(radius),
                           )),
