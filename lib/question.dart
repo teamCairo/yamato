@@ -148,149 +148,108 @@ class _QuestionState extends State<Question> {
             children: lw,
           ),
         ),
-        Container(
-          padding: const EdgeInsets.all(6),
-          margin: EdgeInsets.fromLTRB(4.0, 0.0, 4.0, 4.0),
-          child: SizedBox(
-            width: 220,
-            height: 60,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: Colors.indigo[900]),
-              onPressed: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Answer()));
-              },
-              child: Text(
-                "解答する",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.yellow,
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  margin: EdgeInsets.all(4),
+                  child:SizedBox(
+                    width: 280,
+                    height: 60,
+                    child: ElevatedButton(onPressed: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(builder: (context) => Answer()));
+                    }, child: Text("解答する", style: TextStyle(fontSize:  20,),),),
+                  ),
                 ),
-              ),
-            ),
-          ),
-        ),
       ]))),
       bottomNavigationBar: BottomAppBar(
         color: Colors.lightBlue,
-        notchMargin: 6.0,
-        shape: AutomaticNotchedShape(
-          RoundedRectangleBorder(),
-          StadiumBorder(
-            side: BorderSide(),
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 2.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                width: 120,
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.blue)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              width: 100,
+              height: 40,
+              margin: const EdgeInsets.all(4.0),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                label: Text("前へ",
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w100,
+                    )),
+                icon: Icon(Icons.arrow_left_rounded, size: 30),
+                style: OutlinedButton.styleFrom(
                     elevation: 10,
-                    shadowColor: Colors.blue,
+                    primary: Colors.lightBlue,
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    )),
+              ),
+            ),
+            Container(
+                width: 110,
+                height: 40,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape:
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ),
+                    elevation: 10,
                     primary: Colors.white,
                   ),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Answer()));
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 2, 0, 2),
-                    child: Container(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                            Icons.arrow_left_rounded,
-                            size: 35,
-                            color: Colors.lightBlue,
-                          ),
-                          Text(
-                            '前の問題',
-                            style: TextStyle(fontSize: 12, color: Colors.blue),
-                          ),
-                        ],
-                      ),
+
+                  onPressed: () {Navigator.of(context).pop();},
+                  icon: Icon(Icons.list,size: 40,color: Colors.lightBlue,),
+                  label: Text("一覧", style: TextStyle(
+                    color: Colors.blue,
+                  ),),
+                )
+            ),
+            Container(
+              width: 110,
+              height: 40,
+              margin: const EdgeInsets.all(4.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0)),
+                  elevation: 10,
+                  primary: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Question()));
+                },
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(16, 2, 0, 2),
+                  child: Container(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          '次へ',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w100,
+                              color: Colors.lightBlue),
+                        ),
+                        Icon(
+                          Icons.arrow_right_rounded,
+                          size: 30,
+                          color: Colors.lightBlue,
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-              Container(
-                  width: 110,
-                  height: 50,
-                  child: ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: Colors.blue)),
-                      elevation: 10,
-                      shadowColor: Colors.blue,
-                      primary: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    icon: Icon(
-                      Icons.list,
-                      size: 30,
-                      color: Colors.lightBlue,
-                    ),
-                    label: Text(
-                      "一覧へ",
-                      style: TextStyle(
-                        color: Colors.blue,
-                      ),
-                    ),
-                  )),
-              Container(
-                width: 120,
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                        side: BorderSide(color: Colors.blue)),
-                    elevation: 10,
-                    shadowColor: Colors.blue,
-                    primary: Colors.white,
-                  ),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Answer()));
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 2, 0, 2),
-                    child: Container(
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            '次の問題',
-                            style: TextStyle(fontSize: 12, color: Colors.blue),
-                          ),
-                          Icon(
-                            Icons.arrow_right_rounded,
-                            size: 35,
-                            color: Colors.lightBlue,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
