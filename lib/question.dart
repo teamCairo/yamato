@@ -6,7 +6,19 @@ import 'answer.dart';
 import 'db.dart';
 
 class Question extends StatefulWidget {
-  Question({Key key}) : super(key: key);
+
+  final argumentMode;
+  final argumentTryingListNo;
+  final argumentBusinessYear;
+  final argumentPeriod;
+  final argumentQuestionNo;
+
+  Question({this.argumentMode,//1:questiontryingsあり、2:questiontryingsなし（単発）
+      this.argumentTryingListNo,
+      this.argumentBusinessYear,
+      this.argumentPeriod,
+      this.argumentQuestionNo}
+      );
 
   @override
   _QuestionState createState() => _QuestionState();
@@ -16,11 +28,14 @@ class _QuestionState extends State<Question> {
   final double elev = 20;
   String outputtext = '';
   String radioValue = '';
+  String questionCountHeader ="";
   List<Image> outputimgList = [];
-  int businessYear = 2021;
-  int period = 1;
-  int questionNo = 26;
-  int tryingListNo = 26;
+  int mode;
+  int businessYear ;
+  int period ;
+  int questionNo ;
+  int tryingListNo;
+  int tryingListCount=0;
   var _textController = TextEditingController();
 
   List<QuestionHeader> qh = [];
@@ -41,9 +56,14 @@ class _QuestionState extends State<Question> {
 
   @override
   Widget build(BuildContext context) {
+
     if (outputtext == '') {
       loadAsset();
-    } else {}
+    } else {
+      if(mode==1){
+        questionCountHeader=tryingListNo.toString()+"/"+tryingListCount.toString();
+      }
+    }
 
     List<Widget> lw =[];
     if(qh.length==0) {}else{
@@ -101,7 +121,8 @@ class _QuestionState extends State<Question> {
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         title: Text(
-            "1/86　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
+          //TODO 全体の問題数を取得　→DB
+            "${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
         leading: Icon(Icons.home_sharp),
         elevation: elev,
         automaticallyImplyLeading: false,
@@ -156,6 +177,13 @@ class _QuestionState extends State<Question> {
                     height: 60,
                     child: ElevatedButton(onPressed: () {
                       Navigator.push(
+
+                        //TODO 回答が空欄でないかチェック
+                        //TODO Modeが1の場合、QuestionTryingをチェック（未回答かどうか）
+                        //TODO QuestionTryingを更新（未回答の場合）
+                        //TODO QuestionHeaderを更新（未回答もしくはModeが2の場合）
+                        //TODO　変数に回答も含めてAnswer画面を起動
+
                           context, MaterialPageRoute(builder: (context) => Answer()));
                     }, child: Text("解答する", style: TextStyle(fontSize:  20,),),),
                   ),
@@ -171,7 +199,7 @@ class _QuestionState extends State<Question> {
               height: 40,
               margin: const EdgeInsets.all(4.0),
               child: ElevatedButton.icon(
-                onPressed: () {
+                onPressed:widget.argumentMode==2||tryingListNo==1 ? null : () {
                   Navigator.of(context).pop();
                 },
                 label: Text("前へ",
@@ -220,7 +248,7 @@ class _QuestionState extends State<Question> {
                   elevation: 10,
                   primary: Colors.white,
                 ),
-                onPressed: () {
+                onPressed: widget.argumentMode==2 ? null :() {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Question()));
                 },
@@ -257,6 +285,27 @@ class _QuestionState extends State<Question> {
 
   void loadAsset() async {
     MyDatabase db = MyDatabase();
+
+    mode = widget.argumentMode;
+    if(mode==1){
+
+      List<QuestionTrying> qt=
+      await db.selectQuestionTryingById(widget.argumentTryingListNo);
+
+      tryingListCount=
+      await db.selectQuestionTryingCount();
+
+      businessYear =qt[0].businessYear;
+      period = qt[0].period;
+      questionNo  = qt[0].questionNo;
+
+    }else{
+      businessYear =widget.argumentBusinessYear;
+      period = widget.argumentPeriod;
+      questionNo  = widget.argumentQuestionNo;
+    }
+
+
     this.qh =
         await db.selectQuestionHeaderByKey(businessYear, period, questionNo);
     print(qh[0]);

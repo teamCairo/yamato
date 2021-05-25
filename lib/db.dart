@@ -136,6 +136,36 @@ class MyDatabase extends _$MyDatabase {
   }
 
 
+
+  Stream<List<QuestionHeader>> selectQuestionHeaderByKeyWatch(int businessYear,int period, int questionNo) {
+    return
+      customSelect(
+        'SELECT *'
+            +'From question_Headers '
+            +'WHERE business_Year = ? '
+            +'AND period = ? '
+            +'AND question_No = ?;',
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo)],
+        readsFrom: {questionHeaders},
+      ).watch().map((rows) {
+        return rows
+            .map((row) => QuestionHeader(
+          businessYear:row.readInt('business_year')
+          ,period:row.readInt('period')
+          ,questionNo:row.readInt('question_no')
+          ,subjectId:row.readInt('subject_id')
+          ,compulsoryType:row.readInt('compulsory_type')
+          ,answerType:row.readInt('answer_type')
+          ,questionText:row.readString('question_text')
+          ,numberAnswer:row.readInt('number_answer')
+          ,correctType1:row.readInt('correct_type1')
+          ,correctType2:row.readInt('correct_type2')
+          ,correctType3:row.readInt('correct_type3')
+          ,favorite:row.readBool('favorite')
+        )).toList();
+      });
+  }
+
   Future<List<QuestionOption>> selectQuestionOptionsByQInfo(int businessYear,int period, int questionNo) {
     return
       customSelect(

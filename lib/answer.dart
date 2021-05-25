@@ -5,7 +5,26 @@ import 'package:yamato/question.dart';
 import 'db.dart';
 
 class Answer extends StatefulWidget {
-  Answer({Key key}) : super(key: key);
+
+
+  final argumentMode;
+  final argumentTryingListNo;
+  final argumentBusinessYear;
+  final argumentPeriod;
+  final argumentQuestionNo;
+  final argumentSingleAnswer;
+  final argumentMultipleAnswer;
+  final argumentNumberAnswer;
+
+  Answer({this.argumentMode,//1:questiontryingsあり、2:questiontryingsなし（単発）
+    this.argumentTryingListNo,
+    this.argumentBusinessYear,
+    this.argumentPeriod,
+    this.argumentQuestionNo,
+    this.argumentSingleAnswer,
+    this.argumentMultipleAnswer,
+    this.argumentNumberAnswer,}
+      );
 
   @override
   _AnswerState createState() => _AnswerState();
@@ -14,10 +33,18 @@ class Answer extends StatefulWidget {
 class _AnswerState extends State<Answer> {
   final double elev = 20;
   String outputtext = '';
-  int businessYear = 2021;
-  int period = 1;
-  int questionNo = 26;
-  int tryingListNo = 26;
+  int mode;
+  int businessYear ;
+  int period ;
+  int questionNo ;
+  int tryingListNo;
+  String singleAnswer ;
+  String multipleAnswer ;
+  int numberAnswer;
+  String answer;
+  int tryingListCount=0;
+  String questionCountHeader ="";
+  String mainButtonText="";
 
   List<QuestionHeader> qh;
   List<QuestionOption> qo;
@@ -35,12 +62,44 @@ class _AnswerState extends State<Answer> {
     if(qh==null){
     }else{
       favorite = qh[0].favorite;
+
+      if(qh[0].answerType==1){
+        answer=singleAnswer;
+
+      }else if(qh[0].answerType==2){
+        answer=multipleAnswer;
+
+      }else{
+        answer=numberAnswer.toString();
+
+      }
+
+
+      if(mode==1){
+        questionCountHeader=tryingListNo.toString()+"/"+tryingListCount.toString();
+
+        if(tryingListNo==tryingListCount){
+
+          mainButtonText = "結果画面へ";
+
+        }else{
+
+          mainButtonText="次の問題へ";
+
+        }
+      }else{
+        mainButtonText = "一覧へもどる";
+      }
+
+
     }
+
 
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
-        title: Text("1/86　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
+        //TODO 全体の問題数を取得　→DB
+        title: Text("{questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
         leading: Icon(Icons.home_sharp),
         elevation: elev,
         automaticallyImplyLeading: false,
@@ -71,7 +130,7 @@ class _AnswerState extends State<Answer> {
                       child: Icon(Icons.close, size: 100, color: Colors.indigo)),
                   padding: const EdgeInsets.all(16),
                 ),
-                Text('正解:a\nあなたの回答:c',
+                Text('正解:a\nあなたの回答:${answer}}',
                     style: TextStyle(fontSize: 25), textAlign: TextAlign.center),
                 Container(
                   padding: const EdgeInsets.all(8),
@@ -99,9 +158,17 @@ class _AnswerState extends State<Answer> {
                     width: 280,
                     height: 60,
                     child: ElevatedButton(onPressed: () {
+
+                      //TODO 最終問題完了時の処理を追加
+                      //TODO Mode：2のときの処理を追加
                       Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => Question()));
-                    }, child: Text("次の問題", style: TextStyle(fontSize:  20,),),),
+                          context, MaterialPageRoute(builder: (context) => Question(
+                          argumentMode: 1,
+                          argumentBusinessYear: null,
+                          argumentPeriod: null,
+                          argumentQuestionNo: null,
+                          argumentTryingListNo: tryingListNo+1)));
+                    }, child: Text(mainButtonText, style: TextStyle(fontSize:  20,),),),
                   ),
                 ),
               ],
@@ -117,7 +184,7 @@ class _AnswerState extends State<Answer> {
               height: 40,
               margin: const EdgeInsets.all(4.0),
               child: ElevatedButton.icon(
-                onPressed: () {
+                onPressed:widget.argumentMode==2 ? null : () {
                   Navigator.of(context).pop();
                 },
                 label: Text("前へ",
@@ -166,7 +233,7 @@ class _AnswerState extends State<Answer> {
                   elevation: 10,
                   primary: Colors.white,
                 ),
-                onPressed: () {
+                onPressed:widget.argumentMode==2||tryingListNo==tryingListCount ? null : () {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Question()));
                 },
@@ -203,6 +270,27 @@ class _AnswerState extends State<Answer> {
 
 
   void loadAsset(MyDatabase db) async {
+
+
+    mode = widget.argumentMode;
+    if(mode==1){
+
+      List<QuestionTrying> qt=
+      await db.selectQuestionTryingById(widget.argumentTryingListNo);
+
+      businessYear =qt[0].businessYear;
+      period = qt[0].period;
+      questionNo  = qt[0].questionNo;
+
+      singleAnswer  = qt[0].singleAnswer;
+      multipleAnswer  = qt[0].multipleAnswer;
+      numberAnswer  = qt[0].numberAnswer;
+
+    }else{
+      businessYear =widget.argumentBusinessYear;
+      period = widget.argumentPeriod;
+      questionNo  = widget.argumentQuestionNo;
+    }
 
     this.qh =
     await db.selectQuestionHeaderByKey(businessYear, period, questionNo);

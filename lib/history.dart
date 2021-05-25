@@ -113,7 +113,11 @@ class _History extends State<History> {
           child: OutlinedButton.icon(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Question()));
+                  context, MaterialPageRoute(builder: (context) => Question(argumentMode:1
+              ,argumentBusinessYear:null
+              ,argumentPeriod:null
+              ,argumentQuestionNo:null
+              ,argumentTryingListNo:1)));
             },
             label: Text(
               "選択問題をトライ",
