@@ -182,20 +182,25 @@ class MyDatabase extends _$MyDatabase {
       )).get();
   }
 
-  Future<List<QuestionHeader>> selectQuestionFilesForFilter(int compulsoryType) {
+  Future<List<QuestionHeader>> selectQuestionFilesForFilter(int compulsoryType, int period, List<int> sub) {
     //Variable.withInt(period),Variable.withInt(subjectId),Variable.withInt(compulsoryType),
+    String _select = 'SELECT *'
+        +' From question_Headers '
+        +' WHERE  compulsory_type = ?'
+        +' AND period = ? '
+        +' AND  ';
+    _select += 'subject_id IN(';
+    for(var i =0; i < sub.length-1; i++){
+      _select += sub[i].toString()+',';
+    }
+    int t = sub.length-1;
+    _select += sub[t].toString();
+    _select += ') ORDER BY question_no ASC';
     return
       customSelect(
-        'SELECT *'
-            +' From question_Headers '
-            +' WHERE  compulsory_type = ? '
-            //+' AND period = ? '
-            //+' AND subject_id = ?'
-           // +' AND correct_type1  = ?'
-           // +' AND favorite = ?'
-            +' ORDER BY question_no ASC',
-        variables: [Variable.withInt(compulsoryType)],
-        readsFrom: {questionHeaders},
+        _select,
+        variables: [Variable.withInt(compulsoryType), Variable.withInt(period)],
+        readsFrom: {questionHeaders },
       ).map((row) => QuestionHeader(
           businessYear:row.readInt('business_year')
           ,period:row.readInt('period')

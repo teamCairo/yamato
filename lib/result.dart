@@ -12,7 +12,8 @@ class Result extends StatefulWidget {
 
 
   //Result({Key key}) : super(key: key);
-  Result(this.qtext1, this.kailist1,this.codelist1, this.catlist1, this.hitsulist1, this.moshi1);
+  Result(this.question1 ,this.qtext1, this.kailist1,this.codelist1, this.catlist1, this.hitsulist1, this.moshi1);
+  List question1;
   List qtext1;
   List catlist1;
   List codelist1;
@@ -42,6 +43,7 @@ class _ResultState extends State<Result> {
    bool favorite = false;
    Color _iconcol = Colors.lightBlue;
    List<int> qorder = <int>[];
+   List question2;
    List qtext2;
    List kailist2;
    List codelist2;
@@ -50,10 +52,14 @@ class _ResultState extends State<Result> {
    List moshi2;
    List<bool> checkm = [];
    List hissyulist = [];
+   bool _ordercheck = false;
 
 
   void initState() {
     super.initState();
+    if(widget.question1 != null){
+      this.question2 = widget.question1;
+    }
     if (widget.qtext1 != null) {
       this.qtext2 =  widget.qtext1;
     }
@@ -81,11 +87,12 @@ class _ResultState extends State<Result> {
 
     for(var i = 0; i < hitsulist2.length; i++)
       if(hitsulist2[i] == 0) {
-        hissyulist.add("必修");
+        hissyulist.add("0");
       } else if (hitsulist2[i] ==1) {
-        hissyulist.add("必修以外");
+        hissyulist.add("1");
       } else {}
   }
+
 
 
 
@@ -101,20 +108,12 @@ class _ResultState extends State<Result> {
         backgroundColor: Colors.cyan[100],
 
       appBar: AppBar(
-        title: Text("検索結果：X問"),
+        elevation: 8,
+        leading:Icon(Icons.home_sharp),
+        title: Text("検索結果：${question2.length}問"),
         backgroundColor: Colors.lightBlue[400],
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: IconButton(
-              icon: Icon(Icons.shuffle),
-              onPressed: () {
-                //setState(() {
-                //.shuffle();
-           //   });
-            },
-            ),
-          ),
+
           Padding(
               padding: const EdgeInsets.all(4.0),
              child: IconButton(
@@ -250,6 +249,25 @@ class _ResultState extends State<Result> {
 
            ),
          ),
+         SizedBox(
+           height: 30,
+           width: 250,
+           child:CheckboxListTile(
+           value: _ordercheck,
+           title: Text(
+             "順番をシャッフルする",
+             style: TextStyle(fontSize: 12,
+               fontWeight: FontWeight.bold,
+               //color: Colors.indigo[900],
+             ),
+           ),
+           controlAffinity: ListTileControlAffinity.leading,
+           onChanged: (bool value) {
+             setState(() {
+               _ordercheck = value;
+             });
+           },
+         ),),
       Container(
       padding: const EdgeInsets.all(20),
       margin: EdgeInsets.all(4),
@@ -257,10 +275,12 @@ class _ResultState extends State<Result> {
       width: 280,
       height: 60,
         child: ElevatedButton(onPressed: () {
-          //qorder.addAll();
+          if(_ordercheck == true) {
+            question2.shuffle();
+          }
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Question())
+            MaterialPageRoute(builder: (context) => Question())
           );
         }, child: Text("演習を始める", style: TextStyle(fontSize:  20,),),),
     ),
