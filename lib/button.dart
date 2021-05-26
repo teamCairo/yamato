@@ -90,7 +90,7 @@ class _ButtonState extends State<Button> {
           ),
           alignment: Alignment.center,
           child: Text(
-            this.contents1, style: TextStyle(fontSize: 18, color: _colora),
+            this.contents1, style: TextStyle(fontSize: 15, color: _colora),
           ),
         ),
       );
