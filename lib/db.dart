@@ -70,10 +70,10 @@ class QuestionTryings extends Table {
   IntColumn get period => integer()();
   IntColumn get questionNo => integer()();
   BoolColumn get endFlg => boolean()();
-  IntColumn get correctType => integer()();
-  TextColumn get singleAnswer => text()();
-  TextColumn get multipleAnswer => text()();
-  IntColumn get numberAnswer => integer()();
+  IntColumn get correctType => integer().nullable()();
+  TextColumn get singleAnswer => text().nullable()();
+  TextColumn get multipleAnswer => text().nullable()();
+  IntColumn get numberAnswer => integer().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -91,7 +91,7 @@ class MyDatabase extends _$MyDatabase {
   MigrationStrategy get migration => destructiveFallback;
 
   @override
-  int get schemaVersion => 5;
+  int get schemaVersion => 6;
 
 
 

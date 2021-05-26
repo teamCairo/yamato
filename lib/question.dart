@@ -37,6 +37,7 @@ class _QuestionState extends State<Question> {
   int tryingListNo;
   int tryingListCount=0;
   var _textController = TextEditingController();
+  List<bool> optionCheckList =[];
 
   List<QuestionHeader> qh = [];
 
@@ -57,16 +58,16 @@ class _QuestionState extends State<Question> {
   @override
   Widget build(BuildContext context) {
 
-    if (outputtext == '') {
+    List<Widget> lw =[];
+    if(qh.length==0) {
+      tryingListNo=widget.argumentTryingListNo;
       loadAsset();
-    } else {
+
+    }else{
+
       if(mode==1){
         questionCountHeader=tryingListNo.toString()+"/"+tryingListCount.toString();
       }
-    }
-
-    List<Widget> lw =[];
-    if(qh.length==0) {}else{
       if (qh[0].answerType == 1) {
         for (int i = 0; i < qo.length; i++) {
           lw.add(RadioListTile(
@@ -85,7 +86,9 @@ class _QuestionState extends State<Question> {
           ));
         }
       } else if (qh[0].answerType == 2) {
-        for (int i = 0; i < qo.length; i++)
+        for (int i = 0; i < qo.length; i++) {
+          optionCheckList.add(false);
+
           lw.add(CheckboxListTile(
             title: Text(
               qo[i].optionCd + " : " + qo[i].optionText,
@@ -94,14 +97,17 @@ class _QuestionState extends State<Question> {
               ),
             ),
             controlAffinity: ListTileControlAffinity.leading,
-            value: false,
+            value: optionCheckList[i],
             onChanged: (bool value) {
-              setState(() {});
+              setState(() {
+                optionCheckList[i]=value;
+              });
             },
             activeColor: Colors.lightBlue,
             tileColor: Colors.white,
             selectedTileColor: Colors.indigo[900],
           ));
+        }
       } else {
         lw.add(
             Container(
@@ -121,7 +127,6 @@ class _QuestionState extends State<Question> {
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         title: Text(
-          //TODO 全体の問題数を取得　→DB
             "${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
         leading: Icon(Icons.home_sharp),
         elevation: elev,
@@ -176,14 +181,25 @@ class _QuestionState extends State<Question> {
                     width: 280,
                     height: 60,
                     child: ElevatedButton(onPressed: () {
+
+                      //TODO 解答が空欄でないかチェック
+                      if(qh[0].answerType == 1){
+                        //single answer
+
+                      }else if (qh[0].answerType == 2){
+                        //multiple answer
+
+                      }else{
+                        //number answer
+
+                      }
+
+                      //TODO Modeが1の場合、QuestionTryingをチェック（未回答かどうか）
+                      //TODO QuestionTryingを更新（未回答の場合）
+                      //TODO QuestionHeaderを更新（未回答もしくはModeが2の場合）
+                      //TODO　変数に回答も含めてAnswer画面を起動
+
                       Navigator.push(
-
-                        //TODO 回答が空欄でないかチェック
-                        //TODO Modeが1の場合、QuestionTryingをチェック（未回答かどうか）
-                        //TODO QuestionTryingを更新（未回答の場合）
-                        //TODO QuestionHeaderを更新（未回答もしくはModeが2の場合）
-                        //TODO　変数に回答も含めてAnswer画面を起動
-
                           context, MaterialPageRoute(builder: (context) => Answer()));
                     }, child: Text("解答する", style: TextStyle(fontSize:  20,),),),
                   ),
@@ -200,7 +216,17 @@ class _QuestionState extends State<Question> {
               margin: const EdgeInsets.all(4.0),
               child: ElevatedButton.icon(
                 onPressed:widget.argumentMode==2||tryingListNo==1 ? null : () {
-                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Question(
+                              argumentMode: 1,
+                              argumentBusinessYear: null,
+                              argumentPeriod: null,
+                              argumentQuestionNo: null,
+                              argumentTryingListNo: widget.argumentTryingListNo-1)
+                          ,maintainState:false)
+                  );
                 },
                 label: Text("前へ",
                     style: TextStyle(
@@ -249,8 +275,17 @@ class _QuestionState extends State<Question> {
                   primary: Colors.white,
                 ),
                 onPressed: widget.argumentMode==2 ? null :() {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Question()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Question(
+                              argumentMode: 1,
+                              argumentBusinessYear: null,
+                              argumentPeriod: null,
+                              argumentQuestionNo: null,
+                              argumentTryingListNo: widget.argumentTryingListNo+1)
+                          ,maintainState:false)
+                  );
                 },
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(16, 2, 0, 2),
