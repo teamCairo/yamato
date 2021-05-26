@@ -409,10 +409,23 @@ class MyDatabase extends _$MyDatabase {
   Future<List<int>> selectQuestionTryingCount() {
     return
       customSelect(
-        'SELECT count(*) as C'
+        'SELECT count(*) as C '
             +'From question_Tryings;',
         readsFrom: {questionTryings},
       ).map((row) => row.readInt('C')
       ).get();
   }
+
+
+  Future<List<int>> selectQuestionTryingNextNo() {
+    return
+      customSelect(
+        'SELECT MIN(id) as M '
+            +'From question_Tryings '
+            +"WHERE end_Flg = 'false' ;",
+        readsFrom: {questionTryings},
+      ).map((row) => row.readInt('M')
+      ).get();
+  }
+
 }
