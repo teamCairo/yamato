@@ -6,7 +6,7 @@ class Button extends StatefulWidget {
   Button(this.contents, this.number);
   String contents;
   int number;
-  method() => createState().activateButton();
+  method() => createState().activateButton(number);
 
   @override
   _ButtonState createState() => _ButtonState();
@@ -33,7 +33,7 @@ class _ButtonState extends State<Button> {
     }
   }
 
-  activateButton(){
+  activateButton(number1){
 
 
       if(color == Colors.indigoAccent.shade700){
@@ -41,11 +41,13 @@ class _ButtonState extends State<Button> {
           color = Colors.white;
           bcolor = Colors.indigoAccent.shade700;
           _filtersa.add(number1.toString());
+          print(_filtersa);
         });}else if(color == Colors.indigoAccent.shade700){
         setState(() {
           color = Colors.indigoAccent.shade700;
           bcolor = Colors.white;
           _filtersa.remove(number1.toString());
+          print(_filtersa);
         });
       }
     }
@@ -57,30 +59,30 @@ class _ButtonState extends State<Button> {
       final width = MediaQuery.of(context).size.width;
       return GestureDetector(
         onTap: () {
-         activateButton();
+         activateButton(this.number1);
         },
         child: Container(
-          height: 43,
+          height: height*0.046,
           //40
-          width: 72,
+          width: width*0.18,
           //70
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
                 color: _colora,
-                width: 1,
+                width: width*0.0025,
               ),
               top: BorderSide(
                 color: _colora,
-                width: 1,
+                width: width*0.0025,
               ),
               left: BorderSide(
                 color: _colora,
-                width: 1,
+                width: width*0.0025,
               ),
               right: BorderSide(
                 color: _colora,
-                width: 1,
+                width: width*0.0025,
               ),
             ),
             color: _bcolora,
