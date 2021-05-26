@@ -382,4 +382,37 @@ class MyDatabase extends _$MyDatabase {
   Future updatequestiontrying(QuestionTrying questiontrying)=> update(questionTryings).replace(questiontrying);
   Future deletequestiontrying(QuestionTrying questiontrying)=> delete(questionTryings).delete(questiontrying);
 
+
+
+  Future<List<QuestionTrying>> selectQuestionTryingById(int id) {
+    return
+      customSelect(
+        'SELECT *'
+            +'From question_Tryings '
+            +'WHERE id = ? ;',
+        variables: [Variable.withInt(id)],
+        readsFrom: {questionTryings},
+      ).map((row) => QuestionTrying(
+          id:row.readInt('id')
+          ,businessYear:row.readInt('business_year')
+          ,period:row.readInt('period')
+          ,questionNo:row.readInt('question_no')
+          ,endFlg:row.readBool('end_flg')
+          ,correctType:row.readInt('correct_type')
+          ,singleAnswer:row.readString('single_answer')
+          ,multipleAnswer:row.readString('multiple_answer')
+          ,numberAnswer:row.readInt('number_answer')
+      )).get();
+  }
+
+
+  Future<List<int>> selectQuestionTryingCount() {
+    return
+      customSelect(
+        'SELECT count(*) as C'
+            +'From question_Tryings;',
+        readsFrom: {questionTryings},
+      ).map((row) => row.readInt('C')
+      ).get();
+  }
 }

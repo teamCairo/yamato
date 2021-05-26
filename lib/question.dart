@@ -292,8 +292,10 @@ class _QuestionState extends State<Question> {
       List<QuestionTrying> qt=
       await db.selectQuestionTryingById(widget.argumentTryingListNo);
 
-      tryingListCount=
+      List<int> countList=
       await db.selectQuestionTryingCount();
+
+      tryingListCount=countList[0];
 
       businessYear =qt[0].businessYear;
       period = qt[0].period;
