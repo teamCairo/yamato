@@ -63,8 +63,11 @@ class _ButtonState extends State<Button> {
         },
         child: Container(
           height: height*0.046,
+          //0.046
           //40
-          width: width*0.18,
+          width: width*0.16,
+          //0.16
+          //0.18
           //70
           decoration: BoxDecoration(
             border: Border(

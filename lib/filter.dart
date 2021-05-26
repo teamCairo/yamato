@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:yamato/db.dart';
 import 'package:yamato/result.dart';
@@ -46,6 +47,14 @@ class _FilterState extends State<Filter> {
     CategoryFilter("動物"),
     CategoryFilter("人類"),
     CategoryFilter("細胞"),
+    CategoryFilter('適当'),
+    CategoryFilter('参考'),
+   // CategoryFilter('仮置'),
+   // CategoryFilter('一応'),
+    //CategoryFilter('何某'),
+   // CategoryFilter('空白'),
+    //CategoryFilter('余白'),
+
 
   ];
   List<String> _filters = <String>[];
@@ -278,9 +287,9 @@ class _FilterState extends State<Filter> {
 
                           child: Padding(padding: EdgeInsets.all(0),
                             child: Wrap(
-                              spacing: 25.0,
+                              spacing: width*0.02,
                               //25.0
-                              runSpacing: 14,
+                              runSpacing: height*0.027,
                               //3.5
                               children: <Widget>[
                                 Button("循環", 1),
@@ -311,6 +320,13 @@ class _FilterState extends State<Filter> {
                                 Button( "動物",26),
                                 Button( "人類",27),
                                 Button( "細胞",28),
+                                Button('適当',29),
+                                Button('参考',30),
+                               // Button('仮置',31),
+                               // Button('一応',32),
+                                //Button('何某',33),
+                               // Button('空白',34),
+                              //  Button('余白',35),
 
                               ],
                             ),
