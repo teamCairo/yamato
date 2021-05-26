@@ -73,10 +73,10 @@ class _FilterState extends State<Filter> {
       }
             );}}
 
-              void all1(){
-   // for(var i =1; i<40; i++){
-    //  _ButtonState.activateButton();
-   // }
+  void all1(String a, int b){
+    for(final CategoryFilter category in _genre){
+      Button(category.name, b).method();
+    }
              }
 
   void clear(){
@@ -137,7 +137,7 @@ class _FilterState extends State<Filter> {
             shape: StadiumBorder(
               side: BorderSide(
                 color: button_bc,
-                width: 1.0,
+                width: 1,
               ),
             ),
             label: Text(category.name, style: TextStyle(
@@ -195,6 +195,8 @@ class _FilterState extends State<Filter> {
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
@@ -211,13 +213,13 @@ class _FilterState extends State<Filter> {
               children: <Widget>[
                 Container(
                   //constraints: BoxConstraints.expand(),
-                  height: 500,
-                  width: 400,
+                  height: height*0.55,
+                  width: width*0.98,
                   decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(
                       color: Colors.indigo[700],
-                      width: 1,
+                      width: width*0.0025,
                     ),
                   ),
                 ),
@@ -225,14 +227,14 @@ class _FilterState extends State<Filter> {
                   child: Column( mainAxisAlignment: MainAxisAlignment.start,
                       children:<Widget>[
                   Text('＜カテゴリー選択＞', style: TextStyle(fontSize: 16, color: Colors.indigo[900])),
-                  SizedBox(height: 10,),
+                  SizedBox(height: height*0.015,),
                   Container(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          height: 40,
-                          width: 80,
+                          height: height*0.044,
+                          width: width*0.19,
                           child:ElevatedButton(onPressed: (){
                             all();
                           //  setState(() {                              _filters.addAll()});
@@ -241,26 +243,26 @@ class _FilterState extends State<Filter> {
                     style: OutlinedButton.styleFrom(
                         primary: Colors.lightBlue,
                         backgroundColor: Colors.lightBlue,
-                        side: BorderSide(color: Colors.blue, width: 1),
+                        side: BorderSide(color: Colors.blue, width: width*0.0025),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40),
                         )),
                       ),
                 ),
                         SizedBox(
-                          height: 40,
-                          width: 20,
+                          height: height*0.045,
+                          width: width*0.1,
                         ),
                         Container(
-                          height: 40,
-                          width: 80,
+                          height: height*0.044,
+                          width: width*0.19,
                           child:ElevatedButton(onPressed: (){
                             clear();
                           }, child: Text('クリア', style: TextStyle(fontSize: 14, color: Colors.white)),
                           style: OutlinedButton.styleFrom(
                               primary: Colors.lightBlue,
                               backgroundColor: Colors.lightBlue,
-                              side: BorderSide(color: Colors.blue, width: 1),
+                              side: BorderSide(color: Colors.blue, width: width*0.0025),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40),
                               )),
@@ -269,7 +271,7 @@ class _FilterState extends State<Filter> {
                     ),
                   ),
                         Container(
-                          height: 400,
+                          height: height*0.44,
                           alignment: Alignment.center,
                           padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           margin: EdgeInsets.fromLTRB(14, 20, 14, 0),
@@ -319,19 +321,19 @@ class _FilterState extends State<Filter> {
                   mainAxisAlignment: MainAxisAlignment.center,
                     children:<Widget>[
                   Container(
-                  height: 80,
-                  width: 200,
+                  height: height*0.088,
+                  width: width*0.49,
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
                         color: Colors.indigo[700],
-                        width: 1,
+                        width: width*0.0025,
                       ),
                     ),
                   ),
                   child: Column(children:<Widget>[
                     Text('＜必修/必修以外＞', style: TextStyle(color: Colors.indigo[900]),),
-                    SizedBox(height: 10),
+                    SizedBox(height: height*0.012),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
@@ -350,25 +352,25 @@ class _FilterState extends State<Filter> {
                             });
                           },
                         child:Container(
-                          height: 37,
-                          width: 70,
+                          height: height*0.04,
+                          width: width*0.17,
                           decoration: BoxDecoration(
                             border: Border(
                               bottom:  BorderSide(
                              color: _color,
-                                width: 1,
+                                width: width*0.0025,
                               ),
                               top: BorderSide(
                                 color: _color,
-                                width: 1,
+                                width: width*0.0025,
                               ),
                               left:  BorderSide(
                                 color: _color,
-                                width: 1,
+                                width: width*0.0025,
                               ),
                               right: BorderSide(
                                 color: _color,
-                                width: 1,
+                                width: width*0.0025,
                               ),
                             ),
                             color: _bcolor,
@@ -377,7 +379,7 @@ class _FilterState extends State<Filter> {
                           alignment: Alignment.center,
                           child: Text('必修',  style: TextStyle(fontSize: 14, color: _color),),
                         ),),
-                        SizedBox(width: 10),
+                        SizedBox(width: width*0.03),
                         GestureDetector(
                           onTap: () {
                             setState(() {
@@ -393,25 +395,25 @@ class _FilterState extends State<Filter> {
                             });
                           },
                           child:Container(
-                            height: 37,
-                            width: 90,
+                            height: height*0.04,
+                            width: width*0.22,
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom:  BorderSide(
                                   color: _color1,
-                                  width: 1,
+                                  width: width*0.0025,
                                 ),
                                 top: BorderSide(
                                   color: _color1,
-                                  width: 1,
+                                  width: width*0.0025,
                                 ),
                                 left:  BorderSide(
                                   color: _color1,
-                                  width: 1,
+                                  width: width*0.0025,
                                 ),
                                 right: BorderSide(
                                   color: _color1,
-                                  width: 1,
+                                  width: width*0.0025,
                                 ),
                               ),
                               color: _bcolor1,
@@ -424,19 +426,19 @@ class _FilterState extends State<Filter> {
                       ]),
                 ),
                       Container(
-                        height: 80,
-                        width: 200,
+                        height: height*0.088,
+                        width: width*0.49,
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Colors.indigo[700],
-                              width: 1,
+                              width: width*0.0025,
                             ),
                           ),
                         ),
                         child: Column(children:<Widget>[
                           Text('＜クリップ＞' ,style: TextStyle(color: Colors.indigo[900])),
-                          SizedBox(height: 10,),
+                          SizedBox(height: height*0.012,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
 
@@ -456,25 +458,25 @@ class _FilterState extends State<Filter> {
                                   });
                                 },
                                 child:Container(
-                                  height: 37,
-                                  width: 70,
+                                  height: height*0.04,
+                                  width: width*0.17,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: _color2,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       top: BorderSide(
                                         color: _color2,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       left:  BorderSide(
                                         color: _color2,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       right: BorderSide(
                                         color: _color2,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                     ),
                                     color: _bcolor2,
@@ -484,10 +486,10 @@ class _FilterState extends State<Filter> {
                                   child: Row( mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget> [
                                     Icon(Icons.star, size:20, color: _color2,),
-                                    SizedBox(width: 5,),
+                                    SizedBox(width: width*0.012,),
                                     Text('有',  style: TextStyle(fontSize: 14, color: _color2),),]),
                                 ),),
-                              SizedBox(width: 20),
+                              SizedBox(width: width*0.045),
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -503,25 +505,25 @@ class _FilterState extends State<Filter> {
                                   });
                                 },
                                 child:Container(
-                                  height: 37,
-                                  width: 70,
+                                  height: height*0.04,
+                                  width: width*0.17,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: _color3,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       top: BorderSide(
                                         color: _color3,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       left:  BorderSide(
                                         color: _color3,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       right: BorderSide(
                                         color: _color3,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                     ),
                                     color: _bcolor3,
@@ -531,7 +533,7 @@ class _FilterState extends State<Filter> {
                                   child: Row( mainAxisAlignment: MainAxisAlignment.center,
                                       children: <Widget> [
                                         Icon(Icons.star, size:20, color: _color3,),
-                                        SizedBox(width: 5,),
+                                        SizedBox(width: width*0.012,),
                                         Text('無',  style: TextStyle(fontSize: 14, color: _color3),),]),
                                 ),),
                             ],
@@ -541,26 +543,26 @@ class _FilterState extends State<Filter> {
 
                 ]),),
                 Container(
-                  height: 120,
-                  width: 400,
+                  height: height*0.132,
+                  width: width*0.98,
                   child:Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                     children:<Widget>[
 
                       Container(
-                        height: 120,
-                        width: 200,
+                        height: height*0.132,
+                        width: width*0.49,
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Colors.indigo[700],
-                              width: 1,
+                              width: width*0.0025,
                             ),
                           ),
                         ),
                         child: Column(children:<Widget>[
                           Text('＜模試の正誤＞', style: TextStyle(color: Colors.indigo[900])),
-                          SizedBox(height: 10,),
+                          SizedBox(height: height*0.01,),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -583,25 +585,25 @@ class _FilterState extends State<Filter> {
                                   });
                                 },
                                 child:Container(
-                                  height: 37,
-                                  width: 100,
+                                  height: height*0.04,
+                                  width: width*0.25,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: _color4,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       top: BorderSide(
                                         color: _color4,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       left:  BorderSide(
                                         color: _color4,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       right: BorderSide(
                                         color: _color4,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                     ),
                                     color: _bcolor4,
@@ -610,7 +612,7 @@ class _FilterState extends State<Filter> {
                                   alignment: Alignment.center,
                                   child: Text('全ての問題',  style: TextStyle(fontSize: 14, color: _color4),),
                                 ),),
-                              SizedBox(height: 10,),
+                              SizedBox(height: height*0.01,),
 
                               GestureDetector(
                                 onTap: () {
@@ -634,25 +636,25 @@ class _FilterState extends State<Filter> {
                                   });
                                 },
                                 child:Container(
-                                  height: 37,
-                                  width: 140,
+                                  height: height*0.042,
+                                  width: width*0.33,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: _color5,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       top: BorderSide(
                                         color: _color5,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       left:  BorderSide(
                                         color: _color5,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       right: BorderSide(
                                         color: _color5,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                     ),
                                     color: _bcolor5,
@@ -667,19 +669,19 @@ class _FilterState extends State<Filter> {
                       ),
 
                       Container(
-                        height: 120,
-                        width: 200,
+                        height: height*0.132,
+                        width: width*0.48,
                         decoration: BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
                               color: Colors.indigo[700],
-                              width: 1,
+                              width: width*0.0025,
                             ),
                           ),
                         ),
                         child: Column(children:<Widget>[
                           Text('＜出題回＞', style: TextStyle(color: Colors.indigo[900])),
-                          SizedBox(height: 10,),
+                          SizedBox(height: height*0.01,),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
 
@@ -699,25 +701,25 @@ class _FilterState extends State<Filter> {
                                   });
                                 },
                                 child:Container(
-                                  height: 37,
-                                  width: 75,
+                                  height: height*0.041,
+                                  width: width*0.185,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: _color6,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       top: BorderSide(
                                         color: _color6,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       left:  BorderSide(
                                         color: _color6,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       right: BorderSide(
                                         color: _color6,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                     ),
                                     color: _bcolor6,
@@ -726,7 +728,7 @@ class _FilterState extends State<Filter> {
                                   alignment: Alignment.center,
                                   child: Text('第１回',  style: TextStyle(fontSize: 14, color: _color6),),
                                 ),),
-                              SizedBox(width: 5),
+                              SizedBox(width: width*0.03),
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
@@ -742,25 +744,25 @@ class _FilterState extends State<Filter> {
                                   });
                                 },
                                 child:Container(
-                                  height: 37,
-                                  width: 75,
+                                  height: height*0.041,
+                                  width: width*0.185,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: _color7,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       top: BorderSide(
                                         color: _color7,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       left:  BorderSide(
                                         color: _color7,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                       right: BorderSide(
                                         color: _color7,
-                                        width: 1,
+                                        width: width*0.0025,
                                       ),
                                     ),
                                     color: _bcolor7,
@@ -770,7 +772,7 @@ class _FilterState extends State<Filter> {
                                   child: Text('第２回',  style: TextStyle(fontSize: 14, color: _color7),),
                                 ),),
         ]),
-                              SizedBox(height: 10,),
+                              SizedBox(height: height*0.012,),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
@@ -789,25 +791,25 @@ class _FilterState extends State<Filter> {
                                       });
                                     },
                                     child:Container(
-                                      height: 37,
-                                      width: 75,
+                                      height: height*0.04,
+                                      width: width*0.185,
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom:  BorderSide(
                                             color: _color8,
-                                            width: 1,
+                                            width: width*0.0025,
                                           ),
                                           top: BorderSide(
                                             color: _color8,
-                                            width: 1,
+                                            width: width*0.0025,
                                           ),
                                           left:  BorderSide(
                                             color: _color8,
-                                            width: 1,
+                                            width: width*0.0025,
                                           ),
                                           right: BorderSide(
                                             color: _color8,
-                                            width: 1,
+                                            width: width*0.0025,
                                           ),
                                         ),
                                         color: _bcolor8,
@@ -816,7 +818,7 @@ class _FilterState extends State<Filter> {
                                       alignment: Alignment.center,
                                       child: Text('第３回',  style: TextStyle(fontSize: 14, color: _color8),),
                                     ),),
-                                 SizedBox(width: 5,),
+                                 SizedBox(width: width*0.03,),
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -832,25 +834,25 @@ class _FilterState extends State<Filter> {
                                       });
                                     },
                                     child:Container(
-                                      height: 37,
-                                      width: 75,
+                                      height: height*0.04,
+                                      width: width*0.185,
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom:  BorderSide(
                                             color: _color9,
-                                            width: 1,
+                                            width: width*0.0025,
                                           ),
                                           top: BorderSide(
                                             color: _color9,
-                                            width: 1,
+                                            width: width*0.0025,
                                           ),
                                           left:  BorderSide(
                                             color: _color9,
-                                            width: 1,
+                                            width: width*0.0025,
                                           ),
                                           right: BorderSide(
                                             color: _color9,
-                                            width: 1,
+                                            width: width*0.0025,
                                           ),
                                         ),
                                         color: _bcolor9,
@@ -870,8 +872,8 @@ class _FilterState extends State<Filter> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      height: 60,
-                      width: 180,
+                      height: height*0.065,
+                      width: width*0.44,
                       child: ElevatedButton(onPressed: () {
                         filcon();
                       },

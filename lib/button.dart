@@ -6,7 +6,7 @@ class Button extends StatefulWidget {
   Button(this.contents, this.number);
   String contents;
   int number;
-
+  method() => createState().activateButton();
 
   @override
   _ButtonState createState() => _ButtonState();
@@ -53,6 +53,8 @@ class _ButtonState extends State<Button> {
 
     @override
     Widget build(BuildContext context) {
+      final height = MediaQuery.of(context).size.height;
+      final width = MediaQuery.of(context).size.width;
       return GestureDetector(
         onTap: () {
          activateButton();
