@@ -9,18 +9,15 @@ import 'filter.dart';
 class Result extends StatefulWidget {
 
 
-
-
   //Result({Key key}) : super(key: key);
   Result(this.question1 ,this.qtext1, this.kailist1,this.codelist1, this.catlist1, this.hitsulist1, this.moshi1);
   List question1;
   List qtext1;
-  List catlist1;
+  List kailist1;
   List codelist1;
+  List catlist1;
   List hitsulist1;
   List<bool> moshi1;
-  List kailist1;
-
 
 
   @override
@@ -28,17 +25,6 @@ class Result extends StatefulWidget {
 }
 
 class _ResultState extends State<Result> {
-
-
-  //var qlist = ['うっ血心不全について正しいのはどれか。','右心不全の兆候でないのはどれか。','うっ血心不全で認められる浮腫の特徴はどれか。','高拍出性心不全をきたすのはどれか。２つ選べ。','心不全に特徴的な心臓の聴診所見はどれか。'
-                //'成人の胃食道逆流症の典型的な症状はどれか。２つ選べ。','胸やけの誘因となりにくいのはどれか。','胃食道逆流症＜GERD＞の増悪因子でないのはどれか。','上部消化管内視鏡像を別に示す。診断はどれか。',
-             //   '逆流性食道炎について正しいのはどれか。３つ選べ。','逆流性食道炎の治療に最も有用なのはどれか。','本問は、政界した受験者については採点対象に含め、不正解','54歳の男性。胸やけを主訴に来院した。来年前から',];
-
- // var codelist = ['1','15','36','102','6','76','19','2','I11','28','99','4','56'];
- // var catlist = ['循環器','呼吸器','血液','免疫','中毒','循環器','呼吸器','循環器','循環器','呼吸器','呼吸器','消化器','消化器'];
- // List<bool> moshi = [false,false,true,false,true,true,false,true,true,false,true,true,true];
-//  var hitulist = ['必修','必修以外','必修','必修以外','必修','必修','必修','必修以外','必修','必修','必修','必修','必修'];
- // var kailist = ['第１回','第２回','第５回','第４回','第２回','第５回','第３回','第４回','第３回','第１回','第２回','第２回','第４回'];
 
    bool favorite = false;
    Color _iconcol = Colors.lightBlue;
@@ -78,28 +64,22 @@ class _ResultState extends State<Result> {
     if (widget.moshi1 != null) {
       this.moshi2 = widget.moshi1;
     }
-    for(var i = 0; i < moshi2.length; i++)
-      if(moshi2[i] == 0) {
+    for(var i = 0; i < moshi2.length; i++) {
+      if (moshi2[i] == 0) {
         checkm.add(false);
-      } else if (moshi2[i] ==1) {
+      } else if (moshi2[i] == 1) {
         checkm.add(true);
       } else {}
+    }
+
 
     for(var i = 0; i < hitsulist2.length; i++)
       if(hitsulist2[i] == 0) {
-        hissyulist.add("0");
+        hissyulist.add("必修");
       } else if (hitsulist2[i] ==1) {
-        hissyulist.add("1");
+        hissyulist.add("必修以外");
       } else {}
   }
-
-
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +101,6 @@ class _ResultState extends State<Result> {
                onPressed: () => {Navigator.push(
                context, MaterialPageRoute(
                   builder: (context) => Filter(),
-        //以下を追加
              fullscreenDialog: true,
            )
              )},
@@ -208,10 +187,8 @@ class _ResultState extends State<Result> {
                                        mainAxisAlignment: MainAxisAlignment.center,
                                        children: <Widget>[
                                          SizedBox(height: 5,),
-
                                          Visibility(
-                                           visible: true,
-                                           //checkm[index],
+                                           visible: checkm[index],
                                            child:Column(children: <Widget>[
                                              Text('＜模試：誤＞', style: TextStyle(fontSize: 11,  color: Colors.black, fontWeight: FontWeight.w500)),
                                              SizedBox(height: 5,),
@@ -275,6 +252,7 @@ class _ResultState extends State<Result> {
       width: 280,
       height: 60,
         child: ElevatedButton(onPressed: () {
+          //TODO:問題リストデータをデータベースに登録、リストの先頭の問題の引数を↓に代入
           if(_ordercheck == true) {
             question2.shuffle();
           }
@@ -286,7 +264,6 @@ class _ResultState extends State<Result> {
     ),
       ),
     ],
-
       ),
 
 
