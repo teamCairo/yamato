@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
-
 import 'package:yamato/db.dart';
 import 'package:yamato/result.dart';
+import 'button.dart';
 
 
 class CategoryFilter {
@@ -11,8 +10,6 @@ class CategoryFilter {
 }
 
 class Filter extends StatefulWidget {
-
-
 
   @override
   _FilterState createState() => _FilterState();
@@ -52,15 +49,10 @@ class _FilterState extends State<Filter> {
 
   ];
   List<String> _filters = <String>[];
-  List<String> _filterskari = ["1","4","5","7","14"];
   List<String> _hissyu = <String>[];
-  int _hissyukari = 1;
   List<String> _clip = <String>[];
-  bool _clipkari = false;
-  bool _gotou = false;
   List<String> _kai = <String>[];
-  List<String> _kaikari = ["1","3","4"];
-  //Future<List> jouken ;
+  int _gotou = 0;
   List _joken =[];
   List kailist2 =[];
   List codelist2 =[];
@@ -68,37 +60,43 @@ class _FilterState extends State<Filter> {
   List<bool> moshi2 =[];
   List hitsu2 =[];
   List<String> qtext2 =[];
-  var otameshi = 1|2|6;
-  int catcondition = 0;
-  int kaicondition = 0;
-  int catInt;
-  int kaiInt;
-
-
-
-
+  List<int> senko = [2,4,7,8];
+  List<int> senko3 = [10,17,2,5,3];
+  Color button_c = Colors.white;
+  Color button_bc = Colors.indigoAccent.shade700;
 
 
   void all(){
     for(final CategoryFilter category in _genre){
-  setState(() {
-  _filters.add(category.name);
-  }
+    setState(() {
+      _filters.add(category.name);
+      }
             );}}
+
+              void all1(){
+   // for(var i =1; i<40; i++){
+    //  _ButtonState.activateButton();
+   // }
+             }
 
   void clear(){
    setState(() {
       _filters.removeRange(0, _filters.length);
     }
-    );
-  }
+    );}
 
-  void filcon(MyDatabase db)  async{
+   Future filcon2(MyDatabase db) async {
+     List<int> _kai1 = _kai.map(int.parse).toList();
+     List<int> _hissyu1 = _hissyu.map(int.parse).toList();
+     List<int> _clip1 = _clip.map(int.parse).toList();
+            _joken = await db.selectQuestionFilesForFilter(senko3, _hissyu1, _kai1, _clip1, _gotou);
+              print(_joken);
+   }
 
-    //jouken = (await db.selectQuestionFilesForFilter(2021)) as Future<List>;
-      _joken = await db.selectQuestionFilesForFilter(1);
-   //. kaiInt ,,_hissyukari ,_clipkari
-    if (_joken == null) {
+   Future filcon1() async{
+        MyDatabase db = MyDatabase();
+        await filcon2(db);
+        if (_joken == null) {
     } else {
       for(var i = 0; i < _joken.length; i++) {
         kailist2.add(_joken[i].period);
@@ -106,23 +104,21 @@ class _FilterState extends State<Filter> {
         hitsu2.add(_joken[i].compulsoryType);
         catlist2.add(_joken[i].subjectId);
         moshi2.add(_joken[i].correctType1);
-        qtext2.add(_joken[i].questionText);
+        qtext2.add(_joken[i].questionText);}
       } }
-      if(moshi2 == null){} else{
-      setState(() {
-        print(_joken[0]);
-        print(kailist2[0]);print(moshi2[0]);print(hitsu2[0]);print(catlist2[0]);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Result(qtext2, kailist2, codelist2,catlist2, hitsu2, moshi2)),
-        );
 
+
+ void filcon() async {
+    await filcon1();
+    if(moshi2 == null){} else{
+      setState(() {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Result(_joken ,qtext2, kailist2, codelist2,catlist2, hitsu2, moshi2)),
+        );
       });
     }
-  }
-
-
-
+ }
 
 
   Iterable<Widget> get categoryWidgets sync* {
@@ -135,33 +131,33 @@ class _FilterState extends State<Filter> {
           //1.3
           child: FilterChip(
             showCheckmark: false,
-            backgroundColor: Colors.white,
-            selectedColor: Colors.lightBlue[300],
+            backgroundColor: button_c,
+            selectedColor: button_bc,
             //selectedShadowColor: Colors.yellow,
             shape: StadiumBorder(
               side: BorderSide(
-                color: Colors.blue,
+                color: button_bc,
                 width: 1.0,
               ),
             ),
-            //avatar: CircleAvatar(child: Text(category.name)),
             label: Text(category.name, style: TextStyle(
-              color: Colors.black87,
-              //backgroundColor: Colors.white,
-
+              color: button_bc,
             ),
             ),
             selected: _filters.contains(category.name),
             onSelected: (bool value) {
               setState(() {
                 if (value) {
+                  button_c = Colors.indigoAccent.shade700;
+                  button_bc = Colors.white;
                   _filters.add(category.name);
                 } else {
+                  button_c = Colors.white;
+                  button_bc = Colors.indigoAccent.shade700;
                   _filters.removeWhere((String name) {
                     return name == category.name;
                   });
                 }
-
               });
             },
           ),
@@ -169,10 +165,7 @@ class _FilterState extends State<Filter> {
       );
     }
   }
-  int _currentSelection = 0;
-  int _currentSelection1 = 0;
-  int _currentSelection2 = 0;
-  int _currentSelection3 = 0;
+
 
   Color _color = Colors.blue;
   Color _bcolor = Colors.white;
@@ -275,22 +268,52 @@ class _FilterState extends State<Filter> {
                       ],
                     ),
                   ),
-                  Container(
-                    height: 400,
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                        Container(
+                          height: 400,
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          margin: EdgeInsets.fromLTRB(14, 20, 14, 0),
 
-                    child: Padding(padding: EdgeInsets.all(0),
-                      child: Wrap(
-                        spacing: 22.0,
-                        //25.0
-                        runSpacing: 0.1,
-                        //3.5
-                        children: categoryWidgets.toList(),
-                      ),
-                    ),
-                  ),
+                          child: Padding(padding: EdgeInsets.all(0),
+                            child: Wrap(
+                              spacing: 25.0,
+                              //25.0
+                              runSpacing: 14,
+                              //3.5
+                              children: <Widget>[
+                                Button("循環", 1),
+                                Button( "呼吸",2),
+                                Button( "消化",3),
+                                Button( "腎臓",4),
+                                Button( "内代",5),
+                                Button( "神経",6),
+                                Button( "麻酔",7),
+                                Button( "整形",8),
+                                Button( "精神",9),
+                                Button( "皮膚",10),
+                                Button( "眼科",11),
+                                Button( "耳鼻",12),
+                                Button( "泌尿",13),
+                                Button( "婦人",14),
+                                Button( "産科",15),
+                                Button( "小児",16),
+                                Button( "救急",17),
+                                Button( "中毒",18),
+                                Button( "感染",19),
+                                Button( "血液",20),
+                                Button( "免疫",21),
+                                Button( "放射",22),
+                                Button( "公衛",23),
+                                Button( "医総",24),
+                                Button( "植物",25),
+                                Button( "動物",26),
+                                Button( "人類",27),
+                                Button( "細胞",28),
+
+                              ],
+                            ),
+                          ),
+                        ),
                 ]),),
                 Container(child:Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -318,11 +341,11 @@ class _FilterState extends State<Filter> {
                               if(_color == Colors.blue) {
                                 _color = Colors.white;
                                 _bcolor = Colors.blue;
-                                _hissyu.add('1');
+                                _hissyu.add('0');
                               } else {
                                 _color = Colors.blue;
                                 _bcolor = Colors.white;
-                                _hissyu.remove('1');
+                                _hissyu.remove('0');
                               }
                             });
                           },
@@ -361,11 +384,11 @@ class _FilterState extends State<Filter> {
                               if(_color1 == Colors.blue) {
                                 _color1 = Colors.white;
                                 _bcolor1 = Colors.blue;
-                                _hissyu.add('2');
+                                _hissyu.add('1');
                               } else {
                                 _color1 = Colors.blue;
                                 _bcolor1 = Colors.white;
-                                _hissyu.remove('2');
+                                _hissyu.remove('1');
                               }
                             });
                           },
@@ -398,9 +421,7 @@ class _FilterState extends State<Filter> {
                             child: Text('必修以外',  style: TextStyle(fontSize: 14, color: _color1),),
                           ),),
                           ]),
-
                       ]),
-
                 ),
                       Container(
                         height: 80,
@@ -426,11 +447,11 @@ class _FilterState extends State<Filter> {
                                     if(_color2 == Colors.blue) {
                                       _color2 = Colors.white;
                                       _bcolor2 = Colors.blue;
-                                      _clip.add('有');
+                                      _clip.add('0');
                                     } else {
                                       _color2 = Colors.blue;
                                       _bcolor2 = Colors.white;
-                                      _clip.remove('無');
+                                      _clip.remove('0');
                                     }
                                   });
                                 },
@@ -473,11 +494,11 @@ class _FilterState extends State<Filter> {
                                     if(_color3 == Colors.blue) {
                                       _color3 = Colors.white;
                                       _bcolor3 = Colors.blue;
-                                      _clip.add('無');
+                                      _clip.add('1');
                                     } else {
                                       _color3 = Colors.blue;
                                       _bcolor3 = Colors.white;
-                                      _clip.remove('無');
+                                      _clip.remove('1');
                                     }
                                   });
                                 },
@@ -546,27 +567,18 @@ class _FilterState extends State<Filter> {
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    if(
-                                    //_isDisabled == false
-                                       _color5 == Colors.blue && _color4 == Colors.blue)
-                                    {
+                                    if(_color5 == Colors.blue && _color4 == Colors.blue){
                                       _color4 = Colors.white;
                                       _bcolor4 = Colors.blue;
-                                      _gotou = false;
-                                      //_isDisabled = true;
-                                    } else if(//_isDisabled == true
-                                              _color5 == Colors.blue && _color4 == Colors.white)
-                                    {
-                                      _color4 = Colors.blue;
+                                      _gotou = 0;
+                                    } else if(_color5 == Colors.blue && _color4 == Colors.white){
+                                     _color4 = Colors.blue;
                                       _bcolor4 = Colors.white;
-                                      //_isDisabled = false;
-                                    } else if(_color5 == Colors.white && _color4 == Colors.blue)
-                                    {
+                                    } else if(_color5 == Colors.white && _color4 == Colors.blue){
                                       _color5 = Colors.blue;
                                       _bcolor5 = Colors.white;
                                       _color4 = Colors.white;
                                       _bcolor4 = Colors.blue;
-
                                     }
                                   });
                                 },
@@ -604,26 +616,20 @@ class _FilterState extends State<Filter> {
                                 onTap: () {
                                   setState(() {
                                     if(//_isDisabled == false
-                                       _color4 == Colors.blue && _color5 == Colors.blue)
-                                    {
+                                       _color4 == Colors.blue && _color5 == Colors.blue) {
                                       _color5 = Colors.white;
                                       _bcolor5 = Colors.blue;
-                                      _gotou = true;
-                                      //_isDisabled = true;
-                                    } else if(
-                                    //_isDisabled == true
-                                              _color4 == Colors.blue && _color5 == Colors.white)
-                                    {
+                                      _gotou = 1;
+                                    } else if(_color4 == Colors.blue && _color5 == Colors.white) {
                                       _color5 = Colors.blue;
                                       _bcolor5 = Colors.white;
-                                      _gotou = false;
-                                      //_isDisabled = false;
+                                      _gotou = 0;
                                     } else if(_color4 == Colors.white && _color5 == Colors.blue) {
                                       _color4 = Colors.blue;
                                       _bcolor4 = Colors.white;
                                       _color5 = Colors.white;
                                       _bcolor5 = Colors.blue;
-                                      _gotou = true;
+                                      _gotou = 1;
                                     } else {}
                                   });
                                 },
@@ -684,11 +690,11 @@ class _FilterState extends State<Filter> {
                                     if(_color6 == Colors.blue) {
                                       _color6 = Colors.white;
                                       _bcolor6 = Colors.blue;
-                                      _kai.add('第１回');
+                                      _kai.add('1');
                                     } else {
                                       _color6 = Colors.blue;
                                       _bcolor6 = Colors.white;
-                                      _kai.remove('第１回');
+                                      _kai.remove('1');
                                     }
                                   });
                                 },
@@ -727,11 +733,11 @@ class _FilterState extends State<Filter> {
                                     if(_color7 == Colors.blue) {
                                       _color7 = Colors.white;
                                       _bcolor7 = Colors.blue;
-                                      _kai.add('第２回');
+                                      _kai.add('2');
                                     } else {
                                       _color7 = Colors.blue;
                                       _bcolor7 = Colors.white;
-                                      _kai.remove('第２回');
+                                      _kai.remove('2');
                                     }
                                   });
                                 },
@@ -774,11 +780,11 @@ class _FilterState extends State<Filter> {
                                         if(_color8 == Colors.blue) {
                                           _color8 = Colors.white;
                                           _bcolor8 = Colors.blue;
-                                          _kai.add('第３回');
+                                          _kai.add('3');
                                         } else {
                                           _color8 = Colors.blue;
                                           _bcolor8 = Colors.white;
-                                          _kai.remove('第３回');
+                                          _kai.remove('3');
                                         }
                                       });
                                     },
@@ -817,11 +823,11 @@ class _FilterState extends State<Filter> {
                                         if(_color9 == Colors.blue) {
                                           _color9 = Colors.white;
                                           _bcolor9 = Colors.blue;
-                                          _kai.add('第４回');
+                                          _kai.add('4');
                                         } else {
                                           _color9 = Colors.blue;
                                           _bcolor9 = Colors.white;
-                                          _kai.remove('第４回');
+                                          _kai.remove('4');
                                         }
                                       });
                                     },
@@ -856,26 +862,18 @@ class _FilterState extends State<Filter> {
                           ),
                         ]),
                       ),
-
                 ]),),
 
 
 
                 Container(child: Row(
-                  //mainAxisAlignment: MainAxisAlignment.center,
-
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    //Container(height: 60, width: 150, child: ElevatedButton(onPressed: () {}, style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40),),),
-                      //  child: Text('クリア', style: TextStyle(fontSize: 16),),),),
                     Container(
                       height: 60,
                       width: 180,
                       child: ElevatedButton(onPressed: () {
-                        MyDatabase db = MyDatabase();
-                        filcon(db);
-                        //jouken = db.selectQuestionFilesForFilter(2021);
-
+                        filcon();
                       },
                         style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40),
@@ -883,14 +881,9 @@ class _FilterState extends State<Filter> {
                         child: Text('検索', style: TextStyle(fontSize: 18),),),),
                   ],
                 ),
-
                 ),
-
               ],
             )
-
-
-
         ),
     );
   }

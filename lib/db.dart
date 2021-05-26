@@ -212,24 +212,68 @@ class MyDatabase extends _$MyDatabase {
       )).get();
   }
 
-  Future<List<QuestionHeader>> selectQuestionFilesForFilter(int compulsoryType, int period, List<int> sub) {
+  Future<List<QuestionHeader>> selectQuestionFilesForFilter(List<int> sub, List<int> comp , List<int> peri, List<int> fav, int correctType) {
     //Variable.withInt(period),Variable.withInt(subjectId),Variable.withInt(compulsoryType),
     String _select = 'SELECT *'
         +' From question_Headers '
-        +' WHERE  compulsory_type = ?'
-        +' AND period = ? '
-        +' AND  ';
+        +' WHERE ';
+    //        'correct_type1 = ? '
+      //  +' AND ';
     _select += 'subject_id IN(';
-    for(var i =0; i < sub.length-1; i++){
-      _select += sub[i].toString()+',';
-    }
+
     int t = sub.length-1;
-    _select += sub[t].toString();
+    if(t+1 == 1){
+      _select += sub[0].toString();
+    }else if(t+1 == 0){
+      for(var u = 1; u < 40; u++){
+      _select += u.toString()+',';}
+      _select += '40';
+    }else if(t+1 > 1){
+      for (var i = 0; i < t; i++) {
+        _select += sub[i].toString() + ',';
+      }
+      _select += sub[t].toString();
+    }
+
+    _select += ') AND compulsory_type ';
+    if(comp.length == 1) {
+      _select += 'IN ('+ comp[0].toString();
+    }else {
+      _select += 'IN (0, 1';
+    }
+
+    _select += ') AND period IN(';
+    int  e = peri.length-1;
+    if(e+1 == 1){
+      _select += peri[0].toString();
+    }else if(e+1 == 0){
+      _select += '1, 2, 3, 4';
+    }else if(e+1 > 1) {
+      for (var x = 0; x < e; x++) {
+        _select += peri[x].toString() + ',';
+      }
+        _select += peri[e].toString();
+    }
+
+  //  _select += ') AND favorite ';
+  //  int p = fav.length;
+   // if(p == 0){
+    //  _select += 'IN (true, false)';
+   // } else if(p == 2){
+    //  _select += 'IN (true, false)';
+   // } else if(p ==1 && fav[0] ==0){
+    //  _select += ' = true';
+   // } else if(p ==1 && fav[0] ==1){
+    //  _select += ' = false';
+   // }
+
+
     _select += ') ORDER BY question_no ASC';
+
     return
       customSelect(
         _select,
-        variables: [Variable.withInt(compulsoryType), Variable.withInt(period)],
+       // variables: [ Variable.withInt(correctType)],
         readsFrom: {questionHeaders },
       ).map((row) => QuestionHeader(
           businessYear:row.readInt('business_year')
