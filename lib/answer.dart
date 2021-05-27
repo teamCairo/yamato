@@ -15,6 +15,7 @@ class Answer extends StatefulWidget {
   final argumentSingleAnswer;
   final argumentMultipleAnswer;
   final argumentNumberAnswer;
+  final argumentCorrectType;
 
   Answer({this.argumentMode,//1:questiontryingsあり、2:questiontryingsなし（単発）
     this.argumentTryingListNo,
@@ -23,7 +24,8 @@ class Answer extends StatefulWidget {
     this.argumentQuestionNo,
     this.argumentSingleAnswer,
     this.argumentMultipleAnswer,
-    this.argumentNumberAnswer,}
+    this.argumentNumberAnswer,
+    this.argumentCorrectType,}
       );
 
   @override
@@ -50,27 +52,49 @@ class _AnswerState extends State<Answer> {
   List<QuestionOption> qo;
   List<QuestionFile> qfAnswerTxt;
   bool favorite=false;
+  String correctAnswer="";
 
   @override
   Widget build(BuildContext context) {
 
     MyDatabase db = MyDatabase();
-    if (outputtext == '') {
-      loadAsset(db);
-    } else {}
 
     if(qh==null){
+      tryingListNo=widget.argumentTryingListNo;
+      loadAsset(db);
     }else{
+
+      print("qhsize"+qh.length.toString());
+      print("qosize"+qo.length.toString());
       favorite = qh[0].favorite;
 
       if(qh[0].answerType==1){
-        answer=singleAnswer;
+        answer=widget.argumentSingleAnswer;
+
+
+        for(int i=0;i<qo.length;i++){
+          if(qo[i].correctType==1){
+            correctAnswer=qo[i].optionCd;
+          }
+        }
 
       }else if(qh[0].answerType==2){
-        answer=multipleAnswer;
+        answer=widget.argumentMultipleAnswer;
+
+        correctAnswer="";
+        for(int i=0;i<qo.length;i++){
+          if(qo[i].correctType==1){
+            if(correctAnswer!=""){
+              correctAnswer+=",";
+
+            }
+            correctAnswer+=qo[i].optionCd;
+          }
+        }
 
       }else{
-        answer=numberAnswer.toString();
+        answer=widget.argumentNumberAnswer.toString();
+        correctAnswer=qh[0].numberAnswer.toString();
 
       }
 
@@ -99,7 +123,7 @@ class _AnswerState extends State<Answer> {
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         //TODO 全体の問題数を取得　→DB
-        title: Text("{questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
+        title: Text("${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
         leading: Icon(Icons.home_sharp),
         elevation: elev,
         automaticallyImplyLeading: false,
@@ -127,10 +151,10 @@ class _AnswerState extends State<Answer> {
               children: <Widget>[
                 Container(
                   child: Center(
-                      child: Icon(Icons.close, size: 100, color: Colors.indigo)),
+                      child: Icon(correctAnswer==answer ?Icons.radio_button_off :Icons.close, size: 100, color: correctAnswer==answer ?Colors.red :Colors.indigo)),
                   padding: const EdgeInsets.all(16),
                 ),
-                Text('正解:a\nあなたの回答:${answer}}',
+                Text('正解:${correctAnswer}\nあなたの回答:${answer}',
                     style: TextStyle(fontSize: 25), textAlign: TextAlign.center),
                 Container(
                   padding: const EdgeInsets.all(8),
@@ -184,7 +208,7 @@ class _AnswerState extends State<Answer> {
               height: 40,
               margin: const EdgeInsets.all(4.0),
               child: ElevatedButton.icon(
-                onPressed:widget.argumentMode==2 ? null : () {
+                onPressed:widget.argumentMode==2||tryingListNo==1 ? null : () {
                   Navigator.of(context).pop();
                 },
                 label: Text("前へ",
@@ -216,6 +240,7 @@ class _AnswerState extends State<Answer> {
                   ),
 
                   onPressed: () {Navigator.of(context).pop();},
+                  //TODO　一覧ボタンの処理　連続演習モードで、一覧画面からきている場合：一覧画面までPopする、一覧画面から単発の問題をやっている場合、も同様。　続きから解くからやっている場合は？
                   icon: Icon(Icons.list,size: 40,color: Colors.lightBlue,),
                   label: Text("一覧", style: TextStyle(
                     color: Colors.blue,
@@ -233,7 +258,7 @@ class _AnswerState extends State<Answer> {
                   elevation: 10,
                   primary: Colors.white,
                 ),
-                onPressed:widget.argumentMode==2||tryingListNo==tryingListCount ? null : () {
+                onPressed: widget.argumentMode==2||tryingListNo==tryingListCount ? null :() {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Question()));
                 },
@@ -282,10 +307,11 @@ class _AnswerState extends State<Answer> {
       period = qt[0].period;
       questionNo  = qt[0].questionNo;
 
-      singleAnswer  = qt[0].singleAnswer;
-      multipleAnswer  = qt[0].multipleAnswer;
-      numberAnswer  = qt[0].numberAnswer;
 
+
+      List<int> countList=
+      await db.selectQuestionTryingCount();
+      tryingListCount=countList[0];
     }else{
       businessYear =widget.argumentBusinessYear;
       period = widget.argumentPeriod;
@@ -298,7 +324,8 @@ class _AnswerState extends State<Answer> {
 
     this.qo =
     await db.selectQuestionOptionsByQInfo(businessYear, period, questionNo);
-    print(qo[0]);
+    print("qoとれた"+qo.length.toString());
+
 
     this.qfAnswerTxt =  await db.selectQuestionFilesForUse(businessYear,period,questionNo,2,1);
     print(qfAnswerTxt[0]);

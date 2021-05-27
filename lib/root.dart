@@ -334,6 +334,7 @@ class _RootWidgetState extends State<RootWidget> {
   void restart() async {
     List<int> nextNumberList = await MyDatabase().selectQuestionTryingNextNo();
 
+    //TODO　途中未回答である事を考えると、最小の未解答のNoをとるのではなく、最大の回答済みNo+1にすべき。　ただ、全て回答済みだった場合の処理を忘れない。
     print("Size:Size:Size:"+nextNumberList.length.toString());
     if (nextNumberList[0] == null) {
       showDialog(
