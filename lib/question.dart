@@ -139,7 +139,7 @@ class _QuestionState extends State<Question> {
         backgroundColor: Colors.lightBlue,
         actions: [
           IconButton(
-            icon: Icon(Icons.favorite, color: Colors.redAccent),
+            icon: Icon(Icons.favorite, color: Colors.redAccent),//TODO favorite 更新処理
             onPressed: () {},
           ),
         ],

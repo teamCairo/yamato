@@ -416,6 +416,18 @@ class MyDatabase extends _$MyDatabase {
       ).get();
   }
 
+  Future<List<int>> selectQuestionTryingCountbyCorrectType(int correctType) {
+    return
+      customSelect(
+        'SELECT count(*) as C '
+            +'From question_Tryings '
+            +"WHERE correct_Type = ? ;",
+        variables: [Variable.withInt(correctType)],
+        readsFrom: {questionTryings},
+      ).map((row) => row.readInt('C')
+      ).get();
+  }
+
 
   Future<List<int>> selectQuestionTryingNextNo() {
     return

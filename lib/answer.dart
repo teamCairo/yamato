@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yamato/question.dart';
+import 'package:yamato/finish.dart';
 
 import 'db.dart';
 
@@ -130,7 +131,7 @@ class _AnswerState extends State<Answer> {
         backgroundColor: Colors.lightBlue,
         actions: [
           IconButton(
-            icon: Icon(this.favorite ? Icons.star : Icons.star_border),
+            icon: Icon(this.favorite ? Icons.star : Icons.star_border),//TODO favorite 更新処理
             color: Colors.yellowAccent,
             onPressed: () {
               favorite=!favorite;
@@ -185,13 +186,28 @@ class _AnswerState extends State<Answer> {
 
                       //TODO 最終問題完了時の処理を追加
                       //TODO Mode：2のときの処理を追加
-                      Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => Question(
-                          argumentMode: 1,
-                          argumentBusinessYear: null,
-                          argumentPeriod: null,
-                          argumentQuestionNo: null,
-                          argumentTryingListNo: tryingListNo+1)));
+                      if(widget.argumentMode==2){
+                        //単発問題
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+
+                      }else if(tryingListNo==tryingListCount){
+                        //最終問題
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => Finish()));
+
+
+                      }else{
+                        //最終問題でない
+                        Navigator.push(
+                            context, MaterialPageRoute(builder: (context) => Question(
+                            argumentMode: 1,
+                            argumentBusinessYear: null,
+                            argumentPeriod: null,
+                            argumentQuestionNo: null,
+                            argumentTryingListNo: tryingListNo+1)));
+                      }
+
                     }, child: Text(mainButtonText, style: TextStyle(fontSize:  20,),),),
                   ),
                 ),
