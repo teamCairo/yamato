@@ -11,6 +11,9 @@ class Button extends StatefulWidget {
   @override
   _ButtonState createState() => _ButtonState();
 
+
+  void activateButton(number1){}
+
 }
 
 class _ButtonState extends State<Button> {
@@ -33,7 +36,7 @@ class _ButtonState extends State<Button> {
     }
   }
 
-  activateButton(number1){
+  void activateButton(number1){
 
 
       if(color == Colors.indigoAccent.shade700){
