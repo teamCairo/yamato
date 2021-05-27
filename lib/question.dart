@@ -37,9 +37,10 @@ class _QuestionState extends State<Question> {
   int tryingListNo;
   int tryingListCount=0;
   var _textController = TextEditingController();
+  List<bool> optionCheckList =[];
 
   List<QuestionHeader> qh = [];
-
+  List<QuestionTrying> qt = [];
   List<QuestionOption> qo = [];
 
   List<QuestionFile> qfQuestionTxt = [];
@@ -57,16 +58,16 @@ class _QuestionState extends State<Question> {
   @override
   Widget build(BuildContext context) {
 
-    if (outputtext == '') {
+    List<Widget> lw =[];
+    if(qh.length==0) {
+      tryingListNo=widget.argumentTryingListNo;
       loadAsset();
-    } else {
+
+    }else{
+
       if(mode==1){
         questionCountHeader=tryingListNo.toString()+"/"+tryingListCount.toString();
       }
-    }
-
-    List<Widget> lw =[];
-    if(qh.length==0) {}else{
       if (qh[0].answerType == 1) {
         for (int i = 0; i < qo.length; i++) {
           lw.add(RadioListTile(
@@ -85,7 +86,9 @@ class _QuestionState extends State<Question> {
           ));
         }
       } else if (qh[0].answerType == 2) {
-        for (int i = 0; i < qo.length; i++)
+        for (int i = 0; i < qo.length; i++) {
+          optionCheckList.add(false);
+
           lw.add(CheckboxListTile(
             title: Text(
               qo[i].optionCd + " : " + qo[i].optionText,
@@ -94,25 +97,33 @@ class _QuestionState extends State<Question> {
               ),
             ),
             controlAffinity: ListTileControlAffinity.leading,
-            value: false,
+            value: optionCheckList[i],
             onChanged: (bool value) {
-              setState(() {});
+              setState(() {
+                optionCheckList[i]=value;
+              });
             },
             activeColor: Colors.lightBlue,
             tileColor: Colors.white,
             selectedTileColor: Colors.indigo[900],
           ));
+        }
       } else {
         lw.add(
             Container(
               margin: EdgeInsets.all(20),
               height: 80,
-              width: 200,
+              width: 150,
               child: TextField(
-                  decoration: InputDecoration(hintText: "ここに入力"),
+                  style: new TextStyle(
+                      fontSize: 30.0,
+                      color: Colors.black),
+                      decoration: InputDecoration(hintText: "ここに入力"),
                   controller: _textController,
                   keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly]),
+                  inputFormatters: [
+                    LengthLimitingTextInputFormatter(2),
+                    FilteringTextInputFormatter.digitsOnly]),
             ));
       }
     }
@@ -121,7 +132,6 @@ class _QuestionState extends State<Question> {
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         title: Text(
-          //TODO 全体の問題数を取得　→DB
             "${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
         leading: Icon(Icons.home_sharp),
         elevation: elev,
@@ -129,7 +139,7 @@ class _QuestionState extends State<Question> {
         backgroundColor: Colors.lightBlue,
         actions: [
           IconButton(
-            icon: Icon(Icons.favorite, color: Colors.redAccent),
+            icon: Icon(Icons.favorite, color: Colors.redAccent),//TODO favorite 更新処理
             onPressed: () {},
           ),
         ],
@@ -176,15 +186,7 @@ class _QuestionState extends State<Question> {
                     width: 280,
                     height: 60,
                     child: ElevatedButton(onPressed: () {
-                      Navigator.push(
-
-                        //TODO 回答が空欄でないかチェック
-                        //TODO Modeが1の場合、QuestionTryingをチェック（未回答かどうか）
-                        //TODO QuestionTryingを更新（未回答の場合）
-                        //TODO QuestionHeaderを更新（未回答もしくはModeが2の場合）
-                        //TODO　変数に回答も含めてAnswer画面を起動
-
-                          context, MaterialPageRoute(builder: (context) => Answer()));
+                      moveToAnswer();
                     }, child: Text("解答する", style: TextStyle(fontSize:  20,),),),
                   ),
                 ),
@@ -200,7 +202,17 @@ class _QuestionState extends State<Question> {
               margin: const EdgeInsets.all(4.0),
               child: ElevatedButton.icon(
                 onPressed:widget.argumentMode==2||tryingListNo==1 ? null : () {
-                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Question(
+                              argumentMode: 1,
+                              argumentBusinessYear: null,
+                              argumentPeriod: null,
+                              argumentQuestionNo: null,
+                              argumentTryingListNo: widget.argumentTryingListNo-1)
+                          ,maintainState:false)
+                  );
                 },
                 label: Text("前へ",
                     style: TextStyle(
@@ -248,9 +260,18 @@ class _QuestionState extends State<Question> {
                   elevation: 10,
                   primary: Colors.white,
                 ),
-                onPressed: widget.argumentMode==2 ? null :() {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Question()));
+                onPressed: widget.argumentMode==2||tryingListNo==tryingListCount ? null :() {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Question(
+                              argumentMode: 1,
+                              argumentBusinessYear: null,
+                              argumentPeriod: null,
+                              argumentQuestionNo: null,
+                              argumentTryingListNo: widget.argumentTryingListNo+1)
+                          ,maintainState:false)
+                  );
                 },
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(16, 2, 0, 2),
@@ -283,13 +304,200 @@ class _QuestionState extends State<Question> {
     );
   }
 
+
+  void moveToAnswer() async {
+
+
+    MyDatabase db =MyDatabase();
+    bool answered = false;
+    int correctType;
+    String singleAnswer;
+    String multipleAnswer="";
+    int nmberAnswer;
+
+    print("解答チェック通過");
+
+    //TODO ③正誤チェック
+    if(qh[0].answerType == 1){
+      //single answer
+      if(radioValue!=""){
+        answered=true;
+      }
+
+      singleAnswer=radioValue;
+      multipleAnswer=null;
+      nmberAnswer=null;
+
+
+      String questionAnswer="";
+      //正誤チェック
+      for(int i=0;i<qo.length;i++){
+        if(qo[i].correctType==1){
+          if(qo[i].optionCd==radioValue){
+            correctType=1;
+          }else{
+            correctType=0;
+          }
+        }
+
+      }
+
+    }else if (qh[0].answerType == 2){
+      //multiple answer
+      for(int i=0;i<optionCheckList.length;i++){
+        if(optionCheckList[i]==true){
+          answered=true;
+        }
+      }
+
+      for(int i=0;i<optionCheckList.length;i++){
+        if(optionCheckList[i]==true){
+          if(multipleAnswer!=""){
+            multipleAnswer+=",";
+          }
+          multipleAnswer+=qo[i].optionCd;
+
+        }
+      }
+
+      singleAnswer=null;
+      nmberAnswer=null;
+
+      //正誤チェック
+      correctType=1;
+      for(int i=0;i<qo.length;i++){
+        if((qo[i].correctType==1&&optionCheckList[i]==true)
+            ||(qo[i].correctType==0&&optionCheckList[i]==false)){
+
+        }else{
+          correctType=0;
+        }
+
+      }
+
+    }else{
+      //number answer
+      if(_textController.text!=null){
+
+      singleAnswer=null;
+      multipleAnswer=null;
+        try {
+          nmberAnswer=int.parse(_textController.text);
+
+          answered=true;
+
+          //正誤チェック
+          if(nmberAnswer==qh[0].numberAnswer){
+            correctType=1;
+          }else{
+            correctType=0;
+          }
+        } catch (exception) {
+
+        }
+      }
+    }
+
+
+    if(answered==true){
+      //画面上の解答が入力済みの場合
+      if(mode==1){
+        if(qt[0].endFlg==false){
+          //QuestionTryingありで未回答（初回答）の場合
+          QuestionTrying qtForUpdate = QuestionTrying(id:qt[0].id
+              ,businessYear :qt[0].businessYear
+              ,period :qt[0].period
+              ,questionNo :qt[0].questionNo
+              ,endFlg :true
+              ,correctType :correctType
+              ,singleAnswer:singleAnswer
+              ,multipleAnswer:multipleAnswer
+              ,numberAnswer:nmberAnswer
+          );
+          await db.updatequestiontrying(qtForUpdate);
+
+        }
+      }
+
+      if(mode==2||qt[0].endFlg==false){
+
+        int correctType2ForUpdate;
+        int correctType3ForUpdate;
+        if(qh[0].correctType2==9){
+          correctType2ForUpdate=correctType;
+          correctType3ForUpdate=9;
+        }else if(qh[0].correctType3==9){
+          correctType2ForUpdate=qh[0].correctType2;
+          correctType3ForUpdate=correctType;
+        }else{
+          correctType2ForUpdate=qh[0].correctType3;
+          correctType3ForUpdate=correctType;
+
+        }
+
+        QuestionHeader qh0 = QuestionHeader(
+            businessYear:qh[0].businessYear
+            ,period:qh[0].period
+            ,questionNo:qh[0].questionNo
+            ,subjectId:qh[0].subjectId
+            ,compulsoryType:qh[0].compulsoryType
+            ,answerType:qh[0].answerType
+            ,questionText:qh[0].questionText
+            ,numberAnswer:qh[0].numberAnswer
+            ,correctType1:qh[0].correctType1
+            ,correctType2:correctType2ForUpdate
+            ,correctType3:correctType3ForUpdate
+            ,favorite:qh[0].favorite);//最新のFavoriteが取れてきているか確認。
+        db.updatequestionheader(qh0);
+      }
+
+      //TODO　変数に回答も含めてAnswer画面を起動
+
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => Answer(
+          argumentMode:widget.argumentMode
+      ,argumentTryingListNo:widget.argumentTryingListNo
+      ,argumentBusinessYear:widget.argumentBusinessYear
+      ,argumentPeriod:widget.argumentPeriod
+      ,argumentQuestionNo:widget.argumentQuestionNo
+      ,argumentSingleAnswer:singleAnswer
+      ,argumentMultipleAnswer:multipleAnswer
+      ,argumentNumberAnswer:nmberAnswer
+      ,argumentCorrectType:correctType
+      )
+      )
+      );
+
+    }else{
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text("確認"),
+            content: Text("解答が入力されていません"),
+            actions: <Widget>[
+              // ボタン領域
+              TextButton(
+                child: Text("OK"),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
+
+    }
+
+
+  }
+
   void loadAsset() async {
     MyDatabase db = MyDatabase();
 
     mode = widget.argumentMode;
     if(mode==1){
 
-      List<QuestionTrying> qt=
+      this.qt=
       await db.selectQuestionTryingById(widget.argumentTryingListNo);
 
       List<int> countList=

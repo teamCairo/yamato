@@ -70,10 +70,10 @@ class QuestionTryings extends Table {
   IntColumn get period => integer()();
   IntColumn get questionNo => integer()();
   BoolColumn get endFlg => boolean()();
-  IntColumn get correctType => integer()();
-  TextColumn get singleAnswer => text()();
-  TextColumn get multipleAnswer => text()();
-  IntColumn get numberAnswer => integer()();
+  IntColumn get correctType => integer().nullable()();
+  TextColumn get singleAnswer => text().nullable()();
+  TextColumn get multipleAnswer => text().nullable()();
+  IntColumn get numberAnswer => integer().nullable()();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -91,7 +91,7 @@ class MyDatabase extends _$MyDatabase {
   MigrationStrategy get migration => destructiveFallback;
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 6;
 
 
 
@@ -409,10 +409,35 @@ class MyDatabase extends _$MyDatabase {
   Future<List<int>> selectQuestionTryingCount() {
     return
       customSelect(
-        'SELECT count(*) as C'
+        'SELECT count(*) as C '
             +'From question_Tryings;',
         readsFrom: {questionTryings},
       ).map((row) => row.readInt('C')
       ).get();
   }
+
+  Future<List<int>> selectQuestionTryingCountbyCorrectType(int correctType) {
+    return
+      customSelect(
+        'SELECT count(*) as C '
+            +'From question_Tryings '
+            +"WHERE correct_Type = ? ;",
+        variables: [Variable.withInt(correctType)],
+        readsFrom: {questionTryings},
+      ).map((row) => row.readInt('C')
+      ).get();
+  }
+
+
+  Future<List<int>> selectQuestionTryingNextNo() {
+    return
+      customSelect(
+        'SELECT MIN(id) as M '
+            +'From question_Tryings '
+            +"WHERE end_Flg = 'false' ;",
+        readsFrom: {questionTryings},
+      ).map((row) => row.readInt('M')
+      ).get();
+  }
+
 }

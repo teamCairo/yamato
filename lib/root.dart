@@ -6,6 +6,7 @@ import 'package:yamato/history.dart';
 import 'package:yamato/incorrectcheck.dart';
 import 'package:yamato/datamigrant.dart';
 import 'package:yamato/question.dart';
+import 'package:yamato/finish.dart';
 
 import 'filter.dart';
 
@@ -35,77 +36,115 @@ class _RootWidgetState extends State<RootWidget> {
     final double btnWidth = 120;
     final double btnHeight = 120;
 
-
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
-        elevation:elev,
-        leading:Icon(Icons.home_sharp),
+        elevation: elev,
+        leading: Icon(Icons.home_sharp),
         title: Text(""),
         backgroundColor: headeryColor,
         actions: [
-          IconButton(icon: Icon(Icons.settings), onPressed: () {
-            _textController.text = '';
-            showDialog(
-              context: context,
-              builder: (BuildContext context) => new AlertDialog(
-                title: new Text("リセット"),
-                content: Container(
-                  height: 50,
-                  child: Text("学習データをリセットしてもよろしいですか？")
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              _textController.text = '';
+              showDialog(
+                context: context,
+                builder: (BuildContext context) => new AlertDialog(
+                  title: new Text("リセット"),
+                  content: Container(
+                      height: 50, child: Text("学習データをリセットしてもよろしいですか？")),
+                  // ボタンの配置
+                  actions: <Widget>[
+                    new TextButton(
+                        child: const Text('キャンセル'),
+                        onPressed: () {
+                          Navigator.pop(context, _DialogActionType.cancel);
+                        }),
+                    new TextButton(
+                        child: const Text('OK'),
+                        onPressed: () {
+                          DataMigrant dataMigrant = DataMigrant();
+                          dataMigrant.dataReset();
+                          Navigator.pop(context, _DialogActionType.cancel);
+                        })
+                  ],
                 ),
-                // ボタンの配置
-                actions: <Widget>[
-                  new TextButton(
-                      child: const Text('キャンセル'),
-                      onPressed: () {
-                        Navigator.pop(
-                            context, _DialogActionType.cancel);
-                      }),
-                  new TextButton(
-                      child: const Text('OK'),
-                      onPressed: () {
-                        DataMigrant dataMigrant = DataMigrant();
-                        dataMigrant.dataReset();
-                        Navigator.pop(
-                            context, _DialogActionType.cancel);
-                      })
-                ],
-              ),
-            ).then<void>((value) {
-              // ボタンタップ時の処理
-              switch (value) {
-                case _DialogActionType.cancel:
-                  print("cancel...");
-                  break;
-                case _DialogActionType.ok:
-                  print("OK!!");
-                  break;
-                default:
-                  print("default");
-              }
-            });
-          },),
+              ).then<void>((value) {
+                // ボタンタップ時の処理
+                switch (value) {
+                  case _DialogActionType.cancel:
+                    print("cancel...");
+                    break;
+                  case _DialogActionType.ok:
+                    print("OK!!");
+                    break;
+                  default:
+                    print("default");
+                }
+              });
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Finish()),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.play_arrow),
+            onPressed: () {
+              startStudy();
+            },
+          ),
         ],
       ),
       body: Center(
         //child: Container(
         //padding: const EdgeInsets.all(32),
         //margin: EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children:[
-            Container(
-              padding: const EdgeInsets.all(3),
-              margin: EdgeInsets.all(10),
-              child: Image.asset('assets/image/montore_visual.jpg',
-                  fit: BoxFit.contain),
-              height: 280.0,
-              width: 500.0,
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-            children:[
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Container(
+            padding: const EdgeInsets.all(3),
+            margin: EdgeInsets.all(10),
+            child: Image.asset('assets/image/montore_visual.jpg',
+                fit: BoxFit.contain),
+            height: 280.0,
+            width: 500.0,
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(5),
+                margin: EdgeInsets.all(4),
+                child: SizedBox(
+                  width: btnWidth,
+                  height: btnHeight,
+                  child: OutlinedButton(
+                      onPressed: () {
+                        restart();
+                      },
+                      style: TextButton.styleFrom(
+                          elevation: elev,
+                          primary: primaryColor,
+                          backgroundColor: backColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(radius),
+                          )),
+                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+                        Icon(Icons.replay, size: iconsize),
+                        Text(
+                          "続きから",
+                          style: TextStyle(
+                              fontSize: fontSize, fontWeight: FontWeight.w100),
+                        ),
+                      ])),
+                ),
+              ),
               Container(
                 padding: const EdgeInsets.all(5),
                 margin: EdgeInsets.all(4),
@@ -115,9 +154,10 @@ class _RootWidgetState extends State<RootWidget> {
                   child: OutlinedButton(
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Question())
-                        );},
+                          context,
+                          MaterialPageRoute(builder: (context) => Filter()),
+                        );
+                      },
                       style: TextButton.styleFrom(
                           elevation: elev,
                           primary: primaryColor,
@@ -125,54 +165,21 @@ class _RootWidgetState extends State<RootWidget> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(radius),
                           )),
-                      child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children:[
-                            Icon(Icons.replay,size:iconsize),
-                            Text(
-                              "続きから",
-                              style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w100),
-                            ),])
-                  ),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(5),
-                margin: EdgeInsets.all(4),
-                child: SizedBox(
-                  width: btnWidth,
-                  height: btnHeight,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Filter()),
-                      );
-                    },
-                    style: TextButton.styleFrom(
-                        elevation: elev,
-                        primary: primaryColor,
-                        backgroundColor: backColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(radius),
-                        )),
-                    child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                      children:[
-                        Icon(Icons.search,size:iconsize),
+                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+                        Icon(Icons.search, size: iconsize),
                         Text(
-                      "問題検索",
-                      style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w100),
-                    ),])
-                  ),
+                          "問題検索",
+                          style: TextStyle(
+                              fontSize: fontSize, fontWeight: FontWeight.w100),
+                        ),
+                      ])),
                 ),
               ),
             ],
-
-          )
-            ,Row(
-              mainAxisSize: MainAxisSize.min,
-            children:[
+          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
               Container(
                 padding: const EdgeInsets.all(5),
                 margin: EdgeInsets.all(4),
@@ -190,15 +197,14 @@ class _RootWidgetState extends State<RootWidget> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(radius),
                           )),
-                      child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children:[
-                            Icon(Icons.leaderboard,size:iconsize),
-                            Text(
-                              "学習状況",
-                              style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w100),
-                            ),])
-                  ),
+                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+                        Icon(Icons.leaderboard, size: iconsize),
+                        Text(
+                          "学習状況",
+                          style: TextStyle(
+                              fontSize: fontSize, fontWeight: FontWeight.w100),
+                        ),
+                      ])),
                 ),
               ),
               Container(
@@ -217,11 +223,13 @@ class _RootWidgetState extends State<RootWidget> {
                             content: Container(
                               height: 100,
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   new Text("模試解答に記載されたシリアルコードを入力してください"),
                                   TextField(
-                                    decoration: InputDecoration(hintText: "ここに入力"),
+                                    decoration:
+                                        InputDecoration(hintText: "ここに入力"),
                                     controller: _textController,
                                   ),
                                 ],
@@ -263,21 +271,19 @@ class _RootWidgetState extends State<RootWidget> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(radius),
                           )),
-                      child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children:[
-                            Icon(Icons.qr_code_scanner,size:iconsize),
-                            Text(
-                              "コード入力",
-                              style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.w100),
-                            ),])
-                  ),
+                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+                        Icon(Icons.qr_code_scanner, size: iconsize),
+                        Text(
+                          "コード入力",
+                          style: TextStyle(
+                              fontSize: fontSize, fontWeight: FontWeight.w100),
+                        ),
+                      ])),
                 ),
               ),
             ],
-
-          )]
-        ),
+          )
+        ]),
       ),
       //),
     );
@@ -323,6 +329,41 @@ class _RootWidgetState extends State<RootWidget> {
       }
     }
     return targetParameterList;
+  }
+
+  void restart() async {
+    List<int> nextNumberList = await MyDatabase().selectQuestionTryingNextNo();
+
+    //TODO　途中未回答である事を考えると、最小の未解答のNoをとるのではなく、最大の回答済みNo+1にすべき。　ただ、全て回答済みだった場合の処理を忘れない。
+    print("Size:Size:Size:"+nextNumberList.length.toString());
+    if (nextNumberList[0] == null) {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text("確認"),
+            content: Text("解答中の問題がありません。"),
+            actions: <Widget>[
+              // ボタン領域
+              TextButton(
+                child: Text("OK"),
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Question(
+                  argumentMode: 1,
+                  argumentBusinessYear: null,
+                  argumentPeriod: null,
+                  argumentQuestionNo: null,
+                  argumentTryingListNo: nextNumberList[0])));
+    }
   }
 
   void checkSerial() async {
@@ -399,6 +440,80 @@ class _RootWidgetState extends State<RootWidget> {
       );
     }
   }
+
+
+  void startStudy() async{
+
+    MyDatabase db = MyDatabase();
+
+    List<QuestionTrying> questiontryingsList = await db.getAllquestiontryings();
+    for(var questiontrying in questiontryingsList){
+      await db.deletequestiontrying(questiontrying);
+    }
+
+
+    //TODO 一旦サンプルデータを追加。実際のデータに修正が必要。
+
+
+    QuestionTrying qt0 = QuestionTrying(
+        id:1
+        ,businessYear:2021
+        ,period:1
+        ,questionNo:5
+        ,endFlg:false
+        ,correctType:9
+        ,singleAnswer:null
+        ,multipleAnswer:null
+        ,numberAnswer:null);
+    db.insertquestiontrying(qt0);
+
+    QuestionTrying qt1 = QuestionTrying(
+        id:2
+        ,businessYear:2021
+        ,period:1
+        ,questionNo:10
+        ,endFlg:false
+        ,correctType:9
+        ,singleAnswer:null
+        ,multipleAnswer:null
+        ,numberAnswer:null);
+    db.insertquestiontrying(qt1);
+
+    QuestionTrying qt2 = QuestionTrying(
+        id:3
+        ,businessYear:2021
+        ,period:1
+        ,questionNo:15
+        ,endFlg:false
+        ,correctType:9
+        ,singleAnswer:null
+        ,multipleAnswer:null
+        ,numberAnswer:null);
+    db.insertquestiontrying(qt2);
+
+    QuestionTrying qt3 = QuestionTrying(
+        id:4
+        ,businessYear:2021
+        ,period:1
+        ,questionNo:20
+        ,endFlg:false
+        ,correctType:9
+        ,singleAnswer:null
+        ,multipleAnswer:null
+        ,numberAnswer:null);
+    db.insertquestiontrying(qt3);
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Question(
+                argumentMode: 1,
+                argumentBusinessYear: null,
+                argumentPeriod: null,
+                argumentQuestionNo: null,
+                argumentTryingListNo: 1)));
+  }
+
 }
 
 enum _DialogActionType {

@@ -2131,10 +2131,10 @@ class QuestionTrying extends DataClass implements Insertable<QuestionTrying> {
       @required this.period,
       @required this.questionNo,
       @required this.endFlg,
-      @required this.correctType,
-      @required this.singleAnswer,
-      @required this.multipleAnswer,
-      @required this.numberAnswer});
+      this.correctType,
+      this.singleAnswer,
+      this.multipleAnswer,
+      this.numberAnswer});
   factory QuestionTrying.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String prefix}) {
@@ -2349,18 +2349,14 @@ class QuestionTryingsCompanion extends UpdateCompanion<QuestionTrying> {
     @required int period,
     @required int questionNo,
     @required bool endFlg,
-    @required int correctType,
-    @required String singleAnswer,
-    @required String multipleAnswer,
-    @required int numberAnswer,
+    this.correctType = const Value.absent(),
+    this.singleAnswer = const Value.absent(),
+    this.multipleAnswer = const Value.absent(),
+    this.numberAnswer = const Value.absent(),
   })  : businessYear = Value(businessYear),
         period = Value(period),
         questionNo = Value(questionNo),
-        endFlg = Value(endFlg),
-        correctType = Value(correctType),
-        singleAnswer = Value(singleAnswer),
-        multipleAnswer = Value(multipleAnswer),
-        numberAnswer = Value(numberAnswer);
+        endFlg = Value(endFlg);
   static Insertable<QuestionTrying> custom({
     Expression<int> id,
     Expression<int> businessYear,
@@ -2535,7 +2531,7 @@ class $QuestionTryingsTable extends QuestionTryings
     return GeneratedIntColumn(
       'correct_type',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -2549,7 +2545,7 @@ class $QuestionTryingsTable extends QuestionTryings
     return GeneratedTextColumn(
       'single_answer',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -2563,7 +2559,7 @@ class $QuestionTryingsTable extends QuestionTryings
     return GeneratedTextColumn(
       'multiple_answer',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -2577,7 +2573,7 @@ class $QuestionTryingsTable extends QuestionTryings
     return GeneratedIntColumn(
       'number_answer',
       $tableName,
-      false,
+      true,
     );
   }
 
@@ -2640,32 +2636,24 @@ class $QuestionTryingsTable extends QuestionTryings
           _correctTypeMeta,
           correctType.isAcceptableOrUnknown(
               data['correct_type'], _correctTypeMeta));
-    } else if (isInserting) {
-      context.missing(_correctTypeMeta);
     }
     if (data.containsKey('single_answer')) {
       context.handle(
           _singleAnswerMeta,
           singleAnswer.isAcceptableOrUnknown(
               data['single_answer'], _singleAnswerMeta));
-    } else if (isInserting) {
-      context.missing(_singleAnswerMeta);
     }
     if (data.containsKey('multiple_answer')) {
       context.handle(
           _multipleAnswerMeta,
           multipleAnswer.isAcceptableOrUnknown(
               data['multiple_answer'], _multipleAnswerMeta));
-    } else if (isInserting) {
-      context.missing(_multipleAnswerMeta);
     }
     if (data.containsKey('number_answer')) {
       context.handle(
           _numberAnswerMeta,
           numberAnswer.isAcceptableOrUnknown(
               data['number_answer'], _numberAnswerMeta));
-    } else if (isInserting) {
-      context.missing(_numberAnswerMeta);
     }
     return context;
   }
