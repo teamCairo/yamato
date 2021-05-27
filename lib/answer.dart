@@ -52,7 +52,6 @@ class _AnswerState extends State<Answer> {
   List<QuestionHeader> qh;
   List<QuestionOption> qo;
   List<QuestionFile> qfAnswerTxt;
-  bool favorite=false;
   String correctAnswer="";
   bool initialDataRead=false;
 
@@ -61,14 +60,25 @@ class _AnswerState extends State<Answer> {
 
     MyDatabase db = MyDatabase();
 
+    IconData favoriteIcon;
+
     if(initialDataRead==false){
       tryingListNo=widget.argumentTryingListNo;
+      favoriteIcon = Icons.star_border;
       loadAsset(db);
+
     }else{
+
+      if(qh[0].favorite){
+        favoriteIcon = Icons.star;
+      }else{
+        favoriteIcon = Icons.star_border;
+
+      }
 
       print("qhsize"+qh.length.toString());
       print("69Line：qosize"+qo.length.toString());
-      favorite = qh[0].favorite;
+      print("Favorite"+qh[0].favorite.toString());
 
       if(qh[0].answerType==1){
         answer=widget.argumentSingleAnswer;
@@ -121,6 +131,7 @@ class _AnswerState extends State<Answer> {
     }
 
 
+
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
@@ -131,14 +142,12 @@ class _AnswerState extends State<Answer> {
         backgroundColor: Colors.lightBlue,
         actions: [
           IconButton(
-            icon: Icon(this.favorite ? Icons.star : Icons.star_border),//TODO favorite 更新処理
+            icon: Icon(favoriteIcon),
             color: Colors.yellowAccent,
             onPressed: () {
-              //favorite=!favorite;
               setState(() {
                 initialDataRead=false;
-                print('favoritettete:'+favorite.toString());
-                changeFavorite(qh[0].businessYear, qh[0].period, qh[0].questionNo,favorite,db);
+                changeFavorite(qh[0].businessYear, qh[0].period, qh[0].questionNo,!qh[0].favorite,db);
 
               }
 
@@ -354,15 +363,10 @@ class _AnswerState extends State<Answer> {
     await rootBundle.loadString("assets/text/${qfAnswerTxt[0].filePath}");
 
 
-    if (value == this.outputtext&&this.favorite==qh[0].favorite) {
-    } else {
-      setState(() {
-        print('text読み込み処理' + this.outputtext);
-        this.outputtext = value;
-      });
-    }
-
-    initialDataRead=true;
+    setState(() {
+      initialDataRead=true;
+      this.outputtext = value;
+    });
   }
 
 

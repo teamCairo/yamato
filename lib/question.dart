@@ -48,6 +48,7 @@ class _QuestionState extends State<Question> {
   List<QuestionFile> qfQuestionImg = [];
 
   List<QuestionFile> qfAnswerTxt = [];
+  bool initialDataRead=false;
 
   void _onChanged(String value) {
     setState(() {
@@ -57,13 +58,22 @@ class _QuestionState extends State<Question> {
 
   @override
   Widget build(BuildContext context) {
+    IconData favoriteIcon;
 
     List<Widget> lw =[];
-    if(qh.length==0) {
+    if(initialDataRead==false) {
       tryingListNo=widget.argumentTryingListNo;
+      favoriteIcon = Icons.star_border;
       loadAsset();
 
     }else{
+
+      if(qh[0].favorite){
+        favoriteIcon = Icons.star;
+      }else{
+        favoriteIcon = Icons.star_border;
+
+      }
 
       if(mode==1){
         questionCountHeader=tryingListNo.toString()+"/"+tryingListCount.toString();
@@ -139,8 +149,19 @@ class _QuestionState extends State<Question> {
         backgroundColor: Colors.lightBlue,
         actions: [
           IconButton(
-            icon: Icon(Icons.favorite, color: Colors.redAccent),//TODO favorite 更新処理
-            onPressed: () {},
+            icon: Icon(favoriteIcon),
+            color: Colors.yellowAccent,
+            onPressed: () {
+              MyDatabase db=MyDatabase();
+              setState(() {
+                initialDataRead=false;
+                changeFavorite(qh[0].businessYear, qh[0].period, qh[0].questionNo,!qh[0].favorite,db);
+
+              }
+
+              );
+
+            },
           ),
         ],
       ),
@@ -539,18 +560,43 @@ class _QuestionState extends State<Question> {
     String value =
         await rootBundle.loadString("assets/text/${qfQuestionTxt[0].filePath}");
 
+    this.outputimgList=[];
     for (int i = 0; i < qfQuestionImg.length; i++) {
       await this.outputimgList.add(Image.asset(
           'assets/image/' + qfQuestionImg[i].filePath,
           fit: BoxFit.contain));
     }
 
-    if (value == this.outputtext) {
-    } else {
       setState(() {
-        print('text読み込み処理' + this.outputtext);
+        initialDataRead=true;
         this.outputtext = value;
       });
-    }
   }
+
+
+  void changeFavorite(int businessYear, int period, int questionNo,bool favoriteValue,MyDatabase db) async {
+
+    List<QuestionHeader> qhforFavoriteList =  await db.selectQuestionHeaderByKey(businessYear,period,questionNo);
+    print(qhforFavoriteList[0]);
+
+    QuestionHeader qhforFavorite = QuestionHeader(
+        businessYear:qhforFavoriteList[0].businessYear
+        ,period:qhforFavoriteList[0].period
+        ,questionNo:qhforFavoriteList[0].questionNo
+        ,subjectId:qhforFavoriteList[0].subjectId
+        ,compulsoryType:qhforFavoriteList[0].compulsoryType
+        ,answerType:qhforFavoriteList[0].answerType
+        ,questionText:qhforFavoriteList[0].questionText
+        ,numberAnswer:qhforFavoriteList[0].numberAnswer
+        ,correctType1:qhforFavoriteList[0].correctType1
+        ,correctType2:qhforFavoriteList[0].correctType2
+        ,correctType3:qhforFavoriteList[0].correctType3
+        ,favorite:favoriteValue);
+
+
+    db.updatequestionheader(qhforFavorite);
+
+
+  }
+
 }
