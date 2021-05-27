@@ -219,9 +219,8 @@ class MyDatabase extends _$MyDatabase {
     //Variable.withInt(period),Variable.withInt(subjectId),Variable.withInt(compulsoryType),
     String _select = 'SELECT *'
         +' From question_Headers '
-        +' WHERE ';
-    //        'correct_type1 = ? '
-      //  +' AND ';
+        +' WHERE correct_type1 = ? '
+        +' AND ';
     _select += 'subject_id IN(';
 
     int t = sub.length-1;
@@ -258,25 +257,24 @@ class MyDatabase extends _$MyDatabase {
         _select += peri[e].toString();
     }
 
-  //  _select += ') AND favorite ';
-  //  int p = fav.length;
-   // if(p == 0){
-    //  _select += 'IN (true, false)';
-   // } else if(p == 2){
-    //  _select += 'IN (true, false)';
-   // } else if(p ==1 && fav[0] ==0){
-    //  _select += ' = true';
-   // } else if(p ==1 && fav[0] ==1){
-    //  _select += ' = false';
-   // }
+    _select += ') AND favorite ';
+    int p = fav.length;
+    if(p == 0){
+      _select += 'IN (true, false) ';
+    } else if(p == 2){
+      _select += 'IN (true, false) ';
+    } else if(p ==1 && fav[0] ==0){
+      _select += ' IN (true) ';
+    } else if(p ==1 && fav[0] ==1){
+      _select += ' IN (false) ';
+    }
 
-
-    _select += ') ORDER BY question_no ASC';
+    _select += '  ORDER BY question_no ASC';
 
     return
       customSelect(
         _select,
-       // variables: [ Variable.withInt(correctType)],
+        variables: [ Variable.withInt(correctType)],
         readsFrom: {questionHeaders },
       ).map((row) => QuestionHeader(
           businessYear:row.readInt('business_year')
