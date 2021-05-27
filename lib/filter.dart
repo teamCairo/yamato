@@ -6,12 +6,16 @@ import 'button.dart';
 
 
 class CategoryFilter {
-  const CategoryFilter(this.name);
+  const CategoryFilter(this.name, this.num);
   final String name;
+  final int num;
 }
 
 class Filter extends StatefulWidget {
 
+
+  method(int n) => createState().addtolist(n);
+  method1(int m) => createState().removelist(m);
   @override
   _FilterState createState() => _FilterState();
 }
@@ -19,36 +23,36 @@ class Filter extends StatefulWidget {
 class _FilterState extends State<Filter> {
 
   final List<CategoryFilter> _genre = <CategoryFilter>[
-    CategoryFilter("循環",),
-    CategoryFilter("呼吸",),
-    CategoryFilter("消化",),
-    CategoryFilter("腎臓",),
-    CategoryFilter("内代",),
-    CategoryFilter("神経",),
-    CategoryFilter("血液",),
-    CategoryFilter("免疫",),
-    CategoryFilter("感染",),
-    CategoryFilter("中毒",),
-    CategoryFilter("救急",),
-    CategoryFilter("小児",),
-    CategoryFilter("産科",),
-    CategoryFilter("婦人",),
-    CategoryFilter("泌尿",),
-    CategoryFilter("眼科",),
-    CategoryFilter("耳鼻",),
-    CategoryFilter("皮膚",),
-    CategoryFilter("精神",),
-    CategoryFilter("整形",),
-    CategoryFilter("麻酔",),
-    CategoryFilter("放射",),
-    CategoryFilter("公衛",),
-    CategoryFilter("医総",),
-    CategoryFilter("植物"),
-    CategoryFilter("動物"),
-    CategoryFilter("人類"),
-    CategoryFilter("細胞"),
-    CategoryFilter('適当'),
-    CategoryFilter('参考'),
+    CategoryFilter("循環",1),
+    CategoryFilter("呼吸",2),
+    CategoryFilter("消化",3),
+    CategoryFilter("腎臓",4),
+    CategoryFilter("内代",5),
+    CategoryFilter("神経",6),
+    CategoryFilter("血液",7),
+    CategoryFilter("免疫",8),
+    CategoryFilter("感染",9),
+    CategoryFilter("中毒",10),
+    CategoryFilter("救急",11),
+    CategoryFilter("小児",12),
+    CategoryFilter("産科",13),
+    CategoryFilter("婦人",14),
+    CategoryFilter("泌尿",15),
+    CategoryFilter("眼科",16),
+    CategoryFilter("耳鼻",17),
+    CategoryFilter("皮膚",18),
+    CategoryFilter("精神",19),
+    CategoryFilter("整形",20),
+    CategoryFilter("麻酔",21),
+    CategoryFilter("放射",22),
+    CategoryFilter("公衛",23),
+    CategoryFilter("医総",24),
+    CategoryFilter("植物",25),
+    CategoryFilter("動物",26),
+    CategoryFilter("人類",27),
+    CategoryFilter("細胞",28),
+    CategoryFilter('適当',29),
+    CategoryFilter('参考',30),
    // CategoryFilter('仮置'),
    // CategoryFilter('一応'),
     //CategoryFilter('何某'),
@@ -82,9 +86,13 @@ class _FilterState extends State<Filter> {
       }
             );}}
 
-  void all1(String a, int b){
+  void all1(){
     for(final CategoryFilter category in _genre){
-      Button(category.name, b).method();
+     // setState(() {
+        //Button(category.name, b).method();
+        addtolist(category.num);
+        //Button(category.name, category.num).method();
+   //   });
     }
              }
 
@@ -93,6 +101,15 @@ class _FilterState extends State<Filter> {
       _filters.removeRange(0, _filters.length);
     }
     );}
+
+  void clear1() {
+    for(final CategoryFilter category in _genre) {
+      //setState(() {
+        removelist(category.num);
+       // Button(category.name, category.num).method1();
+    //  });
+    }
+  }
 
    Future filcon2(MyDatabase db) async {
      List<int> _kai1 = _kai.map(int.parse).toList();
@@ -127,6 +144,13 @@ class _FilterState extends State<Filter> {
         );
       });
     }
+ }
+
+ void addtolist(int n) {
+    _filters.add(n.toString());
+ }
+ void removelist(int m){
+    _filters.remove(m.toString());
  }
 
 
@@ -245,7 +269,7 @@ class _FilterState extends State<Filter> {
                           height: height*0.044,
                           width: width*0.19,
                           child:ElevatedButton(onPressed: (){
-                            all();
+                            all1();
                           //  setState(() {                              _filters.addAll()});
                             },
                             child: Text('全選択', style: TextStyle(fontSize: 14, color: Colors.white)),
@@ -266,7 +290,7 @@ class _FilterState extends State<Filter> {
                           height: height*0.044,
                           width: width*0.19,
                           child:ElevatedButton(onPressed: (){
-                            clear();
+                            clear1();
                           }, child: Text('クリア', style: TextStyle(fontSize: 14, color: Colors.white)),
                           style: OutlinedButton.styleFrom(
                               primary: Colors.lightBlue,
@@ -289,7 +313,8 @@ class _FilterState extends State<Filter> {
                             child: Wrap(
                               spacing: width*0.02,
                               //25.0
-                              runSpacing: height*0.027,
+                              runSpacing: height*0.02,
+                              //0.027
                               //3.5
                               children: <Widget>[
                                 Button("循環", 1),
