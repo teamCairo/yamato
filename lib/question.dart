@@ -536,7 +536,6 @@ class _QuestionState extends State<Question> {
 
     this.qh =
         await db.selectQuestionHeaderByKey(businessYear, period, questionNo);
-    print(qh[0]);
 
     this.qo =
         await db.selectQuestionOptionsByQInfo(businessYear, period, questionNo);
