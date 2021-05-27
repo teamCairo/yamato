@@ -62,7 +62,6 @@ class _AnswerListState extends State<AnswerList> {
 class QuestionList extends StatefulWidget {
   @override
   _QuestionListstate createState() => _QuestionListstate();
-  List<QuestionHeader> qhList =  [];
   List<bool> checkedList =  [];
 }
 
@@ -85,32 +84,23 @@ class _QuestionListstate extends State<QuestionList> {
           height: 700,
           width: double.infinity,
           child: StreamBuilder(
-            stream: MyDatabase().watchAllquestionheaders(),
-            builder: (context, AsyncSnapshot<List<QuestionHeader>> snapshot) {
+            stream: MyDatabase().watchAllquestiontryings(),
+            builder: (context, AsyncSnapshot<List<QuestionTrying>> snapshot) {
               return snapshot == null
                   ? Container()
                   : ListView.builder(
                 itemBuilder: (_, index) {
-                  if(widget.qhList.length <= index){
-                    widget.qhList.add(snapshot.data[index]);
-                    widget.checkedList.add(false);
-                  }else{
-                  }
                   return
                     Card(
+                      //TODO　解答結果の一覧表示処理 必要な情報を表示
 
-                      child: CheckboxListTile(
-
-                          value: widget.checkedList[index],
-                          onChanged: (value) {
-                            setState(() => widget.checkedList[index] = value);
-                          },
-                          title: Text(snapshot.data[index].questionNo.toString(), style: TextStyle(fontWeight: FontWeight.bold),),
-                          subtitle: Text(snapshot.data[index].questionText),
-                          secondary: Icon(Icons.stop_sharp, color: Colors.blue),
-                          activeColor: Colors.blue,
-                          selected: _isCheckboxChecked,
-                          controlAffinity:ListTileControlAffinity.trailing
+                      child: ListTile(
+                          title: Text("第"+snapshot.data[index].period.toString()
+                              +"回　No."
+                              +snapshot.data[index].questionNo.toString()
+                              +"               "
+                              +"○"
+                              ,style: TextStyle(fontWeight: FontWeight.bold), )
                       ),
                     );
                 },

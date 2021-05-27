@@ -317,7 +317,6 @@ class _QuestionState extends State<Question> {
 
     print("解答チェック通過");
 
-    //TODO ③正誤チェック
     if(qh[0].answerType == 1){
       //single answer
       if(radioValue!=""){
@@ -450,8 +449,6 @@ class _QuestionState extends State<Question> {
             ,favorite:qh[0].favorite);//最新のFavoriteが取れてきているか確認。
         db.updatequestionheader(qh0);
       }
-
-      //TODO　変数に回答も含めてAnswer画面を起動
 
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => Answer(

@@ -35,6 +35,9 @@ class _RootWidgetState extends State<RootWidget> {
 
     final double btnWidth = 120;
     final double btnHeight = 120;
+    //TODO パラメータが一つも入力されていないときは強制的にパラメータ入力画面を出す。（入力されないと操作できない（もしくはシリアルコード入力ボタンしか使えない）ようにする。）
+
+    //TODO 全画面分Homeボタンの中身を実装
 
     return Scaffold(
       backgroundColor: Colors.cyan[100],

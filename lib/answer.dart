@@ -54,19 +54,20 @@ class _AnswerState extends State<Answer> {
   List<QuestionFile> qfAnswerTxt;
   bool favorite=false;
   String correctAnswer="";
+  bool initialDataRead=false;
 
   @override
   Widget build(BuildContext context) {
 
     MyDatabase db = MyDatabase();
 
-    if(qh==null){
+    if(initialDataRead==false){
       tryingListNo=widget.argumentTryingListNo;
       loadAsset(db);
     }else{
 
       print("qhsize"+qh.length.toString());
-      print("qosize"+qo.length.toString());
+      print("69Line：qosize"+qo.length.toString());
       favorite = qh[0].favorite;
 
       if(qh[0].answerType==1){
@@ -123,7 +124,6 @@ class _AnswerState extends State<Answer> {
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
-        //TODO 全体の問題数を取得　→DB
         title: Text("${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
         leading: Icon(Icons.home_sharp),
         elevation: elev,
@@ -134,12 +134,15 @@ class _AnswerState extends State<Answer> {
             icon: Icon(this.favorite ? Icons.star : Icons.star_border),//TODO favorite 更新処理
             color: Colors.yellowAccent,
             onPressed: () {
-              favorite=!favorite;
+              //favorite=!favorite;
               setState(() {
+                initialDataRead=false;
                 print('favoritettete:'+favorite.toString());
                 changeFavorite(qh[0].businessYear, qh[0].period, qh[0].questionNo,favorite,db);
 
-              });
+              }
+
+              );
 
             },
           ),
@@ -184,8 +187,6 @@ class _AnswerState extends State<Answer> {
                     height: 60,
                     child: ElevatedButton(onPressed: () {
 
-                      //TODO 最終問題完了時の処理を追加
-                      //TODO Mode：2のときの処理を追加
                       if(widget.argumentMode==2){
                         //単発問題
                         Navigator.of(context).pop();
@@ -256,7 +257,7 @@ class _AnswerState extends State<Answer> {
                   ),
 
                   onPressed: () {Navigator.of(context).pop();},
-                  //TODO　一覧ボタンの処理　連続演習モードで、一覧画面からきている場合：一覧画面までPopする、一覧画面から単発の問題をやっている場合、も同様。　続きから解くからやっている場合は？
+                  //TODO　一覧ボタンの処理　連続演習モードで、一覧画面からきている場合：一覧画面までPopする、一覧画面から単発の問題をやっている場合、も同様。　続きから解くからやっている場合は？ 一覧画面側の処理が固まってから実装
                   icon: Icon(Icons.list,size: 40,color: Colors.lightBlue,),
                   label: Text("一覧", style: TextStyle(
                     color: Colors.blue,
@@ -360,6 +361,8 @@ class _AnswerState extends State<Answer> {
         this.outputtext = value;
       });
     }
+
+    initialDataRead=true;
   }
 
 

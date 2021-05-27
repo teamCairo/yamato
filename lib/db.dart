@@ -8,6 +8,9 @@ class Parameters extends Table {
   TextColumn get textValue => text()();
   BoolColumn get booleanValue => boolean().withDefault(const Constant(false))();
 
+
+
+
   @override
   Set<Column> get primaryKey => {code};
 }
