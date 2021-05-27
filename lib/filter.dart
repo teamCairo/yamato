@@ -269,6 +269,7 @@ class _FilterState extends State<Filter> {
                           height: height*0.044,
                           width: width*0.19,
                           child:ElevatedButton(onPressed: (){
+                            //TODO 全選択ボタンの中身実装
                             all1();
                           //  setState(() {                              _filters.addAll()});
                             },
@@ -290,6 +291,7 @@ class _FilterState extends State<Filter> {
                           height: height*0.044,
                           width: width*0.19,
                           child:ElevatedButton(onPressed: (){
+                            //TODO クリアボタンの中身実装
                             clear1();
                           }, child: Text('クリア', style: TextStyle(fontSize: 14, color: Colors.white)),
                           style: OutlinedButton.styleFrom(
@@ -306,14 +308,18 @@ class _FilterState extends State<Filter> {
                         Container(
                           height: height*0.44,
                           alignment: Alignment.center,
-                          padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          margin: EdgeInsets.fromLTRB(14, 20, 14, 0),
-
-                          child: Padding(padding: EdgeInsets.all(0),
+                          //TODO MediaQueryの値
+                          //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          padding: EdgeInsets.all(MediaQuery.of(context).size.height*0),
+                          //margin: EdgeInsets.fromLTRB(14, 20, 14, 0),
+                          margin: EdgeInsets.all(MediaQuery.of(context).size.height*0),
+                          child: Padding(//padding: EdgeInsets.all(0),
+                            padding:EdgeInsets.all(MediaQuery.of(context).size.height*0),
                             child: Wrap(
-                              spacing: width*0.02,
+                              spacing: width*0.015,
+                              //0.02
                               //25.0
-                              runSpacing: height*0.02,
+                              runSpacing: height*0.015,
                               //0.027
                               //3.5
                               children: <Widget>[
