@@ -94,7 +94,7 @@ class MyDatabase extends _$MyDatabase {
   MigrationStrategy get migration => destructiveFallback;
 
   @override
-  int get schemaVersion => 6;
+  int get schemaVersion => 7;
 
 
 
