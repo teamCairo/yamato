@@ -8,129 +8,204 @@ import 'filter.dart';
 
 class Result extends StatefulWidget {
   //Result({Key key}) : super(key: key);
-  Result(this.question1, this.qtext1, this.kailist1, this.codelist1,
-      this.catlist1, this.hitsulist1, this.moshi1);
+  Result(this.mode, this.question1, this.year, this.peri, this.qnum, this.trynum
+      //this.question1, this.qtext1, this.kailist1, this.codelist1,
+      //this.catlist1, this.hitsulist1, this.moshi1
+      );
+  //TODO(△) Result(argumentmode:1-4, argumentQH:??, argumentBY:??,
+  // argumentPeri:??, argumentQN:??, argumentQTN:??)
+  //TODO（△） QTN系からQH取得
+  //TODO（◎） QHから各要素取り出しでレイアウトへ
+  //TODO（×）　非同期処理調整
 
   List question1;
-  List qtext1;
-  List catlist1;
-  List codelist1;
-  List hitsulist1;
-  List<bool> moshi1;
-  List kailist1;
+  //List qtext1;
+  //List kailist1;
+  //List codelist1;
+  //List catlist1;
+  //List hitsulist1;
+  //List<bool> moshi1;
+
+  int mode;
+  int year;
+  int peri;
+  int qnum;
+  int trynum;
+
+
 
   @override
   _ResultState createState() => _ResultState();
 }
 
 class _ResultState extends State<Result> {
-  //var qlist = ['うっ血心不全について正しいのはどれか。','右心不全の兆候でないのはどれか。','うっ血心不全で認められる浮腫の特徴はどれか。','高拍出性心不全をきたすのはどれか。２つ選べ。','心不全に特徴的な心臓の聴診所見はどれか。'
-  //'成人の胃食道逆流症の典型的な症状はどれか。２つ選べ。','胸やけの誘因となりにくいのはどれか。','胃食道逆流症＜GERD＞の増悪因子でないのはどれか。','上部消化管内視鏡像を別に示す。診断はどれか。',
-  //   '逆流性食道炎について正しいのはどれか。３つ選べ。','逆流性食道炎の治療に最も有用なのはどれか。','本問は、政界した受験者については採点対象に含め、不正解','54歳の男性。胸やけを主訴に来院した。来年前から',];
-
-  // var codelist = ['1','15','36','102','6','76','19','2','I11','28','99','4','56'];
-  // var catlist = ['循環器','呼吸器','血液','免疫','中毒','循環器','呼吸器','循環器','循環器','呼吸器','呼吸器','消化器','消化器'];
-  // List<bool> moshi = [false,false,true,false,true,true,false,true,true,false,true,true,true];
-//  var hitulist = ['必修','必修以外','必修','必修以外','必修','必修','必修','必修以外','必修','必修','必修','必修','必修'];
-  // var kailist = ['第１回','第２回','第５回','第４回','第２回','第５回','第３回','第４回','第３回','第１回','第２回','第２回','第４回'];
 
   bool favorite = false;
   Color _iconcol = Colors.lightBlue;
   List<int> qorder = <int>[];
   List question2;
-  List qtext2;
-  List kailist2;
-  List codelist2;
-  List catlist2;
-  List hitsulist2;
-  List moshi2;
+  List qtext2 = [];
+  List kailist2 = [];
+  List codelist2 = [];
+  List catlist2 = [];
+  List hitsulist2 = [];
+  List moshi2 = [];
   List<bool> checkm = [];
   List hissyulist = [];
   bool _ordercheck = false;
+  List questionagain;
+  List tryhistory;
+  bool initialdataread = false;
 
   void initState() {
     super.initState();
+    morewait();
+  // if(widget.mode != 4){
+   // MyDatabase db = MyDatabase();
+   // gettry(db);
+  // }else if(widget.mode == 4){}
+   // if (widget.question1 != null) {
+    //  this.question2 = widget.question1;
+    //  print('q2');
+    //  print(question2);
+   // }
+  //  if (widget.qtext1 != null) {
+    //  this.qtext2 = widget.qtext1;
+    //}
+    //if (widget.kailist1 != null) {
+     // this.kailist2 = widget.kailist1;
+    //}
+    //if (widget.catlist1 != null) {
+     // this.catlist2 = widget.catlist1;
+    //}
+    //if (widget.codelist1 != null) {
+     // this.codelist2 = widget.codelist1;
+   // }
+    //if (widget.hitsulist1 != null) {
+      //this.hitsulist2 = widget.hitsulist1;
+    //}
+    //if (widget.moshi1 != null) {
+     // this.moshi2 = widget.moshi1;
+    //}
+
+
+  }
+   void insertdata(){
+    if(widget.mode != 4){
+      MyDatabase db = MyDatabase();
+      gettry(db);
+    }else if(widget.mode == 4){}
     if (widget.question1 != null) {
       this.question2 = widget.question1;
+      print('q2');
+      print(question2);
     }
-    if (widget.qtext1 != null) {
-      this.qtext2 = widget.qtext1;
-    }
-    if (widget.kailist1 != null) {
-      this.kailist2 = widget.kailist1;
-    }
-    if (widget.catlist1 != null) {
-      this.catlist2 = widget.catlist1;
-    }
-    if (widget.codelist1 != null) {
-      this.codelist2 = widget.codelist1;
-    }
-    if (widget.hitsulist1 != null) {
-      this.hitsulist2 = widget.hitsulist1;
-    }
-    if (widget.moshi1 != null) {
-      this.moshi2 = widget.moshi1;
-    }
-    for (var i = 0; i < moshi2.length; i++)
+  }
+
+  Future<void> morewait() async{
+    await waiting();
+    for(var i = 0; i < moshi2.length; i++) {
       if (moshi2[i] == 0) {
         checkm.add(false);
       } else if (moshi2[i] == 1) {
         checkm.add(true);
       } else {}
-
-    for (var i = 0; i < hitsulist2.length; i++)
-      if (hitsulist2[i] == 0) {
-        hissyulist.add("0");
+    }
+    for(var i = 0; i < hitsulist2.length; i++)
+      if(hitsulist2[i] == 0) {
+        hissyulist.add("必修");
       } else if (hitsulist2[i] == 1) {
-        hissyulist.add("1");
+        hissyulist.add("必修以外");
       } else {}
+    setState(() {
+      initialdataread = true;
+    });
+
+    print(questionagain);
+    print(tryhistory);
+    print(checkm);
+    print(catlist2);
+    print(codelist2);
+    print(kailist2);
+    print(qtext2);
   }
+  Future waiting() async{
+    await insertdata();
+    if (question2 == null) {
+    } else {
+      for(var i = 0; i < question2.length; i++) {
+        kailist2.add(question2[i].period);
+        codelist2.add(question2[i].questionNo);
+        hitsulist2.add(question2[i].compulsoryType);
+        catlist2.add(question2[i].subjectId);
+        moshi2.add(question2[i].correctType1);
+        qtext2.add(question2[i].questionText);}
+    }
+  }
+
+  void dataget(MyDatabase db) async{
+    questionagain = await db.selectQuestionHeaderByKey(
+     widget.year, widget.peri, widget.qnum
+    );
+  }
+  void gettry(MyDatabase db) async{
+    tryhistory = await db.getAllquestiontryings();
+    dataget(db);
+}
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         elevation: 8,
         leading: Icon(Icons.home_sharp),
-        title: Text("検索結果：${question2.length}問"),
+        title: question2 == null ? Text('') :Text("検索結果：${question2.length}問"),
         backgroundColor: Colors.lightBlue[400],
         actions: [
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: IconButton(
               icon: Icon(Icons.search),
-              onPressed: () => {
+               onPressed: () => {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Filter(),
-                      //以下を追加
                       fullscreenDialog: true,
-                    ))
-              },
+                    )
+                  )},
+                ),
+               ),
+             ],
             ),
-          ),
-        ],
-      ),
       body: Column(
         children: <Widget>[
           Expanded(
-            child: ListView.builder(
+            child:question2 == null ? Container()
+            :ListView.builder(
                 padding: const EdgeInsets.all(8),
-                itemCount: qtext2.length,
+                itemCount: question2 == null ? 0 :question2.length,
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => Question(),
+                          builder: (context) => Question(
+                              argumentMode: 2,
+                              argumentBusinessYear: null,
+                              argumentPeriod: kailist2[index],
+                              argumentQuestionNo: codelist2[index],
+                              argumentTryingListNo: null
+                          ),
                         ),
                       );
                     },
                     child: Card(
                       child: Container(
-                        height: 90,
+                        height: height*0.097,
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -145,10 +220,11 @@ class _ResultState extends State<Result> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: <Widget>[
-                                        SizedBox(width: 5),
+                                        SizedBox(width: width*0.012),
+                                        initialdataread == false ? Container():
                                         Container(
-                                          width: 100,
-                                          child: Text(
+                                          width: width*0.25,
+                                          child: initialdataread == false ? Text('') :Text(
                                               "第" +
                                                   kailist2[index].toString() +
                                                   "回" +
@@ -161,10 +237,11 @@ class _ResultState extends State<Result> {
                                                   color: Colors.black54)),
                                         ),
                                         SizedBox(
-                                          width: 4,
+                                          width: width*0.01,
                                         ),
                                         Container(
-                                          child: Text(
+                                          child: initialdataread == false ? Text('')
+                                              :Text(
                                             catlist2[index].toString(),
                                             style: TextStyle(
                                                 fontSize: 16,
@@ -173,11 +250,11 @@ class _ResultState extends State<Result> {
                                           ),
                                         ),
                                         SizedBox(
-                                          width: 15,
+                                          width: width*0.037,
                                         ),
                                         Container(
-                                          height: 20,
-                                          width: 60,
+                                          height: height*0.02,
+                                          width: width*0.15,
                                           decoration: BoxDecoration(
                                             border: const Border(
                                               left: const BorderSide(
@@ -201,7 +278,8 @@ class _ResultState extends State<Result> {
                                           child: Padding(
                                               padding: EdgeInsets.fromLTRB(
                                                   2, 2, 2, 2),
-                                              child: Text(
+                                              child:initialdataread == false ? Text('')
+                                                  :Text(
                                                 hissyulist[index].toString(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
@@ -213,13 +291,14 @@ class _ResultState extends State<Result> {
                                     ),
                                   ),
                                   Container(
-                                    width: 260,
+                                    width: width*0.65,
                                     child: Row(children: <Widget>[
                                       SizedBox(
-                                        width: 20,
+                                        width: width*0.05,
                                       ),
                                       Flexible(
-                                        child: Text(
+                                        child:initialdataread == false ? Text('')
+                                            :Text(
                                           qtext2[index],
                                           style: TextStyle(
                                             fontSize: 16,
@@ -237,17 +316,17 @@ class _ResultState extends State<Result> {
                               Container(
                                 child: Row(children: <Widget>[
                                   Container(
-                                    height: 80,
+                                    height: height*0.086,
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: <Widget>[
                                         SizedBox(
-                                          height: 5,
+                                          height: height*0.03,
                                         ),
                                         Visibility(
-                                          visible: true,
-                                          //checkm[index],
+                                          visible: initialdataread == false ? false
+                                              :checkm[index],
                                           child: Column(children: <Widget>[
                                             Text('＜模試：誤＞',
                                                 style: TextStyle(
@@ -256,22 +335,23 @@ class _ResultState extends State<Result> {
                                                     fontWeight:
                                                         FontWeight.w500)),
                                             SizedBox(
-                                              height: 5,
+                                              height: height*0.03,
                                             ),
                                             Icon(Icons.check),
                                           ]),
                                         ),
                                         SizedBox(
-                                          height: 5,
+                                          height: height*0.03,
                                         ),
                                       ],
                                     ),
                                   ),
                                   SizedBox(
-                                    width: 5,
+                                    width: width*0.012,
                                   ),
                                   GestureDetector(
                                     onTap: () {
+                                      //TODO　favorite機能実装
                                       setState(() {
                                         if (favorite == false) {
                                           _iconcol = Colors.yellow;
@@ -289,7 +369,7 @@ class _ResultState extends State<Result> {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: 10,
+                                    width: width*0.025,
                                   ),
                                 ]),
                               ),
@@ -300,8 +380,8 @@ class _ResultState extends State<Result> {
                 }),
           ),
           SizedBox(
-            height: 30,
-            width: 250,
+            height: height*0.032,
+            width: width*0.62,
             child: CheckboxListTile(
               value: _ordercheck,
               title: Text(
@@ -324,8 +404,8 @@ class _ResultState extends State<Result> {
             padding: const EdgeInsets.all(20),
             margin: EdgeInsets.all(4),
             child: SizedBox(
-              width: 280,
-              height: 60,
+              height: height*0.065,
+              width: width*0.7,
               child: ElevatedButton(
                 onPressed: () {
                   startStudy();
