@@ -314,7 +314,8 @@ class $ParametersTable extends Parameters
 class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
   final int businessYear;
   final int period;
-  final int questionNo;
+  final String questionNo;
+  final int pediatricsType;
   final int subjectId;
   final int compulsoryType;
   final int answerType;
@@ -328,6 +329,7 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
       {@required this.businessYear,
       @required this.period,
       @required this.questionNo,
+      @required this.pediatricsType,
       @required this.subjectId,
       @required this.compulsoryType,
       @required this.answerType,
@@ -348,8 +350,10 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
       businessYear: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}business_year']),
       period: intType.mapFromDatabaseResponse(data['${effectivePrefix}period']),
-      questionNo: intType
+      questionNo: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}question_no']),
+      pediatricsType: intType
+          .mapFromDatabaseResponse(data['${effectivePrefix}pediatrics_type']),
       subjectId:
           intType.mapFromDatabaseResponse(data['${effectivePrefix}subject_id']),
       compulsoryType: intType
@@ -380,7 +384,10 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
       map['period'] = Variable<int>(period);
     }
     if (!nullToAbsent || questionNo != null) {
-      map['question_no'] = Variable<int>(questionNo);
+      map['question_no'] = Variable<String>(questionNo);
+    }
+    if (!nullToAbsent || pediatricsType != null) {
+      map['pediatrics_type'] = Variable<int>(pediatricsType);
     }
     if (!nullToAbsent || subjectId != null) {
       map['subject_id'] = Variable<int>(subjectId);
@@ -422,6 +429,9 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
       questionNo: questionNo == null && nullToAbsent
           ? const Value.absent()
           : Value(questionNo),
+      pediatricsType: pediatricsType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pediatricsType),
       subjectId: subjectId == null && nullToAbsent
           ? const Value.absent()
           : Value(subjectId),
@@ -458,7 +468,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
     return QuestionHeader(
       businessYear: serializer.fromJson<int>(json['businessYear']),
       period: serializer.fromJson<int>(json['period']),
-      questionNo: serializer.fromJson<int>(json['questionNo']),
+      questionNo: serializer.fromJson<String>(json['questionNo']),
+      pediatricsType: serializer.fromJson<int>(json['pediatricsType']),
       subjectId: serializer.fromJson<int>(json['subjectId']),
       compulsoryType: serializer.fromJson<int>(json['compulsoryType']),
       answerType: serializer.fromJson<int>(json['answerType']),
@@ -476,7 +487,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
     return <String, dynamic>{
       'businessYear': serializer.toJson<int>(businessYear),
       'period': serializer.toJson<int>(period),
-      'questionNo': serializer.toJson<int>(questionNo),
+      'questionNo': serializer.toJson<String>(questionNo),
+      'pediatricsType': serializer.toJson<int>(pediatricsType),
       'subjectId': serializer.toJson<int>(subjectId),
       'compulsoryType': serializer.toJson<int>(compulsoryType),
       'answerType': serializer.toJson<int>(answerType),
@@ -492,7 +504,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
   QuestionHeader copyWith(
           {int businessYear,
           int period,
-          int questionNo,
+          String questionNo,
+          int pediatricsType,
           int subjectId,
           int compulsoryType,
           int answerType,
@@ -506,6 +519,7 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
         businessYear: businessYear ?? this.businessYear,
         period: period ?? this.period,
         questionNo: questionNo ?? this.questionNo,
+        pediatricsType: pediatricsType ?? this.pediatricsType,
         subjectId: subjectId ?? this.subjectId,
         compulsoryType: compulsoryType ?? this.compulsoryType,
         answerType: answerType ?? this.answerType,
@@ -522,6 +536,7 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           ..write('businessYear: $businessYear, ')
           ..write('period: $period, ')
           ..write('questionNo: $questionNo, ')
+          ..write('pediatricsType: $pediatricsType, ')
           ..write('subjectId: $subjectId, ')
           ..write('compulsoryType: $compulsoryType, ')
           ..write('answerType: $answerType, ')
@@ -543,21 +558,25 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           $mrjc(
               questionNo.hashCode,
               $mrjc(
-                  subjectId.hashCode,
+                  pediatricsType.hashCode,
                   $mrjc(
-                      compulsoryType.hashCode,
+                      subjectId.hashCode,
                       $mrjc(
-                          answerType.hashCode,
+                          compulsoryType.hashCode,
                           $mrjc(
-                              questionText.hashCode,
+                              answerType.hashCode,
                               $mrjc(
-                                  numberAnswer.hashCode,
+                                  questionText.hashCode,
                                   $mrjc(
-                                      correctType1.hashCode,
+                                      numberAnswer.hashCode,
                                       $mrjc(
-                                          correctType2.hashCode,
-                                          $mrjc(correctType3.hashCode,
-                                              favorite.hashCode))))))))))));
+                                          correctType1.hashCode,
+                                          $mrjc(
+                                              correctType2.hashCode,
+                                              $mrjc(
+                                                  correctType3.hashCode,
+                                                  favorite
+                                                      .hashCode)))))))))))));
   @override
   bool operator ==(dynamic other) =>
       identical(this, other) ||
@@ -565,6 +584,7 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
           other.businessYear == this.businessYear &&
           other.period == this.period &&
           other.questionNo == this.questionNo &&
+          other.pediatricsType == this.pediatricsType &&
           other.subjectId == this.subjectId &&
           other.compulsoryType == this.compulsoryType &&
           other.answerType == this.answerType &&
@@ -579,7 +599,8 @@ class QuestionHeader extends DataClass implements Insertable<QuestionHeader> {
 class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
   final Value<int> businessYear;
   final Value<int> period;
-  final Value<int> questionNo;
+  final Value<String> questionNo;
+  final Value<int> pediatricsType;
   final Value<int> subjectId;
   final Value<int> compulsoryType;
   final Value<int> answerType;
@@ -593,6 +614,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
     this.businessYear = const Value.absent(),
     this.period = const Value.absent(),
     this.questionNo = const Value.absent(),
+    this.pediatricsType = const Value.absent(),
     this.subjectId = const Value.absent(),
     this.compulsoryType = const Value.absent(),
     this.answerType = const Value.absent(),
@@ -606,7 +628,8 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
   QuestionHeadersCompanion.insert({
     @required int businessYear,
     @required int period,
-    @required int questionNo,
+    @required String questionNo,
+    @required int pediatricsType,
     @required int subjectId,
     @required int compulsoryType,
     @required int answerType,
@@ -619,6 +642,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
   })  : businessYear = Value(businessYear),
         period = Value(period),
         questionNo = Value(questionNo),
+        pediatricsType = Value(pediatricsType),
         subjectId = Value(subjectId),
         compulsoryType = Value(compulsoryType),
         answerType = Value(answerType),
@@ -631,7 +655,8 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
   static Insertable<QuestionHeader> custom({
     Expression<int> businessYear,
     Expression<int> period,
-    Expression<int> questionNo,
+    Expression<String> questionNo,
+    Expression<int> pediatricsType,
     Expression<int> subjectId,
     Expression<int> compulsoryType,
     Expression<int> answerType,
@@ -646,6 +671,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
       if (businessYear != null) 'business_year': businessYear,
       if (period != null) 'period': period,
       if (questionNo != null) 'question_no': questionNo,
+      if (pediatricsType != null) 'pediatrics_type': pediatricsType,
       if (subjectId != null) 'subject_id': subjectId,
       if (compulsoryType != null) 'compulsory_type': compulsoryType,
       if (answerType != null) 'answer_type': answerType,
@@ -661,7 +687,8 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
   QuestionHeadersCompanion copyWith(
       {Value<int> businessYear,
       Value<int> period,
-      Value<int> questionNo,
+      Value<String> questionNo,
+      Value<int> pediatricsType,
       Value<int> subjectId,
       Value<int> compulsoryType,
       Value<int> answerType,
@@ -675,6 +702,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
       businessYear: businessYear ?? this.businessYear,
       period: period ?? this.period,
       questionNo: questionNo ?? this.questionNo,
+      pediatricsType: pediatricsType ?? this.pediatricsType,
       subjectId: subjectId ?? this.subjectId,
       compulsoryType: compulsoryType ?? this.compulsoryType,
       answerType: answerType ?? this.answerType,
@@ -697,7 +725,10 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
       map['period'] = Variable<int>(period.value);
     }
     if (questionNo.present) {
-      map['question_no'] = Variable<int>(questionNo.value);
+      map['question_no'] = Variable<String>(questionNo.value);
+    }
+    if (pediatricsType.present) {
+      map['pediatrics_type'] = Variable<int>(pediatricsType.value);
     }
     if (subjectId.present) {
       map['subject_id'] = Variable<int>(subjectId.value);
@@ -735,6 +766,7 @@ class QuestionHeadersCompanion extends UpdateCompanion<QuestionHeader> {
           ..write('businessYear: $businessYear, ')
           ..write('period: $period, ')
           ..write('questionNo: $questionNo, ')
+          ..write('pediatricsType: $pediatricsType, ')
           ..write('subjectId: $subjectId, ')
           ..write('compulsoryType: $compulsoryType, ')
           ..write('answerType: $answerType, ')
@@ -781,12 +813,26 @@ class $QuestionHeadersTable extends QuestionHeaders
   }
 
   final VerificationMeta _questionNoMeta = const VerificationMeta('questionNo');
-  GeneratedIntColumn _questionNo;
+  GeneratedTextColumn _questionNo;
   @override
-  GeneratedIntColumn get questionNo => _questionNo ??= _constructQuestionNo();
-  GeneratedIntColumn _constructQuestionNo() {
-    return GeneratedIntColumn(
+  GeneratedTextColumn get questionNo => _questionNo ??= _constructQuestionNo();
+  GeneratedTextColumn _constructQuestionNo() {
+    return GeneratedTextColumn(
       'question_no',
+      $tableName,
+      false,
+    );
+  }
+
+  final VerificationMeta _pediatricsTypeMeta =
+      const VerificationMeta('pediatricsType');
+  GeneratedIntColumn _pediatricsType;
+  @override
+  GeneratedIntColumn get pediatricsType =>
+      _pediatricsType ??= _constructPediatricsType();
+  GeneratedIntColumn _constructPediatricsType() {
+    return GeneratedIntColumn(
+      'pediatrics_type',
       $tableName,
       false,
     );
@@ -917,6 +963,7 @@ class $QuestionHeadersTable extends QuestionHeaders
         businessYear,
         period,
         questionNo,
+        pediatricsType,
         subjectId,
         compulsoryType,
         answerType,
@@ -959,6 +1006,14 @@ class $QuestionHeadersTable extends QuestionHeaders
               data['question_no'], _questionNoMeta));
     } else if (isInserting) {
       context.missing(_questionNoMeta);
+    }
+    if (data.containsKey('pediatrics_type')) {
+      context.handle(
+          _pediatricsTypeMeta,
+          pediatricsType.isAcceptableOrUnknown(
+              data['pediatrics_type'], _pediatricsTypeMeta));
+    } else if (isInserting) {
+      context.missing(_pediatricsTypeMeta);
     }
     if (data.containsKey('subject_id')) {
       context.handle(_subjectIdMeta,
@@ -1242,7 +1297,7 @@ class $SubjectsTable extends Subjects with TableInfo<$SubjectsTable, Subject> {
 class QuestionOption extends DataClass implements Insertable<QuestionOption> {
   final int businessYear;
   final int period;
-  final int questionNo;
+  final String questionNo;
   final String optionCd;
   final String optionText;
   final int correctType;
@@ -1263,7 +1318,7 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
       businessYear: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}business_year']),
       period: intType.mapFromDatabaseResponse(data['${effectivePrefix}period']),
-      questionNo: intType
+      questionNo: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}question_no']),
       optionCd: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}option_cd']),
@@ -1283,7 +1338,7 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
       map['period'] = Variable<int>(period);
     }
     if (!nullToAbsent || questionNo != null) {
-      map['question_no'] = Variable<int>(questionNo);
+      map['question_no'] = Variable<String>(questionNo);
     }
     if (!nullToAbsent || optionCd != null) {
       map['option_cd'] = Variable<String>(optionCd);
@@ -1325,7 +1380,7 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
     return QuestionOption(
       businessYear: serializer.fromJson<int>(json['businessYear']),
       period: serializer.fromJson<int>(json['period']),
-      questionNo: serializer.fromJson<int>(json['questionNo']),
+      questionNo: serializer.fromJson<String>(json['questionNo']),
       optionCd: serializer.fromJson<String>(json['optionCd']),
       optionText: serializer.fromJson<String>(json['optionText']),
       correctType: serializer.fromJson<int>(json['correctType']),
@@ -1337,7 +1392,7 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
     return <String, dynamic>{
       'businessYear': serializer.toJson<int>(businessYear),
       'period': serializer.toJson<int>(period),
-      'questionNo': serializer.toJson<int>(questionNo),
+      'questionNo': serializer.toJson<String>(questionNo),
       'optionCd': serializer.toJson<String>(optionCd),
       'optionText': serializer.toJson<String>(optionText),
       'correctType': serializer.toJson<int>(correctType),
@@ -1347,7 +1402,7 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
   QuestionOption copyWith(
           {int businessYear,
           int period,
-          int questionNo,
+          String questionNo,
           String optionCd,
           String optionText,
           int correctType}) =>
@@ -1396,7 +1451,7 @@ class QuestionOption extends DataClass implements Insertable<QuestionOption> {
 class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
   final Value<int> businessYear;
   final Value<int> period;
-  final Value<int> questionNo;
+  final Value<String> questionNo;
   final Value<String> optionCd;
   final Value<String> optionText;
   final Value<int> correctType;
@@ -1411,7 +1466,7 @@ class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
   QuestionOptionsCompanion.insert({
     @required int businessYear,
     @required int period,
-    @required int questionNo,
+    @required String questionNo,
     @required String optionCd,
     @required String optionText,
     @required int correctType,
@@ -1424,7 +1479,7 @@ class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
   static Insertable<QuestionOption> custom({
     Expression<int> businessYear,
     Expression<int> period,
-    Expression<int> questionNo,
+    Expression<String> questionNo,
     Expression<String> optionCd,
     Expression<String> optionText,
     Expression<int> correctType,
@@ -1442,7 +1497,7 @@ class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
   QuestionOptionsCompanion copyWith(
       {Value<int> businessYear,
       Value<int> period,
-      Value<int> questionNo,
+      Value<String> questionNo,
       Value<String> optionCd,
       Value<String> optionText,
       Value<int> correctType}) {
@@ -1466,7 +1521,7 @@ class QuestionOptionsCompanion extends UpdateCompanion<QuestionOption> {
       map['period'] = Variable<int>(period.value);
     }
     if (questionNo.present) {
-      map['question_no'] = Variable<int>(questionNo.value);
+      map['question_no'] = Variable<String>(questionNo.value);
     }
     if (optionCd.present) {
       map['option_cd'] = Variable<String>(optionCd.value);
@@ -1526,11 +1581,11 @@ class $QuestionOptionsTable extends QuestionOptions
   }
 
   final VerificationMeta _questionNoMeta = const VerificationMeta('questionNo');
-  GeneratedIntColumn _questionNo;
+  GeneratedTextColumn _questionNo;
   @override
-  GeneratedIntColumn get questionNo => _questionNo ??= _constructQuestionNo();
-  GeneratedIntColumn _constructQuestionNo() {
-    return GeneratedIntColumn(
+  GeneratedTextColumn get questionNo => _questionNo ??= _constructQuestionNo();
+  GeneratedTextColumn _constructQuestionNo() {
+    return GeneratedTextColumn(
       'question_no',
       $tableName,
       false,
@@ -1654,7 +1709,7 @@ class $QuestionOptionsTable extends QuestionOptions
 class QuestionFile extends DataClass implements Insertable<QuestionFile> {
   final int businessYear;
   final int period;
-  final int questionNo;
+  final String questionNo;
   final int questionAnswerType;
   final int fileNo;
   final String filePath;
@@ -1676,7 +1731,7 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
       businessYear: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}business_year']),
       period: intType.mapFromDatabaseResponse(data['${effectivePrefix}period']),
-      questionNo: intType
+      questionNo: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}question_no']),
       questionAnswerType: intType.mapFromDatabaseResponse(
           data['${effectivePrefix}question_answer_type']),
@@ -1698,7 +1753,7 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
       map['period'] = Variable<int>(period);
     }
     if (!nullToAbsent || questionNo != null) {
-      map['question_no'] = Variable<int>(questionNo);
+      map['question_no'] = Variable<String>(questionNo);
     }
     if (!nullToAbsent || questionAnswerType != null) {
       map['question_answer_type'] = Variable<int>(questionAnswerType);
@@ -1745,7 +1800,7 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
     return QuestionFile(
       businessYear: serializer.fromJson<int>(json['businessYear']),
       period: serializer.fromJson<int>(json['period']),
-      questionNo: serializer.fromJson<int>(json['questionNo']),
+      questionNo: serializer.fromJson<String>(json['questionNo']),
       questionAnswerType: serializer.fromJson<int>(json['questionAnswerType']),
       fileNo: serializer.fromJson<int>(json['fileNo']),
       filePath: serializer.fromJson<String>(json['filePath']),
@@ -1758,7 +1813,7 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
     return <String, dynamic>{
       'businessYear': serializer.toJson<int>(businessYear),
       'period': serializer.toJson<int>(period),
-      'questionNo': serializer.toJson<int>(questionNo),
+      'questionNo': serializer.toJson<String>(questionNo),
       'questionAnswerType': serializer.toJson<int>(questionAnswerType),
       'fileNo': serializer.toJson<int>(fileNo),
       'filePath': serializer.toJson<String>(filePath),
@@ -1769,7 +1824,7 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
   QuestionFile copyWith(
           {int businessYear,
           int period,
-          int questionNo,
+          String questionNo,
           int questionAnswerType,
           int fileNo,
           String filePath,
@@ -1824,7 +1879,7 @@ class QuestionFile extends DataClass implements Insertable<QuestionFile> {
 class QuestionFilesCompanion extends UpdateCompanion<QuestionFile> {
   final Value<int> businessYear;
   final Value<int> period;
-  final Value<int> questionNo;
+  final Value<String> questionNo;
   final Value<int> questionAnswerType;
   final Value<int> fileNo;
   final Value<String> filePath;
@@ -1841,7 +1896,7 @@ class QuestionFilesCompanion extends UpdateCompanion<QuestionFile> {
   QuestionFilesCompanion.insert({
     @required int businessYear,
     @required int period,
-    @required int questionNo,
+    @required String questionNo,
     @required int questionAnswerType,
     @required int fileNo,
     @required String filePath,
@@ -1856,7 +1911,7 @@ class QuestionFilesCompanion extends UpdateCompanion<QuestionFile> {
   static Insertable<QuestionFile> custom({
     Expression<int> businessYear,
     Expression<int> period,
-    Expression<int> questionNo,
+    Expression<String> questionNo,
     Expression<int> questionAnswerType,
     Expression<int> fileNo,
     Expression<String> filePath,
@@ -1877,7 +1932,7 @@ class QuestionFilesCompanion extends UpdateCompanion<QuestionFile> {
   QuestionFilesCompanion copyWith(
       {Value<int> businessYear,
       Value<int> period,
-      Value<int> questionNo,
+      Value<String> questionNo,
       Value<int> questionAnswerType,
       Value<int> fileNo,
       Value<String> filePath,
@@ -1903,7 +1958,7 @@ class QuestionFilesCompanion extends UpdateCompanion<QuestionFile> {
       map['period'] = Variable<int>(period.value);
     }
     if (questionNo.present) {
-      map['question_no'] = Variable<int>(questionNo.value);
+      map['question_no'] = Variable<String>(questionNo.value);
     }
     if (questionAnswerType.present) {
       map['question_answer_type'] = Variable<int>(questionAnswerType.value);
@@ -1967,11 +2022,11 @@ class $QuestionFilesTable extends QuestionFiles
   }
 
   final VerificationMeta _questionNoMeta = const VerificationMeta('questionNo');
-  GeneratedIntColumn _questionNo;
+  GeneratedTextColumn _questionNo;
   @override
-  GeneratedIntColumn get questionNo => _questionNo ??= _constructQuestionNo();
-  GeneratedIntColumn _constructQuestionNo() {
-    return GeneratedIntColumn(
+  GeneratedTextColumn get questionNo => _questionNo ??= _constructQuestionNo();
+  GeneratedTextColumn _constructQuestionNo() {
+    return GeneratedTextColumn(
       'question_no',
       $tableName,
       false,
@@ -2119,7 +2174,7 @@ class QuestionTrying extends DataClass implements Insertable<QuestionTrying> {
   final int id;
   final int businessYear;
   final int period;
-  final int questionNo;
+  final String questionNo;
   final bool endFlg;
   final int correctType;
   final String singleAnswer;
@@ -2140,14 +2195,14 @@ class QuestionTrying extends DataClass implements Insertable<QuestionTrying> {
       {String prefix}) {
     final effectivePrefix = prefix ?? '';
     final intType = db.typeSystem.forDartType<int>();
-    final boolType = db.typeSystem.forDartType<bool>();
     final stringType = db.typeSystem.forDartType<String>();
+    final boolType = db.typeSystem.forDartType<bool>();
     return QuestionTrying(
       id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
       businessYear: intType
           .mapFromDatabaseResponse(data['${effectivePrefix}business_year']),
       period: intType.mapFromDatabaseResponse(data['${effectivePrefix}period']),
-      questionNo: intType
+      questionNo: stringType
           .mapFromDatabaseResponse(data['${effectivePrefix}question_no']),
       endFlg:
           boolType.mapFromDatabaseResponse(data['${effectivePrefix}end_flg']),
@@ -2174,7 +2229,7 @@ class QuestionTrying extends DataClass implements Insertable<QuestionTrying> {
       map['period'] = Variable<int>(period);
     }
     if (!nullToAbsent || questionNo != null) {
-      map['question_no'] = Variable<int>(questionNo);
+      map['question_no'] = Variable<String>(questionNo);
     }
     if (!nullToAbsent || endFlg != null) {
       map['end_flg'] = Variable<bool>(endFlg);
@@ -2229,7 +2284,7 @@ class QuestionTrying extends DataClass implements Insertable<QuestionTrying> {
       id: serializer.fromJson<int>(json['id']),
       businessYear: serializer.fromJson<int>(json['businessYear']),
       period: serializer.fromJson<int>(json['period']),
-      questionNo: serializer.fromJson<int>(json['questionNo']),
+      questionNo: serializer.fromJson<String>(json['questionNo']),
       endFlg: serializer.fromJson<bool>(json['endFlg']),
       correctType: serializer.fromJson<int>(json['correctType']),
       singleAnswer: serializer.fromJson<String>(json['singleAnswer']),
@@ -2244,7 +2299,7 @@ class QuestionTrying extends DataClass implements Insertable<QuestionTrying> {
       'id': serializer.toJson<int>(id),
       'businessYear': serializer.toJson<int>(businessYear),
       'period': serializer.toJson<int>(period),
-      'questionNo': serializer.toJson<int>(questionNo),
+      'questionNo': serializer.toJson<String>(questionNo),
       'endFlg': serializer.toJson<bool>(endFlg),
       'correctType': serializer.toJson<int>(correctType),
       'singleAnswer': serializer.toJson<String>(singleAnswer),
@@ -2257,7 +2312,7 @@ class QuestionTrying extends DataClass implements Insertable<QuestionTrying> {
           {int id,
           int businessYear,
           int period,
-          int questionNo,
+          String questionNo,
           bool endFlg,
           int correctType,
           String singleAnswer,
@@ -2326,7 +2381,7 @@ class QuestionTryingsCompanion extends UpdateCompanion<QuestionTrying> {
   final Value<int> id;
   final Value<int> businessYear;
   final Value<int> period;
-  final Value<int> questionNo;
+  final Value<String> questionNo;
   final Value<bool> endFlg;
   final Value<int> correctType;
   final Value<String> singleAnswer;
@@ -2347,7 +2402,7 @@ class QuestionTryingsCompanion extends UpdateCompanion<QuestionTrying> {
     this.id = const Value.absent(),
     @required int businessYear,
     @required int period,
-    @required int questionNo,
+    @required String questionNo,
     @required bool endFlg,
     this.correctType = const Value.absent(),
     this.singleAnswer = const Value.absent(),
@@ -2361,7 +2416,7 @@ class QuestionTryingsCompanion extends UpdateCompanion<QuestionTrying> {
     Expression<int> id,
     Expression<int> businessYear,
     Expression<int> period,
-    Expression<int> questionNo,
+    Expression<String> questionNo,
     Expression<bool> endFlg,
     Expression<int> correctType,
     Expression<String> singleAnswer,
@@ -2385,7 +2440,7 @@ class QuestionTryingsCompanion extends UpdateCompanion<QuestionTrying> {
       {Value<int> id,
       Value<int> businessYear,
       Value<int> period,
-      Value<int> questionNo,
+      Value<String> questionNo,
       Value<bool> endFlg,
       Value<int> correctType,
       Value<String> singleAnswer,
@@ -2417,7 +2472,7 @@ class QuestionTryingsCompanion extends UpdateCompanion<QuestionTrying> {
       map['period'] = Variable<int>(period.value);
     }
     if (questionNo.present) {
-      map['question_no'] = Variable<int>(questionNo.value);
+      map['question_no'] = Variable<String>(questionNo.value);
     }
     if (endFlg.present) {
       map['end_flg'] = Variable<bool>(endFlg.value);
@@ -2498,11 +2553,11 @@ class $QuestionTryingsTable extends QuestionTryings
   }
 
   final VerificationMeta _questionNoMeta = const VerificationMeta('questionNo');
-  GeneratedIntColumn _questionNo;
+  GeneratedTextColumn _questionNo;
   @override
-  GeneratedIntColumn get questionNo => _questionNo ??= _constructQuestionNo();
-  GeneratedIntColumn _constructQuestionNo() {
-    return GeneratedIntColumn(
+  GeneratedTextColumn get questionNo => _questionNo ??= _constructQuestionNo();
+  GeneratedTextColumn _constructQuestionNo() {
+    return GeneratedTextColumn(
       'question_no',
       $tableName,
       false,

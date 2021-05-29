@@ -18,7 +18,8 @@ class Parameters extends Table {
 class QuestionHeaders extends Table {
   IntColumn get businessYear => integer()();
   IntColumn get period => integer()();
-  IntColumn get questionNo => integer()();
+  TextColumn get questionNo => text()();
+  IntColumn get pediatricsType => integer()();
   IntColumn get subjectId => integer()();
   IntColumn get compulsoryType => integer()();
   IntColumn get answerType => integer()();
@@ -43,7 +44,7 @@ class Subjects extends Table {
 class QuestionOptions extends Table {
   IntColumn get businessYear => integer()();
   IntColumn get period => integer()();
-  IntColumn get questionNo => integer()();
+  TextColumn get questionNo => text()();
   TextColumn get optionCd => text()();
   TextColumn get optionText => text()();
   IntColumn get correctType => integer()();
@@ -56,7 +57,7 @@ class QuestionOptions extends Table {
 class QuestionFiles extends Table {
   IntColumn get businessYear => integer()();
   IntColumn get period => integer()();
-  IntColumn get questionNo => integer()();
+  TextColumn get questionNo => text()();
   IntColumn get questionAnswerType => integer()();
   IntColumn get fileNo => integer()();
   TextColumn get filePath => text()();
@@ -71,7 +72,7 @@ class QuestionTryings extends Table {
   IntColumn get id => integer()();
   IntColumn get businessYear => integer()();
   IntColumn get period => integer()();
-  IntColumn get questionNo => integer()();
+  TextColumn get questionNo => text()();
   BoolColumn get endFlg => boolean()();
   IntColumn get correctType => integer().nullable()();
   TextColumn get singleAnswer => text().nullable()();
@@ -94,7 +95,7 @@ class MyDatabase extends _$MyDatabase {
   MigrationStrategy get migration => destructiveFallback;
 
   @override
-  int get schemaVersion => 7;
+  int get schemaVersion => 9;
 
 
 
@@ -112,7 +113,7 @@ class MyDatabase extends _$MyDatabase {
 
 
 
-  Future<List<QuestionHeader>> selectQuestionHeaderByKey(int businessYear,int period, int questionNo) {
+  Future<List<QuestionHeader>> selectQuestionHeaderByKey(int businessYear,int period, String questionNo) {
     return
       customSelect(
         'SELECT *'
@@ -120,12 +121,12 @@ class MyDatabase extends _$MyDatabase {
             +'WHERE business_Year = ? '
             +'AND period = ? '
             +'AND question_No = ?;',
-        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo)],
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withString(questionNo)],
         readsFrom: {questionHeaders},
       ).map((row) => QuestionHeader(
             businessYear:row.readInt('business_year')
             ,period:row.readInt('period')
-            ,questionNo:row.readInt('question_no')
+            ,questionNo:row.readString('question_no')
             ,subjectId:row.readInt('subject_id')
             ,compulsoryType:row.readInt('compulsory_type')
             ,answerType:row.readInt('answer_type')
@@ -140,7 +141,7 @@ class MyDatabase extends _$MyDatabase {
 
 
 
-  Stream<List<QuestionHeader>> selectQuestionHeaderByKeyWatch(int businessYear,int period, int questionNo) {
+  Stream<List<QuestionHeader>> selectQuestionHeaderByKeyWatch(int businessYear,int period, String questionNo) {
     return
       customSelect(
         'SELECT *'
@@ -148,14 +149,14 @@ class MyDatabase extends _$MyDatabase {
             +'WHERE business_Year = ? '
             +'AND period = ? '
             +'AND question_No = ?;',
-        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo)],
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withString(questionNo)],
         readsFrom: {questionHeaders},
       ).watch().map((rows) {
         return rows
             .map((row) => QuestionHeader(
           businessYear:row.readInt('business_year')
           ,period:row.readInt('period')
-          ,questionNo:row.readInt('question_no')
+          ,questionNo:row.readString('question_no')
           ,subjectId:row.readInt('subject_id')
           ,compulsoryType:row.readInt('compulsory_type')
           ,answerType:row.readInt('answer_type')
@@ -169,7 +170,7 @@ class MyDatabase extends _$MyDatabase {
       });
   }
 
-  Future<List<QuestionOption>> selectQuestionOptionsByQInfo(int businessYear,int period, int questionNo) {
+  Future<List<QuestionOption>> selectQuestionOptionsByQInfo(int businessYear,int period, String questionNo) {
     return
       customSelect(
         'SELECT *'
@@ -178,12 +179,12 @@ class MyDatabase extends _$MyDatabase {
             +'AND period = ? '
             +'AND question_No = ?'
             +' ORDER BY option_Cd ASC ;',
-        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo)],
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withString(questionNo)],
         readsFrom: {questionOptions},
       ).map((row) => QuestionOption(
           businessYear:row.readInt('business_year')
           ,period:row.readInt('period')
-          ,questionNo:row.readInt('question_no')
+          ,questionNo:row.readString('question_no')
           ,optionCd:row.readString('option_cd')
           ,optionText:row.readString('option_text')
           ,correctType:row.readInt('correct_type')
@@ -191,7 +192,7 @@ class MyDatabase extends _$MyDatabase {
   }
 
 
-  Future<List<QuestionFile>> selectQuestionFilesForUse(int businessYear,int period, int questionNo,int questionAnswerType, int fileType) {
+  Future<List<QuestionFile>> selectQuestionFilesForUse(int businessYear,int period, String questionNo,int questionAnswerType, int fileType) {
     return
       customSelect(
         'SELECT *'
@@ -202,12 +203,12 @@ class MyDatabase extends _$MyDatabase {
             +' AND question_Answer_Type = ?'
             +' AND file_Type = ?'
             +' ORDER BY file_No ASC',
-        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo),Variable.withInt(questionAnswerType),Variable.withInt(fileType)],
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withString(questionNo),Variable.withInt(questionAnswerType),Variable.withInt(fileType)],
         readsFrom: {questionFiles},
       ).map((row) => QuestionFile(
           businessYear:row.readInt('business_year')
           ,period:row.readInt('period')
-          ,questionNo:row.readInt('question_no')
+          ,questionNo:row.readString('question_no')
           ,questionAnswerType:row.readInt('question_answer_type')
           ,fileNo:row.readInt('file_no')
           ,filePath:row.readString('file_path')
@@ -279,7 +280,7 @@ class MyDatabase extends _$MyDatabase {
       ).map((row) => QuestionHeader(
           businessYear:row.readInt('business_year')
           ,period:row.readInt('period')
-          ,questionNo:row.readInt('question_no')
+          ,questionNo:row.readString('question_no')
           ,subjectId:row.readInt('subject_id')
           ,compulsoryType:row.readInt('compulsory_type')
           ,answerType:row.readInt('answer_type')
@@ -291,69 +292,6 @@ class MyDatabase extends _$MyDatabase {
           ,favorite:row.readBool('favorite')
       )).get();
   }
-  /*
-
-    Future<List<int>> amountOfStudyStatu(int businessYear,int period, String questionNo) {
-    return
-      customSelect(
-        'SELECT correct_Type FROM study_Status '
-            +'WHERE business_Year = ? '
-            +'AND period = ? '
-            +'AND question_No = ?'
-        +'ORDER BY id DESC',
-        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withString(questionNo)],
-        readsFrom: {studyStatus},
-      ).map((row) => row.readInt('correct_Type')).get();
-  }
-
-  Future<List<QuestionHeader>> selectQuestionHeaderByKey(int businessYear,int period, int questionNo) {
-    return
-      customSelect(
-        'SELECT *'
-            +'From question_Headers '
-            +'WHERE business_Year = ? '
-            +'AND period = ? '
-            +'AND question_No = ?;',
-        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo)],
-        readsFrom: {questionHeaders}).map((row) {
-        return QuestionHeader.fromData(row.data, db);
-      }).get();
-  }
-
-
-  */
-
-  /*
-
-  Stream<List<QuestionHeader>> selectQuestionHeaderByKey(int businessYear,int period, int questionNo) {
-    return
-      customSelect(
-        'SELECT *'
-            +'From question_Headers '
-            +'WHERE business_Year = ? '
-            +'AND period = ? '
-            +'AND question_No = ?;',
-        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withInt(questionNo)],
-        readsFrom: {questionHeaders},
-      ).watch().map((rows) {
-        return rows
-            .map((row) => QuestionHeader(
-            businessYear:row.readInt('businessYear')
-            ,period:row.readInt('period')
-            ,questionNo:row.readInt('questionNo')
-            ,subjectId:row.readInt('subjectId')
-            ,compulsoryType:row.readInt('compulsoryType')
-            ,answerType:row.readInt('answerType')
-            ,questionText:row.readString('questionText')
-            ,numberAnswer:row.readInt('numberAnswer')
-            ,correctType1:row.readInt('correctType1')
-            ,correctType2:row.readInt('correctType2')
-            ,correctType3:row.readInt('correctType3')
-            ,favorite:row.readBool('favorite')
-        )).toList();
-      });
-  }
-   */
 
   Future <List<Subject>> getAllsubjects()=> select(subjects).get();
   Stream <List<Subject>> watchAllsubjects()=> select(subjects).watch();
@@ -397,7 +335,7 @@ class MyDatabase extends _$MyDatabase {
           id:row.readInt('id')
           ,businessYear:row.readInt('business_year')
           ,period:row.readInt('period')
-          ,questionNo:row.readInt('question_no')
+          ,questionNo:row.readString('question_no')
           ,endFlg:row.readBool('end_flg')
           ,correctType:row.readInt('correct_type')
           ,singleAnswer:row.readString('single_answer')
