@@ -29,7 +29,7 @@ class Result extends StatefulWidget {
   int mode;
   int year;
   int peri;
-  int qnum;
+  String qnum;
   int trynum;
 
 
@@ -446,7 +446,7 @@ class _ResultState extends State<Result> {
         id:null
         ,businessYear:2021
         ,period:1
-        ,questionNo:5
+        ,questionNo:'A05'
         ,endFlg:false
         ,correctType:null
         ,singleAnswer:null
@@ -459,7 +459,7 @@ class _ResultState extends State<Result> {
         id:null
         ,businessYear:2021
         ,period:1
-        ,questionNo:10
+        ,questionNo:'C10'
         ,endFlg:false
         ,correctType:null
         ,singleAnswer:null
@@ -471,7 +471,7 @@ class _ResultState extends State<Result> {
         id:null
         ,businessYear:2021
         ,period:1
-        ,questionNo:15
+        ,questionNo:'B15'
         ,endFlg:false
         ,correctType:null
         ,singleAnswer:null
@@ -483,7 +483,7 @@ class _ResultState extends State<Result> {
         id:null
         ,businessYear:2021
         ,period:1
-        ,questionNo:20
+        ,questionNo:'D20'
         ,endFlg:false
         ,correctType:null
         ,singleAnswer:null
