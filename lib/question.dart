@@ -33,7 +33,7 @@ class _QuestionState extends State<Question> {
   int mode;
   int businessYear ;
   int period ;
-  int questionNo ;
+  String questionNo ;
   int tryingListNo;
   int tryingListCount=0;
   var _textController = TextEditingController();
@@ -142,7 +142,7 @@ class _QuestionState extends State<Question> {
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         title: Text(
-            "${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
+            "${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo}"),
         leading: Icon(Icons.home_sharp),
         elevation: elev,
         automaticallyImplyLeading: false,
@@ -573,7 +573,7 @@ class _QuestionState extends State<Question> {
   }
 
 
-  void changeFavorite(int businessYear, int period, int questionNo,bool favoriteValue,MyDatabase db) async {
+  void changeFavorite(int businessYear, int period, String questionNo,bool favoriteValue,MyDatabase db) async {
 
     List<QuestionHeader> qhforFavoriteList =  await db.selectQuestionHeaderByKey(businessYear,period,questionNo);
     print(qhforFavoriteList[0]);

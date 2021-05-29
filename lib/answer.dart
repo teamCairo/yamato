@@ -39,7 +39,7 @@ class _AnswerState extends State<Answer> {
   int mode;
   int businessYear ;
   int period ;
-  int questionNo ;
+  String questionNo ;
   int tryingListNo;
   String singleAnswer ;
   String multipleAnswer ;
@@ -370,7 +370,7 @@ class _AnswerState extends State<Answer> {
   }
 
 
-  void changeFavorite(int businessYear, int period, int questionNo,bool favoriteValue,MyDatabase db) async {
+  void changeFavorite(int businessYear, int period, String questionNo,bool favoriteValue,MyDatabase db) async {
 
     List<QuestionHeader> qhforFavoriteList =  await db.selectQuestionHeaderByKey(businessYear,period,questionNo);
     print(qhforFavoriteList[0]);

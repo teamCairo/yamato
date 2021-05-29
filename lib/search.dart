@@ -101,15 +101,6 @@ class _SearchState extends State<Search> {
           Ctile(number: "", name: "産科",),
 
 
-
-
-
-
-
-
-
-
-
         ],
       ),
     );

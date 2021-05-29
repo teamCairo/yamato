@@ -462,7 +462,7 @@ class _RootWidgetState extends State<RootWidget> {
         id:1
         ,businessYear:2021
         ,period:1
-        ,questionNo:5
+        ,questionNo:'A01'
         ,endFlg:false
         ,correctType:9
         ,singleAnswer:null
@@ -474,7 +474,7 @@ class _RootWidgetState extends State<RootWidget> {
         id:2
         ,businessYear:2021
         ,period:1
-        ,questionNo:10
+        ,questionNo:'B02'
         ,endFlg:false
         ,correctType:9
         ,singleAnswer:null
@@ -486,7 +486,7 @@ class _RootWidgetState extends State<RootWidget> {
         id:3
         ,businessYear:2021
         ,period:1
-        ,questionNo:15
+        ,questionNo:'C02'
         ,endFlg:false
         ,correctType:9
         ,singleAnswer:null
@@ -498,7 +498,7 @@ class _RootWidgetState extends State<RootWidget> {
         id:4
         ,businessYear:2021
         ,period:1
-        ,questionNo:20
+        ,questionNo:'F12'
         ,endFlg:false
         ,correctType:9
         ,singleAnswer:null
