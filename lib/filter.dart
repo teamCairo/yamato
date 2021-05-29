@@ -160,8 +160,9 @@ class _FilterState extends State<Filter> {
      List<int> _kai1 = _kai.map(int.parse).toList();
      List<int> _hissyu1 = _hissyu.map(int.parse).toList();
      List<int> _clip1 = _clip.map(int.parse).toList();
+     List<int> _filters1 = _filters.map(int.parse).toList();
             _joken = await db.selectQuestionFilesForFilter(
-                senko3, _hissyu1, _kai1, _clip1, _gotou);
+                _filters1, _hissyu1, _kai1, _clip1, _gotou);
               print(_joken);
    }
 
@@ -459,7 +460,6 @@ class _FilterState extends State<Filter> {
                           child:ElevatedButton(onPressed: (){
                             //TODO 全選択ボタンの中身実装
                             all1();
-                          //  setState(() {                              _filters.addAll()});
                             },
                             child: Text('全選択', style: TextStyle(fontSize: 14, color: Colors.white)),
                     style: OutlinedButton.styleFrom(
