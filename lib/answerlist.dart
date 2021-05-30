@@ -11,6 +11,7 @@ class AnswerList extends StatefulWidget {
 class _AnswerListState extends State<AnswerList> {
 
   MyDatabase db = MyDatabase();
+  final double elev = 20;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,19 @@ class _AnswerListState extends State<AnswerList> {
 
       appBar: AppBar(
         title: Text("解答一覧"),
-        backgroundColor: Colors.lightBlue[400],
+        leading: IconButton(
+          icon: Icon(Icons.home_sharp),
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RootWidget(),
+                    maintainState: false));
+          },
+        ),
+        elevation: elev,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.lightBlue,
         actions: [],
       ),
 
@@ -41,16 +54,14 @@ class _AnswerListState extends State<AnswerList> {
           child:SizedBox(
             width: 280,
             height: 60,
-            child: ElevatedButton(onPressed: () {
-              //TODO ルート画面に戻る処理を追加
-              /*
+            child: ElevatedButton(          onPressed: () {
               Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Root()),
-              );
-               */
-
-            }, child: Text("ホームへ", style: TextStyle(fontSize:  20,),),),
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => RootWidget(),
+                      maintainState: false));
+            }
+            , child: Text("ホームへ", style: TextStyle(fontSize:  20,),),),
           ),
         ),
       ),

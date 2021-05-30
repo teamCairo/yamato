@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'answer.dart';
+import 'root.dart';
 import 'db.dart';
 
 class Question extends StatefulWidget {
@@ -141,9 +142,18 @@ class _QuestionState extends State<Question> {
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
-        title: Text(
-            "${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo}"),
-        leading: Icon(Icons.home_sharp),
+        title: Text(initialDataRead==false ? "" :
+            "${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo}" ),
+        leading: IconButton(
+            icon:Icon(Icons.home_sharp)
+        ,onPressed:() {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RootWidget()
+                  ,maintainState:false)
+          );
+        },),
         elevation: elev,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlue,
@@ -167,7 +177,7 @@ class _QuestionState extends State<Question> {
       ),
       body: Container(
           child: SingleChildScrollView(
-              child: Column(children: <Widget>[
+              child: Column(children:initialDataRead==false ? <Widget>[] : <Widget>[
         Card(
             margin: EdgeInsets.all(10),
             child: Column(children: [

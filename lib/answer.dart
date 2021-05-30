@@ -4,6 +4,7 @@ import 'package:yamato/question.dart';
 import 'package:yamato/finish.dart';
 
 import 'db.dart';
+import 'root.dart';
 
 class Answer extends StatefulWidget {
 
@@ -135,8 +136,17 @@ class _AnswerState extends State<Answer> {
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
-        title: Text("${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
-        leading: Icon(Icons.home_sharp),
+        title: Text(initialDataRead==false ? "" :"${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
+        leading: IconButton(
+          icon:Icon(Icons.home_sharp)
+          ,onPressed:() {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RootWidget()
+                  ,maintainState:false)
+          );
+        },),
         elevation: elev,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlue,
@@ -161,7 +171,7 @@ class _AnswerState extends State<Answer> {
           color:Colors.cyan[100],
           child: SingleChildScrollView(
             child: Column(
-              children: <Widget>[
+              children:initialDataRead==false ? <Widget>[] : <Widget>[
                 Container(
                   child: Center(
                       child: Icon(correctAnswer==answer ?Icons.radio_button_off :Icons.close, size: 100, color: correctAnswer==answer ?Colors.red :Colors.indigo)),
