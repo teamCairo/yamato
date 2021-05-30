@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:yamato/qtile.dart';
 import 'package:yamato/question.dart';
 import 'package:yamato/db.dart';
-import 'package:filter_list/filter_list.dart';
 
 import 'filter.dart';
 
 class Result extends StatefulWidget {
-  //Result({Key key}) : super(key: key);
   Result(this.mode, this.question1, this.year, this.peri, this.qnum, this.trynum
-      //this.question1, this.qtext1, this.kailist1, this.codelist1,
-      //this.catlist1, this.hitsulist1, this.moshi1
       );
   //TODO(△) Result(argumentmode:1-4, argumentQH:??, argumentBY:??,
   // argumentPeri:??, argumentQN:??, argumentQTN:??)
@@ -19,20 +14,11 @@ class Result extends StatefulWidget {
   //TODO（×）　非同期処理調整
 
   List question1;
-  //List qtext1;
-  //List kailist1;
-  //List codelist1;
-  //List catlist1;
-  //List hitsulist1;
-  //List<bool> moshi1;
-
   int mode;
   int year;
   int peri;
   String qnum;
   int trynum;
-
-
 
   @override
   _ResultState createState() => _ResultState();
@@ -44,79 +30,40 @@ class _ResultState extends State<Result> {
   Color _iconcol = Colors.lightBlue;
   List<int> qorder = <int>[];
   List question2;
-  List qtext2 = [];
+  List qtextlist2 = [];
   List kailist2 = [];
   List codelist2 = [];
   List catlist2 = [];
-  List hitsulist2 = [];
-  List moshi2 = [];
+  List hissyulist2 = [];
+  List moshilist2 = [];
+  List favolist2 = [];
   List<bool> checkm = [];
   List hissyulist = [];
   bool _ordercheck = false;
   List questionagain;
   List tryhistory;
   bool initialdataread = false;
+  bool datareadforfav = true;
+  List<int> favon = [];
+  List fav = [];
+
+
+  IconData favoriteIcon;
 
   void initState() {
     super.initState();
     morewait();
-  // if(widget.mode != 4){
-   // MyDatabase db = MyDatabase();
-   // gettry(db);
-  // }else if(widget.mode == 4){}
-   // if (widget.question1 != null) {
-    //  this.question2 = widget.question1;
-    //  print('q2');
-    //  print(question2);
-   // }
-  //  if (widget.qtext1 != null) {
-    //  this.qtext2 = widget.qtext1;
-    //}
-    //if (widget.kailist1 != null) {
-     // this.kailist2 = widget.kailist1;
-    //}
-    //if (widget.catlist1 != null) {
-     // this.catlist2 = widget.catlist1;
-    //}
-    //if (widget.codelist1 != null) {
-     // this.codelist2 = widget.codelist1;
-   // }
-    //if (widget.hitsulist1 != null) {
-      //this.hitsulist2 = widget.hitsulist1;
-    //}
-    //if (widget.moshi1 != null) {
-     // this.moshi2 = widget.moshi1;
-    //}
-
-
-  }
-   void insertdata(){
-    if(widget.mode != 4){
-      MyDatabase db = MyDatabase();
-      gettry(db);
-    }else if(widget.mode == 4){}
-    if (widget.question1 != null) {
-      this.question2 = widget.question1;
-      print('q2');
-      print(question2);
-    }
   }
 
   Future<void> morewait() async{
     await waiting();
-    for(var i = 0; i < moshi2.length; i++) {
-      if (moshi2[i] == 0) {
+    for(var i = 0; i < moshilist2.length; i++) {
+      if (moshilist2[i] == 0) {
         checkm.add(false);
-      } else if (moshi2[i] == 1) {
+      } else if (moshilist2[i] == 1) {
         checkm.add(true);
       } else {}
     }
-    for(var i = 0; i < hitsulist2.length; i++)
-      if(hitsulist2[i] == 0) {
-        hissyulist.add("必修");
-      } else if (hitsulist2[i] == 1) {
-        hissyulist.add("必修以外");
-      } else {}
     setState(() {
       initialdataread = true;
     });
@@ -127,36 +74,104 @@ class _ResultState extends State<Result> {
     print(catlist2);
     print(codelist2);
     print(kailist2);
-    print(qtext2);
+    print(qtextlist2);
   }
+
   Future waiting() async{
     await insertdata();
+
     if (question2 == null) {
     } else {
       for(var i = 0; i < question2.length; i++) {
-        kailist2.add(question2[i].period);
-        codelist2.add(question2[i].questionNo);
-        hitsulist2.add(question2[i].compulsoryType);
+        //kailist2.add(question2[i].period);
+        //codelist2.add(question2[i].questionNo);
+        //hissyulist2.add(question2[i].compulsoryType);
         catlist2.add(question2[i].subjectId);
-        moshi2.add(question2[i].correctType1);
-        qtext2.add(question2[i].questionText);}
+        moshilist2.add(question2[i].correctType1);
+        //qtextlist2.add(question2[i].questionText);
+        //favolist2.add(question2[i].favorite);
+      }
     }
   }
 
-  void dataget(MyDatabase db) async{
-    questionagain = await db.selectQuestionHeaderByKey(
-     widget.year, widget.peri, widget.qnum
-    );
+  Future insertdata(){
+    if(widget.mode != 4){
+      MyDatabase db = MyDatabase();
+      gettry(db);
+    }else if(widget.mode == 4){}
+    if (widget.question1 != null) {
+      this.question2 = widget.question1;
+      print('q2');
+      print(question2);
+    }
+    setState(() {
+      datareadforfav = true;
+    });
   }
+
+  Future insertdata1() async{
+    MyDatabase db = MyDatabase();
+    this.question2 = await dataget(db);
+    print('確認');
+    print(question2);
+    setState(() {
+      datareadforfav = true;
+    });
+  }
+
   void gettry(MyDatabase db) async{
     tryhistory = await db.getAllquestiontryings();
     dataget(db);
-}
+  }
+
+  Future dataget(MyDatabase db) async{
+    questionagain = await db.selectQuestionHeaderByKey(
+        widget.year, widget.peri, widget.qnum
+    );
+  }
+
+
+
+  Future changeFavorite(int businessYear, int period, String questionNo,bool favoriteValue,MyDatabase db) async {
+
+    List<QuestionHeader> qhforFavoriteList =  await db.selectQuestionHeaderByKey(businessYear,period,questionNo);
+    print(qhforFavoriteList[0]);
+    print('前');
+
+    QuestionHeader qhforFavorite = QuestionHeader(
+        businessYear:qhforFavoriteList[0].businessYear
+        ,period:qhforFavoriteList[0].period
+        ,questionNo:qhforFavoriteList[0].questionNo
+        ,subjectId:qhforFavoriteList[0].subjectId
+        ,pediatricsType:qhforFavoriteList[0].pediatricsType
+        ,compulsoryType:qhforFavoriteList[0].compulsoryType
+        ,answerType:qhforFavoriteList[0].answerType
+        ,questionText:qhforFavoriteList[0].questionText
+        ,numberAnswer:qhforFavoriteList[0].numberAnswer
+        ,correctType1:qhforFavoriteList[0].correctType1
+        ,correctType2:qhforFavoriteList[0].correctType2
+        ,correctType3:qhforFavoriteList[0].correctType3
+        ,favorite:favoriteValue);
+
+    db.updatequestionheader(qhforFavorite);
+    print(qhforFavoriteList[0]);
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final onoff = fav.contains("1");
+  ////  for(var i=0; i<question2.length; i++){
+  //    favkanri.add(question2[i].favorite);
+   // }
+    //if(datareadforfav == false){
+      //insertdata1();
+    //}else{
+    //}
+
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
@@ -169,23 +184,23 @@ class _ResultState extends State<Result> {
             padding: const EdgeInsets.all(4.0),
             child: IconButton(
               icon: Icon(Icons.search),
-               onPressed: () => {
+              onPressed: () => {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Filter(),
                       fullscreenDialog: true,
                     )
-                  )},
-                ),
-               ),
-             ],
+                )},
             ),
+          ),
+        ],
+      ),
       body: Column(
         children: <Widget>[
           Expanded(
             child:question2 == null ? Container()
-            :ListView.builder(
+                :ListView.builder(
                 padding: const EdgeInsets.all(8),
                 itemCount: question2 == null ? 0 :question2.length,
                 itemBuilder: (BuildContext context, int index) {
@@ -196,8 +211,8 @@ class _ResultState extends State<Result> {
                           builder: (context) => Question(
                               argumentMode: 2,
                               argumentBusinessYear: null,
-                              argumentPeriod: kailist2[index],
-                              argumentQuestionNo: codelist2[index],
+                              argumentPeriod: question2[index].period,
+                              argumentQuestionNo: question2[index].questionNo,
                               argumentTryingListNo: null
                           ),
                         ),
@@ -205,168 +220,146 @@ class _ResultState extends State<Result> {
                     },
                     child: Card(
                       child: Container(
-                        height: height*0.097,
+                        height: height*0.11,
+                        //0.097
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
                                   child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,
-                                children: <Widget>[
-                                  Container(
-                                    child: Row(
-                                      mainAxisAlignment:
+                                    children: <Widget>[
+                                      Container(
+                                        child: Row(
+                                          mainAxisAlignment:
                                           MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        SizedBox(width: width*0.012),
-                                        initialdataread == false ? Container():
-                                        Container(
-                                          width: width*0.25,
-                                          child: initialdataread == false ? Text('') :Text(
-                                              "第" +
-                                                  kailist2[index].toString() +
-                                                  "回" +
-                                                  '/' +
-                                                  codelist2[index].toString(),
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.black54)),
-                                        ),
-                                        SizedBox(
-                                          width: width*0.01,
-                                        ),
-                                        Container(
-                                          child: initialdataread == false ? Text('')
-                                              :Text(
-                                            catlist2[index].toString(),
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.blue),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: width*0.037,
-                                        ),
-                                        Container(
-                                          height: height*0.02,
-                                          width: width*0.15,
-                                          decoration: BoxDecoration(
-                                            border: const Border(
-                                              left: const BorderSide(
-                                                color: Colors.black54,
-                                                width: 1,
-                                              ),
-                                              top: const BorderSide(
-                                                color: Colors.black54,
-                                                width: 1,
-                                              ),
-                                              right: const BorderSide(
-                                                color: Colors.black54,
-                                                width: 1,
-                                              ),
-                                              bottom: const BorderSide(
-                                                color: Colors.black54,
-                                                width: 1,
+                                          children: <Widget>[
+                                            SizedBox(width: width*0.012),
+                                            initialdataread == false ? Container():
+                                            Container(
+                                              width: width*0.25,
+                                              child: initialdataread == false ? Text('') :Text(
+                                                  "第" +
+                                                      question2[index].period.toString() +
+                                                      "回" +
+                                                      '/' +
+                                                      question2[index].questionNo.toString(),
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight: FontWeight.w600,
+                                                      color: Colors.black54)),
+                                            ),
+                                            SizedBox(
+                                              width: width*0.01,
+                                            ),
+                                            Container(
+                                              child: initialdataread == false ? Text('')
+                                                  :Text(
+                                                catlist2[index].toString(),
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.blue),
                                               ),
                                             ),
-                                          ),
-                                          child: Padding(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  2, 2, 2, 2),
-                                              child:initialdataread == false ? Text('')
-                                                  :Text(
-                                                hissyulist[index].toString(),
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.black),
-                                              )),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    width: width*0.65,
-                                    child: Row(children: <Widget>[
-                                      SizedBox(
-                                        width: width*0.05,
                                       ),
-                                      Flexible(
-                                        child:initialdataread == false ? Text('')
-                                            :Text(
-                                          qtext2[index],
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.indigo[900],
-                                            fontWeight: FontWeight.bold,
+                                      Container(
+                                        width: width*0.65,
+                                        child: Row(children: <Widget>[
+                                          SizedBox(
+                                            width: width*0.05,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
-                                        ),
-                                      )
-                                    ]),
-                                  ),
-                                ],
-                              )),
-                              Container(
+                                          Flexible(
+                                            child:initialdataread == false ? Text('')
+                                                :Text(
+                                              //qtextlist2[index],
+                                              question2[index].questionText,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.indigo[900],
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                            ),
+                                          )
+                                        ]),
+                                      ),
+                                    ],
+                                  )),
+                              initialdataread == false ? Container()
+                                  :Container(
                                 child: Row(children: <Widget>[
                                   Container(
                                     height: height*0.086,
                                     child: Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       children: <Widget>[
                                         SizedBox(
-                                          height: height*0.03,
+                                          height: height*0.01,
                                         ),
-                                        Visibility(
-                                          visible: initialdataread == false ? false
-                                              :checkm[index],
+                                        Container(
+                                          height: height*0.06,
+                                           width: width*0.15,
+                                          // Visibility(
+                                          //  visible: initialdataread == false ? false
+                                          //     :checkm[index], child:
                                           child: Column(children: <Widget>[
-                                            Text('＜模試：誤＞',
+                                            Text('＜模試＞',
                                                 style: TextStyle(
                                                     fontSize: 11,
-                                                    color: Colors.black,
+                                                    color: Colors.indigo[800],
                                                     fontWeight:
-                                                        FontWeight.w500)),
+                                                    FontWeight.w600)),
                                             SizedBox(
-                                              height: height*0.03,
+                                              height: height*0.01,
                                             ),
-                                            Icon(Icons.check),
+                                            checkm[index] == false ? Icon(Icons.radio_button_off, color: Colors.red, size: 30) :Icon(Icons.close, color: Colors.blue, size: 30),
                                           ]),
                                         ),
                                         SizedBox(
-                                          height: height*0.03,
+                                          height: height*0.01,
+                                          //0.03
                                         ),
                                       ],
                                     ),
                                   ),
                                   SizedBox(
-                                    width: width*0.012,
+                                    width: width*0.02,
                                   ),
                                   GestureDetector(
                                     onTap: () {
                                       //TODO　favorite機能実装
                                       setState(() {
-                                        if (favorite == false) {
-                                          _iconcol = Colors.yellow;
-                                          favorite = true;
-                                        } else if (favorite == true) {
-                                          _iconcol = Colors.lightBlue;
-                                          favorite = false;
-                                        } else {}
+                                        MyDatabase db=MyDatabase();
+                                        //datareadforfav =false;
+                                        if(onoff == false){
+                                          if(fav.contains('1') == false){
+                                          fav.add('1');}else{}
+                                          print('ふぁｖ管理');
+                                          print(onoff);
+                                        }else{
+                                         fav.remove('1');
+                                          print('ふぁｖ管理');
+                                          print(onoff);
+                                        }
+                                        changeFavorite(2021, question2[index].period, question2[index].questionNo,!question2[index].favorite,db);
                                       });
                                     },
-                                    child: Icon(
+                                    child:onoff == false ?
+                                    Icon(
                                       Icons.star_border,
-                                      color: _iconcol,
+                                      //favoriteIcon
+                                      color: Colors.blue,
                                       size: 30,
-                                    ),
+                                    )
+                                    :Icon(Icons.star,color: Colors.yellowAccent, size: 30,)
                                   ),
                                   SizedBox(
                                     width: width*0.025,
