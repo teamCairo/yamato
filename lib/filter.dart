@@ -223,6 +223,8 @@ class _FilterState extends State<Filter> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final adjustsizeh = MediaQuery.of(context).size.height*0.0011;
+
 
     Widget Catbutton (
         int num, Color col, Color bcol, String text, bool flag
@@ -322,7 +324,7 @@ class _FilterState extends State<Filter> {
                                 //TODO 全選択ボタンの中身実装
                                 all();
                               },
-                                child: Text('全選択', style: TextStyle(fontSize: 14, color: Colors.white)),
+                                child: Text('全選択', style: TextStyle(fontSize: 14*adjustsizeh, color: Colors.white)),
                                 style: OutlinedButton.styleFrom(
                                     primary: Colors.lightBlue,
                                     backgroundColor: Colors.lightBlue,
@@ -342,7 +344,7 @@ class _FilterState extends State<Filter> {
                               child:ElevatedButton(onPressed: (){
                                 //TODO クリアボタンの中身実装
                                 clear();
-                              }, child: Text('クリア', style: TextStyle(fontSize: 14, color: Colors.white)),
+                              }, child: Text('クリア', style: TextStyle(fontSize: 14*adjustsizeh, color: Colors.white)),
                                 style: OutlinedButton.styleFrom(
                                     primary: Colors.lightBlue,
                                     backgroundColor: Colors.lightBlue,
@@ -437,7 +439,7 @@ class _FilterState extends State<Filter> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   alignment: Alignment.center,
-                                  child: Text('必修',  style: TextStyle(fontSize: 14, color: hissyucol1),),
+                                  child: Text('必修',  style: TextStyle(fontSize: 14*adjustsizeh, color: hissyucol1),),
                                 ),),
                               SizedBox(width: width*0.03),
                               GestureDetector(
@@ -480,7 +482,7 @@ class _FilterState extends State<Filter> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   alignment: Alignment.center,
-                                  child: Text('必修以外',  style: TextStyle(fontSize: 14, color: hissyucol2),),
+                                  child: Text('必修以外',  style: TextStyle(fontSize: 14*adjustsizeh, color: hissyucol2),),
                                 ),),
                             ]),
                       ]),
@@ -545,9 +547,9 @@ class _FilterState extends State<Filter> {
                                 alignment: Alignment.center,
                                 child: Row( mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget> [
-                                      Icon(Icons.star, size:20, color: favocol1,),
+                                      Icon(Icons.star, size:20*adjustsizeh, color: favocol1,),
                                       SizedBox(width: width*0.012,),
-                                      Text('有',  style: TextStyle(fontSize: 14, color: favocol1),),]),
+                                      Text('有',  style: TextStyle(fontSize: 14*adjustsizeh, color: favocol1),),]),
                               ),),
                             SizedBox(width: width*0.045),
                             GestureDetector(
@@ -592,9 +594,9 @@ class _FilterState extends State<Filter> {
                                 alignment: Alignment.center,
                                 child: Row( mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget> [
-                                      Icon(Icons.star, size:20, color: favocol2,),
+                                      Icon(Icons.star, size:20*adjustsizeh, color: favocol2,),
                                       SizedBox(width: width*0.012,),
-                                      Text('無',  style: TextStyle(fontSize: 14, color: favocol2),),]),
+                                      Text('無',  style: TextStyle(fontSize: 14*adjustsizeh, color: favocol2),),]),
                               ),),
                           ],
                         ),
@@ -670,7 +672,7 @@ class _FilterState extends State<Filter> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   alignment: Alignment.center,
-                                  child: Text('全ての問題',  style: TextStyle(fontSize: 14, color: gotoucol1),),
+                                  child: Text('全ての問題',  style: TextStyle(fontSize: 14*adjustsizeh, color: gotoucol1),),
                                 ),),
                               SizedBox(height: height*0.01,),
 
@@ -786,7 +788,7 @@ class _FilterState extends State<Filter> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     alignment: Alignment.center,
-                                    child: Text('第１回',  style: TextStyle(fontSize: 14, color: kaicol1),),
+                                    child: Text('第１回',  style: TextStyle(fontSize: 14*adjustsizeh, color: kaicol1),),
                                   ),),
                                 SizedBox(width: width*0.03),
                                 GestureDetector(
@@ -829,7 +831,7 @@ class _FilterState extends State<Filter> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     alignment: Alignment.center,
-                                    child: Text('第２回',  style: TextStyle(fontSize: 14, color: kaicol2),),
+                                    child: Text('第２回',  style: TextStyle(fontSize: 14*adjustsizeh, color: kaicol2),),
                                   ),),
                               ]),
                           SizedBox(height: height*0.012,),

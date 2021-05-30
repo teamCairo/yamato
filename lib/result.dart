@@ -10,8 +10,7 @@ class Result extends StatefulWidget {
   //TODO(△) Result(argumentmode:1-4, argumentQH:??, argumentBY:??,
   // argumentPeri:??, argumentQN:??, argumentQTN:??)
   //TODO（△） QTN系からQH取得
-  //TODO（◎） QHから各要素取り出しでレイアウトへ
-  //TODO（×）　非同期処理調整
+  //TODO（△）　非同期処理調整
 
   List question1;
   int mode;
@@ -29,7 +28,7 @@ class _ResultState extends State<Result> {
   bool favorite = false;
   Color _iconcol = Colors.lightBlue;
   List<int> qorder = <int>[];
-  List question2;
+  List question2 =[];
   List qtextlist2 = [];
   List kailist2 = [];
   List codelist2 = [];
@@ -45,7 +44,7 @@ class _ResultState extends State<Result> {
   bool initialdataread = false;
   bool datareadforfav = true;
   List<int> favon = [];
-  List fav = [];
+  final fav = Set<String>();
 
 
   IconData favoriteIcon;
@@ -125,9 +124,12 @@ class _ResultState extends State<Result> {
   }
 
   Future dataget(MyDatabase db) async{
-    questionagain = await db.selectQuestionHeaderByKey(
-        widget.year, widget.peri, widget.qnum
+    for(var i=0; i<tryhistory.length; i++){
+      questionagain = await db.selectQuestionHeaderByKey(
+       // widget.year, widget.peri, widget.qnum
+      tryhistory[i].businessYear, tryhistory[i].period, tryhistory[i].questionNo
     );
+    question2.add(questionagain);}
   }
 
 
@@ -152,10 +154,10 @@ class _ResultState extends State<Result> {
         ,correctType2:qhforFavoriteList[0].correctType2
         ,correctType3:qhforFavoriteList[0].correctType3
         ,favorite:favoriteValue);
-
+//TODO 情報取得・更新不具合修正
     db.updatequestionheader(qhforFavorite);
     print(qhforFavoriteList[0]);
-
+    print('後');
 
   }
 
@@ -163,7 +165,9 @@ class _ResultState extends State<Result> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final onoff = fav.contains("1");
+
+    List<Widget> Elements =[];
+
   ////  for(var i=0; i<question2.length; i++){
   //    favkanri.add(question2[i].favorite);
    // }
@@ -172,250 +176,260 @@ class _ResultState extends State<Result> {
     //}else{
     //}
 
-    return Scaffold(
-      backgroundColor: Colors.cyan[100],
-      appBar: AppBar(
-        elevation: 8,
-        leading: Icon(Icons.home_sharp),
-        title: question2 == null ? Text('') :Text("検索結果：${question2.length}問"),
-        backgroundColor: Colors.lightBlue[400],
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Filter(),
-                      fullscreenDialog: true,
-                    )
-                )},
-            ),
-          ),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child:question2 == null ? Container()
-                :ListView.builder(
-                padding: const EdgeInsets.all(8),
-                itemCount: question2 == null ? 0 :question2.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => Question(
-                              argumentMode: 2,
-                              argumentBusinessYear: null,
-                              argumentPeriod: question2[index].period,
-                              argumentQuestionNo: question2[index].questionNo,
-                              argumentTryingListNo: null
-                          ),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      child: Container(
-                        height: height*0.11,
-                        //0.097
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Container(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Container(
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            SizedBox(width: width*0.012),
-                                            initialdataread == false ? Container():
-                                            Container(
-                                              width: width*0.25,
-                                              child: initialdataread == false ? Text('') :Text(
-                                                  "第" +
-                                                      question2[index].period.toString() +
-                                                      "回" +
-                                                      '/' +
-                                                      question2[index].questionNo.toString(),
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 14,
-                                                      fontWeight: FontWeight.w600,
-                                                      color: Colors.black54)),
-                                            ),
-                                            SizedBox(
-                                              width: width*0.01,
-                                            ),
-                                            Container(
-                                              child: initialdataread == false ? Text('')
-                                                  :Text(
-                                                catlist2[index].toString(),
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.blue),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        width: width*0.65,
-                                        child: Row(children: <Widget>[
-                                          SizedBox(
-                                            width: width*0.05,
-                                          ),
-                                          Flexible(
-                                            child:initialdataread == false ? Text('')
-                                                :Text(
-                                              //qtextlist2[index],
-                                              question2[index].questionText,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.indigo[900],
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                            ),
-                                          )
-                                        ]),
-                                      ),
-                                    ],
-                                  )),
-                              initialdataread == false ? Container()
-                                  :Container(
-                                child: Row(children: <Widget>[
-                                  Container(
-                                    height: height*0.086,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        SizedBox(
-                                          height: height*0.01,
-                                        ),
-                                        Container(
-                                          height: height*0.06,
-                                           width: width*0.15,
-                                          // Visibility(
-                                          //  visible: initialdataread == false ? false
-                                          //     :checkm[index], child:
-                                          child: Column(children: <Widget>[
-                                            Text('＜模試＞',
-                                                style: TextStyle(
-                                                    fontSize: 11,
-                                                    color: Colors.indigo[800],
-                                                    fontWeight:
-                                                    FontWeight.w600)),
-                                            SizedBox(
-                                              height: height*0.01,
-                                            ),
-                                            checkm[index] == false ? Icon(Icons.radio_button_off, color: Colors.red, size: 30) :Icon(Icons.close, color: Colors.blue, size: 30),
-                                          ]),
-                                        ),
-                                        SizedBox(
-                                          height: height*0.01,
-                                          //0.03
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: width*0.02,
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      //TODO　favorite機能実装
-                                      setState(() {
-                                        MyDatabase db=MyDatabase();
-                                        //datareadforfav =false;
-                                        if(onoff == false){
-                                          if(fav.contains('1') == false){
-                                          fav.add('1');}else{}
-                                          print('ふぁｖ管理');
-                                          print(onoff);
-                                        }else{
-                                         fav.remove('1');
-                                          print('ふぁｖ管理');
-                                          print(onoff);
-                                        }
-                                        changeFavorite(2021, question2[index].period, question2[index].questionNo,!question2[index].favorite,db);
-                                      });
-                                    },
-                                    child:onoff == false ?
-                                    Icon(
-                                      Icons.star_border,
-                                      //favoriteIcon
-                                      color: Colors.blue,
-                                      size: 30,
-                                    )
-                                    :Icon(Icons.star,color: Colors.yellowAccent, size: 30,)
-                                  ),
-                                  SizedBox(
-                                    width: width*0.025,
-                                  ),
-                                ]),
-                              ),
-                            ]),
-                      ),
-                    ),
-                  );
-                }),
-          ),
-          SizedBox(
-            height: height*0.032,
-            width: width*0.62,
-            child: CheckboxListTile(
-              value: _ordercheck,
-              title: Text(
-                "順番をシャッフルする",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  //color: Colors.indigo[900],
-                ),
+    Widget ListElement(int p, String n, int c, String t, bool m, bool f ){
+      final onoff = fav.contains('2021'+p.toString()+n);
+      return InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => Question(
+                  argumentMode: 2,
+                  argumentBusinessYear: null,
+                  argumentPeriod: p,
+                  argumentQuestionNo: n,
+                  argumentTryingListNo: null
               ),
-              controlAffinity: ListTileControlAffinity.leading,
-              onChanged: (bool value) {
-                setState(() {
-                  _ordercheck = value;
-                });
-              },
             ),
+          );
+        },
+        child: Card(
+          child: Container(
+            height: height*0.11,
+            //0.097
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Container(
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(width: width*0.012),
+                                initialdataread == false ? Container():
+                                Container(
+                                  width: width*0.25,
+                                  child: initialdataread == false ? Text('') :Text(
+                                      "第" +
+                                          p.toString() +
+                                          "回" +
+                                          '/' +
+                                          n,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black54)),
+                                ),
+                                SizedBox(
+                                  width: width*0.01,
+                                ),
+                                Container(
+                                  child: initialdataread == false ? Text('')
+                                      :Text(
+                                    c.toString(),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blue),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            width: width*0.65,
+                            child: Row(children: <Widget>[
+                              SizedBox(
+                                width: width*0.05,
+                              ),
+                              Flexible(
+                                child:initialdataread == false ? Text('')
+                                    :Text(
+                                  //qtextlist2[index],
+                                  t,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.indigo[900],
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                              )
+                            ]),
+                          ),
+                        ],
+                      )),
+                  initialdataread == false ? Container()
+                      :Container(
+                    child: Row(children: <Widget>[
+                      Container(
+                        height: height*0.086,
+                        child: Column(
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              height: height*0.01,
+                            ),
+                            Container(
+                              height: height*0.06,
+                              width: width*0.15,
+                              // Visibility(
+                              //  visible: initialdataread == false ? false
+                              //     :checkm[index], child:
+                              child: Column(children: <Widget>[
+                                Text('＜模試＞',
+                                    style: TextStyle(
+                                        fontSize: 11,
+                                        color: Colors.indigo[800],
+                                        fontWeight:
+                                        FontWeight.w600)),
+                                SizedBox(
+                                  height: height*0.01,
+                                ),
+                                m == false ? Icon(Icons.radio_button_off, color: Colors.red, size: 30) :Icon(Icons.close, color: Colors.blue, size: 30),
+                              ]),
+                            ),
+                            SizedBox(
+                              height: height*0.01,
+                              //0.03
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: width*0.02,
+                      ),
+                      GestureDetector(
+                          onTap: () {
+                            //TODO　favorite機能実装
+                            setState(() {
+                              MyDatabase db=MyDatabase();
+                              //datareadforfav =false;
+                              if(onoff == false){
+                                fav.add('2021'+p.toString()+n);
+                              }else{
+                                fav.remove('2021'+p.toString()+n);
+                              }
+                              changeFavorite(2021, p, n,!f,db);
+                            });
+                          },
+                          child:onoff == false ?
+                          Icon(
+                            Icons.star_border,
+                            //favoriteIcon
+                            color: Colors.blue,
+                            size: 30,
+                          )
+                              :Icon(Icons.star,color: Colors.yellowAccent, size: 30,)
+                      ),
+                      SizedBox(
+                        width: width*0.025,
+                      ),
+                    ]),
+                  ),
+                ]),
           ),
-          Container(
-            padding: const EdgeInsets.all(20),
-            margin: EdgeInsets.all(4),
-            child: SizedBox(
-              height: height*0.065,
-              width: width*0.7,
-              child: ElevatedButton(
-                onPressed: () {
-                  startStudy();
-                },
-                child: Text(
-                  "演習を始める",
+        ),
+      );}
+      if(question2 != null){
+    for(var i=1; i<question2.length; i++){
+      Elements.add(ListElement(question2[i].period, question2[i].questionNo,
+          question2[i].subjectId, question2[i].questionText,
+          checkm[i], question2[i].favorite));
+    }}else{}
+
+
+      return Scaffold(
+        backgroundColor: Colors.cyan[100],
+        appBar: AppBar(
+          elevation: 8,
+          leading: Icon(Icons.home_sharp),
+          title: question2 == null ? Text('') :Text("検索結果：${question2.length}問"),
+          backgroundColor: Colors.lightBlue[400],
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: IconButton(
+                icon: Icon(Icons.search),
+                //TODO このボタン押下時、前の検索条件を保持する？戻るボタンを押したとき
+                //navipopだともっと前の画面に戻ってしまう。new画面且つリセット状態でも不自然ではない？
+                onPressed: () => {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Filter(),
+                        fullscreenDialog: true,
+                      )
+                  )},
+              ),
+            ),
+          ],
+        ),
+        body: Column(
+          children: <Widget>[
+            Expanded(
+              child:question2 == null ? Container()
+                  :ListView(
+                  //padding: const EdgeInsets.all(8),
+                  //itemCount: question2 == null ? 0 :question2.length,
+                //  itemBuilder: (BuildContext context, int index) {
+                    children: Elements,
+                 // }
+                  ),
+            ),
+            SizedBox(
+              height: height*0.032,
+              width: width*0.62,
+              child: CheckboxListTile(
+                value: _ordercheck,
+                title: Text(
+                  "順番をシャッフルする",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    //color: Colors.indigo[900],
+                  ),
+                ),
+                controlAffinity: ListTileControlAffinity.leading,
+                onChanged: (bool value) {
+                  setState(() {
+                    _ordercheck = value;
+                  });
+                },
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.all(20),
+              margin: EdgeInsets.all(4),
+              child: SizedBox(
+                height: height*0.065,
+                width: width*0.7,
+                child: ElevatedButton(
+                  onPressed: () {
+                    startStudy();
+                  },
+                  child: Text(
+                    "演習を始める",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
+          ],
+        ),
+      );
+    }
+
 
   void startStudy() async{
 
@@ -494,5 +508,5 @@ class _ResultState extends State<Result> {
                 argumentQuestionNo: null,
                 argumentTryingListNo: 1)));
   }
-
 }
+
