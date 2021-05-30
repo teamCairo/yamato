@@ -539,8 +539,6 @@ class _QuestionState extends State<Question> {
 
     this.qo =
         await db.selectQuestionOptionsByQInfo(businessYear, period, questionNo);
-    print(qo[0]);
-    print(qo.length.toString());
 
     this.qfQuestionTxt = await db.selectQuestionFilesForUse(
         businessYear, period, questionNo, 1, 1);
@@ -583,6 +581,7 @@ class _QuestionState extends State<Question> {
         ,period:qhforFavoriteList[0].period
         ,questionNo:qhforFavoriteList[0].questionNo
         ,subjectId:qhforFavoriteList[0].subjectId
+        ,pediatricsType:qhforFavoriteList[0].pediatricsType
         ,compulsoryType:qhforFavoriteList[0].compulsoryType
         ,answerType:qhforFavoriteList[0].answerType
         ,questionText:qhforFavoriteList[0].questionText

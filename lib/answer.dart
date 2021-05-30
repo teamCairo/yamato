@@ -235,7 +235,16 @@ class _AnswerState extends State<Answer> {
               margin: const EdgeInsets.all(4.0),
               child: ElevatedButton.icon(
                 onPressed:widget.argumentMode==2||tryingListNo==1 ? null : () {
-                  Navigator.of(context).pop();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Question(
+                              argumentMode: 1,
+                              argumentBusinessYear: null,
+                              argumentPeriod: null,
+                              argumentQuestionNo: null,
+                              argumentTryingListNo: widget.argumentTryingListNo-1)
+                          ,maintainState:false));
                 },
                 label: Text("前へ",
                     style: TextStyle(
@@ -285,8 +294,16 @@ class _AnswerState extends State<Answer> {
                   primary: Colors.white,
                 ),
                 onPressed: widget.argumentMode==2||tryingListNo==tryingListCount ? null :() {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Question()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => Question(
+                      argumentMode: 1,
+                      argumentBusinessYear: null,
+                      argumentPeriod: null,
+                      argumentQuestionNo: null,
+                      argumentTryingListNo: widget.argumentTryingListNo+1)
+                  ,maintainState:false));
                 },
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(16, 2, 0, 2),
@@ -380,6 +397,7 @@ class _AnswerState extends State<Answer> {
         ,period:qhforFavoriteList[0].period
         ,questionNo:qhforFavoriteList[0].questionNo
         ,subjectId:qhforFavoriteList[0].subjectId
+        ,pediatricsType:qhforFavoriteList[0].pediatricsType
         ,compulsoryType:qhforFavoriteList[0].compulsoryType
         ,answerType:qhforFavoriteList[0].answerType
         ,questionText:qhforFavoriteList[0].questionText
