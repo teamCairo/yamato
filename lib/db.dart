@@ -376,7 +376,7 @@ class MyDatabase extends _$MyDatabase {
       customSelect(
         'SELECT MIN(id) as M '
             +'From question_Tryings '
-            +"WHERE end_Flg = 'false' ;",
+            +"WHERE end_Flg = 0 ;",
         readsFrom: {questionTryings},
       ).map((row) => row.readInt('M')
       ).get();
