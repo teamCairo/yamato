@@ -27,7 +27,7 @@ class _FinishState extends State<Finish> {
     if (dataReadFlg) {
       //データ取得後の処理
 
-      correctPercent = (correctNumber / questionNumber).truncate();
+      correctPercent = (100*correctNumber / questionNumber).truncate();
     } else {
       //データ取得前の処理
 

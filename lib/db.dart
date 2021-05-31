@@ -382,4 +382,91 @@ class MyDatabase extends _$MyDatabase {
       ).get();
   }
 
+
+
+  Future<List<AnswerListInfo>> selectAnswerListInfoAll() {
+    return
+      customSelect(
+        'SELECT '
+            +'qh.business_year AS qhbusiness_year '
+            +',qh.period AS qhperiod '
+            +',qh.question_no AS qhquestion_no '
+            +',qh.subject_id AS qhsubject_id '
+            +',qh.pediatrics_type AS qhpediatrics_type '
+            +',qh.compulsory_type AS qhcompulsory_type '
+            +',qh.answer_type AS qhanswer_type '
+            +',qh.question_text AS qhquestion_text '
+            +',qh.number_answer AS qhnumber_answer '
+            +',qh.correct_type1 AS qhcorrect_type1 '
+            +',qh.correct_type2 AS qhcorrect_type2 '
+            +',qh.correct_type3 AS qhcorrect_type3 '
+            +',qh.favorite AS qhfavorite '
+            +',qt.id AS qtid '
+            +',qt.correct_type AS qhcorrect_type '
+            +',qt.single_answer AS qhsingle_answer '
+            +',qt.multiple_answer AS qhmultiple_answer '
+            +',qt.number_answer AS qhnumber_answer '
+            +'From question_Tryings qt '
+            +'LEFT OUTER JOIN question_Headers qh '
+            +'ON qt.business_Year=qh.business_Year '
+            +'AND qt.period=qh.period '
+            +'AND qt.question_No=qh.question_No;',
+        readsFrom: {questionTryings,questionHeaders},
+      ).map((row) => AnswerListInfo(
+          businessYear:row.readInt('qhbusiness_year')
+          ,period:row.readInt('qhperiod')
+          ,questionNo:row.readString('qhquestion_no')
+          ,subjectId:row.readInt('qhsubject_id')
+          ,pediatricsType:row.readInt('qhpediatrics_type')
+          ,compulsoryType:row.readInt('qhcompulsory_type')
+          ,answerType:row.readInt('qhanswer_type')
+          ,questionText:row.readString('qhquestion_text')
+          ,numberAnswer:row.readInt('qhnumber_answer')
+          ,correctType1:row.readInt('qhcorrect_type1')
+          ,correctType2:row.readInt('qhcorrect_type2')
+          ,correctType3:row.readInt('qhcorrect_type3')
+          ,favorite:row.readBool('qhfavorite')
+          ,id:row.readInt('qtid')
+          ,correctType:row.readInt('qtcorrect_type')
+      )).get();
+  }
+
+
+}
+
+class AnswerListInfo{final int businessYear;
+final int period;
+final String questionNo;
+final int subjectId;
+final int pediatricsType;
+final int compulsoryType;
+final int answerType;
+final String questionText;
+final int numberAnswer;
+final int correctType1;
+final int correctType2;
+final int correctType3;
+final bool favorite;
+final int id;
+final int correctType;
+
+  AnswerListInfo({
+    this.businessYear
+    , this.period
+    , this.questionNo
+    , this.subjectId
+    , this.pediatricsType
+    , this.compulsoryType
+    , this.answerType
+    , this.questionText
+    , this.numberAnswer
+    , this.correctType1
+    , this.correctType2
+    , this.correctType3
+    , this.favorite
+    , this.id
+    , this.correctType
+  });
+
+
 }
