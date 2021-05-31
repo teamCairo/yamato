@@ -263,13 +263,13 @@ class MyDatabase extends _$MyDatabase {
     _select += ') AND favorite ';
     int p = fav.length;
     if(p == 0){
-      _select += "IN ('true', 'false') ";
+      _select += "IN (0, 1)";
     }  else if(p ==1 && fav[0] ==0){
-      _select += " IN ('true') ";
+      _select += " IN (0) ";
     } else if(p ==1 && fav[0] ==1){
-      _select += " IN ('true') ";
+      _select += " IN (1) ";
     }else {
-      _select += "IN ('true', 'false') ";
+      _select += "IN (0, 1) ";
     }
 
     _select += '  ORDER BY question_no ASC';
