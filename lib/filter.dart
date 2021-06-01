@@ -107,46 +107,37 @@ class _FilterState extends State<Filter> {
     }
   }
 
-  void filtercondition() async {
-    MyDatabase db = MyDatabase();
+  void filtercondition(MyDatabase db) async {
+    //
     List<int> _kai1 = _period.map(int.parse).toList();
     List<int> _hissyu1 = _compulsory.map(int.parse).toList();
     List<int> _clip1 = _favorite.map(int.parse).toList();
     List<int> _filters1 = _catfilters.map(int.parse).toList();
-    //_pediatrics = _catfilters.contains('29');
     _questions = await db.selectQuestionFilesForFilter(
         _filters1, _hissyu1, _kai1, _clip1, _gotou, _pediatrics);
     print('before');
     print(_questions.length);
     print(_questions);
     print(moshilist2);
-    if(_questions == null){
+    //var indexLength = _questions[0].length;
+    if(_questions.length == 0){
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>
               Result(4, null, null)),
         );
-    } else{
+    }else if(_questions.length > 1){
         //TODO なぜかエラー
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>
               Result(4, _questions, null)),
        );
+    }else {
+      
     }
   }
 
-  Future filtercondition1(MyDatabase db) async {
-    List<int> _kai1 = _period.map(int.parse).toList();
-    List<int> _hissyu1 = _compulsory.map(int.parse).toList();
-    List<int> _clip1 = _favorite.map(int.parse).toList();
-    List<int> _filters1 = _catfilters.map(int.parse).toList();
-    _questions = await db.selectQuestionFilesForFilter(
-        _filters1, _hissyu1, _kai1, _clip1, _gotou, _pediatrics);
-
-    print('dataget');
-    print(_questions);
-  }
 
   void btnonoff(int n){
     setState(() {
@@ -920,7 +911,8 @@ class _FilterState extends State<Filter> {
                     height: height*0.065,
                     width: width*0.44,
                     child: ElevatedButton(onPressed: () {
-                      filtercondition();
+                      MyDatabase db = MyDatabase();
+                      filtercondition(db);
                     },
                       style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
