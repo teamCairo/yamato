@@ -4,13 +4,10 @@ import 'package:yamato/db.dart';
 
 import 'filter.dart';
 
+// ignore: must_be_immutable
 class Result extends StatefulWidget {
   Result(this.mode, this.question1, this.year, this.peri, this.qnum, this.trynum
       );
-  //TODO(△) Result(argumentmode:1-4, argumentQH:??, argumentBY:??,
-  // argumentPeri:??, argumentQN:??, argumentQTN:??)
-  //TODO（△） QTN系からQH取得
-  //TODO（△）　非同期処理調整
 
   List question1;
   int mode;
@@ -25,29 +22,16 @@ class Result extends StatefulWidget {
 
 class _ResultState extends State<Result> {
 
-  bool favorite = false;
-  Color _iconcol = Colors.lightBlue;
-  List<int> qorder = <int>[];
   List question2 =[];
-  List qtextlist2 = [];
-  List kailist2 = [];
-  List codelist2 = [];
   List catlist2 = [];
-  List hissyulist2 = [];
   List moshilist2 = [];
-  List favolist2 = [];
   List<bool> checkm = [];
-  List hissyulist = [];
-  bool _ordercheck = false;
   List questionagain;
   List tryhistory;
+  bool _ordercheck = false;
   bool initialdataread = false;
-  bool datareadforfav = true;
-  List<int> favon = [];
   final fav = Set<String>();
 
-
-  IconData favoriteIcon;
 
   void initState() {
     super.initState();
@@ -70,10 +54,7 @@ class _ResultState extends State<Result> {
     print(questionagain);
     print(tryhistory);
     print(checkm);
-    print(catlist2);
-    print(codelist2);
-    print(kailist2);
-    print(qtextlist2);
+
   }
 
   Future waiting() async{
@@ -82,17 +63,13 @@ class _ResultState extends State<Result> {
     if (question2 == null) {
     } else {
       for(var i = 0; i < question2.length; i++) {
-        //kailist2.add(question2[i].period);
-        //codelist2.add(question2[i].questionNo);
-        //hissyulist2.add(question2[i].compulsoryType);
         catlist2.add(question2[i].subjectId);
         moshilist2.add(question2[i].correctType1);
-        //qtextlist2.add(question2[i].questionText);
-        //favolist2.add(question2[i].favorite);
       }
     }
   }
 
+  // ignore: missing_return
   Future insertdata(){
     if(widget.mode != 4){
       MyDatabase db = MyDatabase();
@@ -103,9 +80,6 @@ class _ResultState extends State<Result> {
       print('q2');
       print(question2);
     }
-    setState(() {
-      datareadforfav = true;
-    });
   }
 
   Future insertdata1() async{
@@ -113,9 +87,6 @@ class _ResultState extends State<Result> {
     this.question2 = await dataget(db);
     print('確認');
     print(question2);
-    setState(() {
-      datareadforfav = true;
-    });
   }
 
   void gettry(MyDatabase db) async{
@@ -131,8 +102,6 @@ class _ResultState extends State<Result> {
     );
     question2.add(questionagain);}
   }
-
-
 
   Future changeFavorite(int businessYear, int period, String questionNo,bool favoriteValue,MyDatabase db) async {
 
@@ -158,24 +127,15 @@ class _ResultState extends State<Result> {
     db.updatequestionheader(qhforFavorite);
     print(qhforFavoriteList[0]);
     print('後');
-
   }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-
+    // ignore: non_constant_identifier_names
     List<Widget> Elements =[];
-
-  ////  for(var i=0; i<question2.length; i++){
-  //    favkanri.add(question2[i].favorite);
-   // }
-    //if(datareadforfav == false){
-      //insertdata1();
-    //}else{
-    //}
-
+    // ignore: non_constant_identifier_names
     Widget ListElement(int p, String n, int c, String t, bool m, bool f ){
       final onoff = fav.contains('2021'+p.toString()+n);
       return InkWell(
@@ -214,12 +174,8 @@ class _ResultState extends State<Result> {
                                 initialdataread == false ? Container():
                                 Container(
                                   width: width*0.25,
-                                  child: initialdataread == false ? Text('') :Text(
-                                      "第" +
-                                          p.toString() +
-                                          "回" +
-                                          '/' +
-                                          n,
+                                  child: initialdataread == false ? Text('')
+                                      :Text("第"+p.toString()+"回"+'/'+n,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: 14,
@@ -250,9 +206,7 @@ class _ResultState extends State<Result> {
                               ),
                               Flexible(
                                 child:initialdataread == false ? Text('')
-                                    :Text(
-                                  //qtextlist2[index],
-                                  t,
+                                    :Text(t,
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.indigo[900],
@@ -275,15 +229,10 @@ class _ResultState extends State<Result> {
                           mainAxisAlignment:
                           MainAxisAlignment.center,
                           children: <Widget>[
-                            SizedBox(
-                              height: height*0.01,
-                            ),
+                            SizedBox(height: height*0.01),
                             Container(
                               height: height*0.06,
                               width: width*0.15,
-                              // Visibility(
-                              //  visible: initialdataread == false ? false
-                              //     :checkm[index], child:
                               child: Column(children: <Widget>[
                                 Text('＜模試＞',
                                     style: TextStyle(
@@ -291,22 +240,16 @@ class _ResultState extends State<Result> {
                                         color: Colors.indigo[800],
                                         fontWeight:
                                         FontWeight.w600)),
-                                SizedBox(
-                                  height: height*0.01,
-                                ),
-                                m == false ? Icon(Icons.radio_button_off, color: Colors.red, size: 30) :Icon(Icons.close, color: Colors.blue, size: 30),
+                                SizedBox(height: height*0.01),
+                                m == false ? Icon(Icons.radio_button_off, color: Colors.red, size: 30)
+                                    :Icon(Icons.close, color: Colors.blue, size: 30),
                               ]),
                             ),
-                            SizedBox(
-                              height: height*0.01,
-                              //0.03
-                            ),
+                            SizedBox(height: height*0.01),
                           ],
                         ),
                       ),
-                      SizedBox(
-                        width: width*0.02,
-                      ),
+                      SizedBox(width: width*0.02),
                       GestureDetector(
                           onTap: () {
                             //TODO　favorite機能実装
@@ -322,23 +265,17 @@ class _ResultState extends State<Result> {
                             });
                           },
                           child:onoff == false ?
-                          Icon(
-                            Icons.star_border,
-                            //favoriteIcon
-                            color: Colors.blue,
-                            size: 30,
-                          )
-                              :Icon(Icons.star,color: Colors.yellowAccent, size: 30,)
+                          Icon(Icons.star_border, color: Colors.blue, size: 30,)
+                          :Icon(Icons.star,color: Colors.yellowAccent[700], size: 30,)
                       ),
-                      SizedBox(
-                        width: width*0.025,
-                      ),
+                      SizedBox(width: width*0.025),
                     ]),
                   ),
                 ]),
           ),
         ),
       );}
+
       if(question2 != null){
     for(var i=1; i<question2.length; i++){
       Elements.add(ListElement(question2[i].period, question2[i].questionNo,
@@ -389,11 +326,12 @@ class _ResultState extends State<Result> {
               height: height*0.032,
               width: width*0.62,
               child: CheckboxListTile(
+                //TODO レイアウト相談
                 value: _ordercheck,
                 title: Text(
                   "順番をシャッフルする",
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 13,
                     fontWeight: FontWeight.bold,
                     //color: Colors.indigo[900],
                   ),

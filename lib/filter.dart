@@ -49,20 +49,14 @@ class _FilterState extends State<Filter> {
     CategoryFilter('適当',29,),
     CategoryFilter('参考',30,),
   ];
+
   List<String> _catfilters = <String>[];
-  List<String> _hissyu = <String>[];
+  List<String> _compulsory = <String>[];
   List<String> _favorite = <String>[];
-  List<String> _kai = <String>[];
+  List<String> _peri = <String>[];
   int _gotou = 0;
-  List _questions =[];
-  List kailist2 =[];
-  List codelist2 =[];
-  List catlist2 =[];
-  List<int> moshilist2 =[];
-  List hissyulist2 =[];
-  List<String> qtextlist2 =[];
-  Color button_c = Colors.white;
-  Color button_bc = Colors.indigoAccent.shade700;
+  List _questions = [];
+  List<int> moshilist2 = [];
   List<Color> btncList = [];
   List<Color> btnbcList = [];
   List<bool> btnflagList = [];
@@ -88,68 +82,63 @@ class _FilterState extends State<Filter> {
     for(final CategoryFilter category in _genre){
       if(_catfilters.contains(category.num.toString()) == false) {
         _catfilters.add(category.num.toString());}else{}
-      for(var i =0; i<29; i++) {
+      for(var i =1; i<30; i++) {
         setState(() {
           btncList[i] = Colors.white;
           btnbcList[i] = Colors.blueAccent;
           btnflagList[i] = true;
         });
       }
-      print(_catfilters);
     }}
 
   void clear() {
     _catfilters.removeRange(0, _catfilters.length);
-    for(var i = 0; i<29; i++) {
+    for(var i = 1; i<30; i++) {
       setState(() {
         btncList[i] = Colors.blueAccent;
         btnbcList[i] = Colors.white;
         btnflagList[i] = false;
       });
     }
-    print(_catfilters);
   }
 
   void filtercondition() async {
-    await filtercondition1();
-    if(moshilist2 == null){} else{
+    MyDatabase db = MyDatabase();
+    await filtercondition1(db);
+    print('before');
+    print(_questions);
+    print(moshilist2);
+    if(_questions == null){
       setState(() {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => Result(
-              4, _questions, null, null, null, null
-          )),
+          MaterialPageRoute(builder: (context) =>
+              Result(4, null, null, null, null, null)),
+        );
+      });
+    } else{
+      setState(() {
+        //TODO なぜかエラー
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>
+              Result(4, _questions, null, null, null, null)),
         );
       });
     }
   }
 
-  Future filtercondition1() async{
-    MyDatabase db = MyDatabase();
-    await filtercondition2(db);
-    if (_questions == null) {
-    } else {
-      for(var i = 0; i < _questions.length; i++) {
-        kailist2.add(_questions[i].period);
-        codelist2.add(_questions[i].questionNo);
-        hissyulist2.add(_questions[i].compulsoryType);
-        catlist2.add(_questions[i].subjectId);
-        moshilist2.add(_questions[i].correctType1);
-        qtextlist2.add(_questions[i].questionText);}
-    } }
-
-  Future filtercondition2(MyDatabase db) async {
-    List<int> _kai1 = _kai.map(int.parse).toList();
-    List<int> _hissyu1 = _hissyu.map(int.parse).toList();
+  Future filtercondition1(MyDatabase db) async {
+    List<int> _kai1 = _peri.map(int.parse).toList();
+    List<int> _hissyu1 = _compulsory.map(int.parse).toList();
     List<int> _clip1 = _favorite.map(int.parse).toList();
     List<int> _filters1 = _catfilters.map(int.parse).toList();
     _questions = await db.selectQuestionFilesForFilter(
         _filters1, _hissyu1, _kai1, _clip1, _gotou);
+
     print('dataget');
     print(_questions);
   }
-
-
 
   void btnonoff(int n){
     setState(() {
@@ -160,63 +149,13 @@ class _FilterState extends State<Filter> {
         if(_catfilters.contains(n.toString()) == false){
           _catfilters.add(n.toString());
         }else{}
-      }else if(btncList[n] == Colors.white){
+      }else{
         btncList[n] = Colors.blueAccent;
         btnbcList[n] = Colors.white;
         _catfilters.remove(n.toString());
         btnflagList[n] = false;
-      }else{}});
+      }});
   }
-
-
-  Iterable<Widget> get categoryWidgets sync* {
-    for (final CategoryFilter category  in _genre) {
-      yield Padding(
-        padding: EdgeInsets.all(4),
-
-        child:Transform(
-          transform: Matrix4.identity()..scale(1.2),
-          //1.3
-          child: FilterChip(
-            showCheckmark: false,
-            backgroundColor: button_c,
-            selectedColor: button_bc,
-            //selectedShadowColor: Colors.yellow,
-            shape: StadiumBorder(
-              side: BorderSide(
-                color: button_bc,
-                width: 1,
-              ),
-            ),
-            label: Text(category.name, style: TextStyle(
-              color: button_bc,
-            ),
-            ),
-            selected: _catfilters.contains(category.name),
-            onSelected: (bool value) {
-              setState(() {
-                if (value) {
-                  button_c = Colors.blueAccent;
-                  button_bc = Colors.white;
-                  _catfilters.add(category.name);
-                } else {
-                  button_c = Colors.white;
-                  button_bc = Colors.blueAccent;
-                  _catfilters.removeWhere((String name) {
-                    return name == category.name;
-                  });
-                }
-              });
-            },
-          ),
-        ),
-      );
-    }
-  }
-
-
-
-
 
 
   @override
@@ -224,8 +163,7 @@ class _FilterState extends State<Filter> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final adjustsizeh = MediaQuery.of(context).size.height*0.0011;
-
-
+    // ignore: non_constant_identifier_names
     Widget Catbutton (
         int num, Color col, Color bcol, String text, bool flag
         ) {
@@ -235,12 +173,7 @@ class _FilterState extends State<Filter> {
         },
         child: Container(
           height: height * 0.046,
-          //0.046
-          //40
           width: width * 0.16,
-          //0.16
-          //0.18
-          //70
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
@@ -276,7 +209,6 @@ class _FilterState extends State<Filter> {
       btnflagList.add(false);
     }
     List<Widget> catButtonList = [];
-
     for(var i = 1; i<30; i++){
       catButtonList.add(Catbutton(i, btncList[i], btnbcList[i], catTextList[i], btnflagList[i]));
     }
@@ -360,11 +292,9 @@ class _FilterState extends State<Filter> {
                         height: height*0.44,
                         alignment: Alignment.center,
                         //TODO MediaQueryの値
-                        //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                         padding: EdgeInsets.all(MediaQuery.of(context).size.height*0),
-                        //margin: EdgeInsets.fromLTRB(14, 20, 14, 0),
                         margin: EdgeInsets.all(MediaQuery.of(context).size.height*0),
-                        child: Padding(//padding: EdgeInsets.all(0),
+                        child: Padding(
                           padding:EdgeInsets.all(MediaQuery.of(context).size.height*0),
                           child: Wrap(
                             spacing: width*0.018,
@@ -404,11 +334,11 @@ class _FilterState extends State<Filter> {
                                     if(hissyucol1 == Colors.blue) {
                                       hissyucol1 = Colors.white;
                                       hissyubcol1 = Colors.blue;
-                                      _hissyu.add('0');
+                                      _compulsory.add('0');
                                     } else {
                                       hissyucol1 = Colors.blue;
                                       hissyubcol1 = Colors.white;
-                                      _hissyu.remove('0');
+                                      _compulsory.remove('0');
                                     }
                                   });
                                 },
@@ -435,7 +365,6 @@ class _FilterState extends State<Filter> {
                                       ),
                                     ),
                                     color: hissyubcol1,
-                                    //TODO 丸角四角ボタンへ変更
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   alignment: Alignment.center,
@@ -448,11 +377,11 @@ class _FilterState extends State<Filter> {
                                     if(hissyucol2 == Colors.blue) {
                                       hissyucol2 = Colors.white;
                                       hissyubcol2 = Colors.blue;
-                                      _hissyu.add('1');
+                                      _compulsory.add('1');
                                     } else {
                                       hissyucol2 = Colors.blue;
                                       hissyubcol2 = Colors.white;
-                                      _hissyu.remove('1');
+                                      _compulsory.remove('1');
                                     }
                                   });
                                 },
@@ -610,7 +539,6 @@ class _FilterState extends State<Filter> {
                 child:Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children:<Widget>[
-
                       Container(
                         height: height*0.132,
                         width: width*0.49,
@@ -675,11 +603,10 @@ class _FilterState extends State<Filter> {
                                   child: Text('全ての問題',  style: TextStyle(fontSize: 14*adjustsizeh, color: gotoucol1),),
                                 ),),
                               SizedBox(height: height*0.01,),
-
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    if(//_isDisabled == false
+                                    if(
                                     gotoucol1 == Colors.blue && gotoucol2 == Colors.blue) {
                                       gotoucol2 = Colors.white;
                                       gotoubcol2 = Colors.blue;
@@ -754,11 +681,11 @@ class _FilterState extends State<Filter> {
                                       if(kaicol1 == Colors.blue) {
                                         kaicol1 = Colors.white;
                                         kaibcol1 = Colors.blue;
-                                        _kai.add('1');
+                                        _peri.add('1');
                                       } else {
                                         kaicol1 = Colors.blue;
                                         kaibcol1 = Colors.white;
-                                        _kai.remove('1');
+                                        _peri.remove('1');
                                       }
                                     });
                                   },
@@ -797,11 +724,11 @@ class _FilterState extends State<Filter> {
                                       if(kaicol2 == Colors.blue) {
                                         kaicol2 = Colors.white;
                                         kaibcol2 = Colors.blue;
-                                        _kai.add('2');
+                                        _peri.add('2');
                                       } else {
                                         kaicol2 = Colors.blue;
                                         kaibcol2 = Colors.white;
-                                        _kai.remove('2');
+                                        _peri.remove('2');
                                       }
                                     });
                                   },
@@ -844,11 +771,11 @@ class _FilterState extends State<Filter> {
                                     if(kaicol3 == Colors.blue) {
                                       kaicol3 = Colors.white;
                                       kaibcol3 = Colors.blue;
-                                      _kai.add('3');
+                                      _peri.add('3');
                                     } else {
                                       kaicol3 = Colors.blue;
                                       kaibcol3 = Colors.white;
-                                      _kai.remove('3');
+                                      _peri.remove('3');
                                     }
                                   });
                                 },
@@ -887,11 +814,11 @@ class _FilterState extends State<Filter> {
                                     if(kaicol4 == Colors.blue) {
                                       kaicol4 = Colors.white;
                                       kaibcol4 = Colors.blue;
-                                      _kai.add('4');
+                                      _peri.add('4');
                                     } else {
                                       kaicol4 = Colors.blue;
                                       kaibcol4 = Colors.white;
-                                      _kai.remove('4');
+                                      _peri.remove('4');
                                     }
                                   });
                                 },
@@ -927,9 +854,6 @@ class _FilterState extends State<Filter> {
                         ]),
                       ),
                     ]),),
-
-
-
               Container(child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
