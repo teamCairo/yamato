@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:yamato/question.dart';
 import 'package:yamato/finish.dart';
+import 'package:yamato/result.dart';
 
 import 'db.dart';
 import 'root.dart';
@@ -284,7 +285,14 @@ class _AnswerState extends State<Answer> {
                     primary: Colors.white,
                   ),
 
-                  onPressed: () {Navigator.of(context).pop();},
+                  onPressed: () {
+                    if(widget.argumentMode != 2){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Result(
+                            widget.argumentMode, null,widget.argumentTryingListNo,
+                          )));}},
                   //TODO　一覧ボタンの処理　連続演習モードで、一覧画面からきている場合：一覧画面までPopする、一覧画面から単発の問題をやっている場合、も同様。　続きから解くからやっている場合は？ 一覧画面側の処理が固まってから実装
                   icon: Icon(Icons.list,size: 40,color: Colors.lightBlue,),
                   label: Text("一覧", style: TextStyle(

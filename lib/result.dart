@@ -6,15 +6,12 @@ import 'filter.dart';
 
 // ignore: must_be_immutable
 class Result extends StatefulWidget {
-  Result(this.mode, this.question1, this.year, this.peri, this.qnum, this.trynum
+  Result(this.argumentMode, this.question1, this.argumentTryingListNo
       );
 
-  List question1;
-  int mode;
-  int year;
-  int peri;
-  String qnum;
-  int trynum;
+  final int argumentMode;
+  final List<QuestionHeader> question1;
+  final int argumentTryingListNo;
 
   @override
   _ResultState createState() => _ResultState();
@@ -31,6 +28,7 @@ class _ResultState extends State<Result> {
   bool _ordercheck = false;
   bool initialdataread = false;
   final fav = Set<String>();
+
 
 
   void initState() {
@@ -65,16 +63,19 @@ class _ResultState extends State<Result> {
       for(var i = 0; i < question2.length; i++) {
         catlist2.add(question2[i].subjectId);
         moshilist2.add(question2[i].correctType1);
+        if(question2[i].favorite == false){}else{
+          fav.add("2021"+question2[i].period.toString()+question2[i].questionNo);
+        }
       }
     }
   }
 
   // ignore: missing_return
   Future insertdata(){
-    if(widget.mode != 4){
+    if(widget.argumentMode != 2 && widget.argumentMode != 4){
       MyDatabase db = MyDatabase();
       gettry(db);
-    }else if(widget.mode == 4){}
+    }else if(widget.argumentMode == 4){}
     if (widget.question1 != null) {
       this.question2 = widget.question1;
       print('q2');
@@ -126,6 +127,9 @@ class _ResultState extends State<Result> {
 //TODO 情報取得・更新不具合修正
     db.updatequestionheader(qhforFavorite);
     print(qhforFavoriteList[0]);
+    print('00000');
+    if(qhforFavoriteList.length <= 1){}else{
+    print(qhforFavoriteList[1]);}
     print('後');
   }
 
@@ -135,18 +139,22 @@ class _ResultState extends State<Result> {
     final width = MediaQuery.of(context).size.width;
     // ignore: non_constant_identifier_names
     List<Widget> Elements =[];
+    List<bool> favoflag = [];
+    for(var i=0; i<question2.length;i++){
+      favoflag.add(question2[i].favorite);
+    }
     // ignore: non_constant_identifier_names
-    Widget ListElement(int p, String n, int c, String t, bool m, bool f ){
-      final onoff = fav.contains('2021'+p.toString()+n);
+    Widget ListElement(int period, String number, int category, String text, bool moshi, bool flag, int ordernumber){
+      final onoff = fav.contains('2021'+period.toString()+number);
       return InkWell(
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => Question(
                   argumentMode: 2,
-                  argumentBusinessYear: null,
-                  argumentPeriod: p,
-                  argumentQuestionNo: n,
+                  argumentBusinessYear: 2021,
+                  argumentPeriod: period,
+                  argumentQuestionNo: number,
                   argumentTryingListNo: null
               ),
             ),
@@ -175,7 +183,7 @@ class _ResultState extends State<Result> {
                                 Container(
                                   width: width*0.25,
                                   child: initialdataread == false ? Text('')
-                                      :Text("第"+p.toString()+"回"+'/'+n,
+                                      :Text("第"+period.toString()+"回"+'/'+number,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: 14,
@@ -188,7 +196,7 @@ class _ResultState extends State<Result> {
                                 Container(
                                   child: initialdataread == false ? Text('')
                                       :Text(
-                                    c.toString(),
+                                    category.toString(),
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
@@ -206,7 +214,7 @@ class _ResultState extends State<Result> {
                               ),
                               Flexible(
                                 child:initialdataread == false ? Text('')
-                                    :Text(t,
+                                    :Text(text,
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.indigo[900],
@@ -241,7 +249,7 @@ class _ResultState extends State<Result> {
                                         fontWeight:
                                         FontWeight.w600)),
                                 SizedBox(height: height*0.01),
-                                m == false ? Icon(Icons.radio_button_off, color: Colors.red, size: 30)
+                                moshi == false ? Icon(Icons.radio_button_off, color: Colors.red, size: 30)
                                     :Icon(Icons.close, color: Colors.blue, size: 30),
                               ]),
                             ),
@@ -255,13 +263,14 @@ class _ResultState extends State<Result> {
                             //TODO　favorite機能実装
                             setState(() {
                               MyDatabase db=MyDatabase();
+                              changeFavorite(2021, period, number,!onoff,db);
                               //datareadforfav =false;
                               if(onoff == false){
-                                fav.add('2021'+p.toString()+n);
+                                fav.add('2021'+period.toString()+number);
                               }else{
-                                fav.remove('2021'+p.toString()+n);
+                                fav.remove('2021'+period.toString()+number);
                               }
-                              changeFavorite(2021, p, n,!f,db);
+
                             });
                           },
                           child:onoff == false ?
@@ -277,10 +286,10 @@ class _ResultState extends State<Result> {
       );}
 
       if(question2 != null){
-    for(var i=1; i<question2.length; i++){
+    for(var i=0; i<question2.length; i++){
       Elements.add(ListElement(question2[i].period, question2[i].questionNo,
           question2[i].subjectId, question2[i].questionText,
-          checkm[i], question2[i].favorite));
+          checkm[i],question2[i].favorite, i));
     }}else{}
 
 
@@ -296,8 +305,6 @@ class _ResultState extends State<Result> {
               padding: const EdgeInsets.all(4.0),
               child: IconButton(
                 icon: Icon(Icons.search),
-                //TODO このボタン押下時、前の検索条件を保持する？戻るボタンを押したとき
-                //navipopだともっと前の画面に戻ってしまう。new画面且つリセット状態でも不自然ではない？
                 onPressed: () => {
                   Navigator.push(
                       context,

@@ -218,55 +218,66 @@ class MyDatabase extends _$MyDatabase {
       )).get();
   }
 
-  Future<List<QuestionHeader>> selectQuestionFilesForFilter(List<int> sub, List<int> comp , List<int> peri, List<int> fav, int correctType) {
+  Future<List<QuestionHeader>> selectQuestionFilesForFilter(List<int> subject, List<int> compulsory , List<int> period, List<int> favorite, int correctType, bool pediatrics) {
     //Variable.withInt(period),Variable.withInt(subjectId),Variable.withInt(compulsoryType),
     String _select = 'SELECT *'
         +' From question_Headers '
         +' WHERE correct_type1 = ? '
         +' AND ';
-    _select += 'subject_id IN(';
+    _select += '(subject_id  IN(';
 
-    int t = sub.length-1;
+    int t = subject.length-1;
     if(t+1 == 1){
-      _select += sub[0].toString();
+      _select += subject[0].toString();
     }else if(t+1 == 0){
-      for(var u = 1; u < 40; u++){
+      for(var u = 1; u < 30; u++){
       _select += u.toString()+',';}
-      _select += '40';
+      _select += '30';
     }else if(t+1 > 1){
       for (var i = 0; i < t; i++) {
-        _select += sub[i].toString() + ',';
+        _select += subject[i].toString() + ',';
       }
-      _select += sub[t].toString();
+      _select += subject[t].toString();
     }
 
-    _select += ') AND compulsory_type ';
-    if(comp.length == 1) {
-      _select += 'IN ('+ comp[0].toString();
+    if(pediatrics == true){
+      _select += ') OR  pediatrics_type IN(1)';
+    } else if(pediatrics == false){
+      _select += ')';
+    } else {
+      _select += ')';
+    }
+    _select += ')';
+
+
+
+    _select += ' AND compulsory_type ';
+    if(compulsory.length == 1) {
+      _select += 'IN ('+ compulsory[0].toString();
     }else {
       _select += 'IN (0, 1';
     }
 
     _select += ') AND period IN(';
-    int  e = peri.length-1;
+    int  e = period.length-1;
     if(e+1 == 1){
-      _select += peri[0].toString();
+      _select += period[0].toString();
     }else if(e+1 == 0){
       _select += '1, 2, 3, 4';
     }else if(e+1 > 1) {
       for (var x = 0; x < e; x++) {
-        _select += peri[x].toString() + ',';
+        _select += period[x].toString() + ',';
       }
-        _select += peri[e].toString();
+        _select += period[e].toString();
     }
 
     _select += ') AND favorite ';
-    int p = fav.length;
+    int p = favorite.length;
     if(p == 0){
       _select += "IN (0, 1)";
-    }  else if(p ==1 && fav[0] ==0){
+    }  else if(p ==1 && favorite[0] ==0){
       _select += " IN (0) ";
-    } else if(p ==1 && fav[0] ==1){
+    } else if(p ==1 && favorite[0] ==1){
       _select += " IN (1) ";
     }else {
       _select += "IN (0, 1) ";

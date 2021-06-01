@@ -53,19 +53,20 @@ class _FilterState extends State<Filter> {
   List<String> _catfilters = <String>[];
   List<String> _compulsory = <String>[];
   List<String> _favorite = <String>[];
-  List<String> _peri = <String>[];
+  List<String> _period = <String>[];
+  bool _pediatrics;
   int _gotou = 0;
-  List _questions = [];
+  List<QuestionHeader> _questions = [];
   List<int> moshilist2 = [];
   List<Color> btncList = [];
   List<Color> btnbcList = [];
   List<bool> btnflagList = [];
   List<String> catTextList =
-  ["","産科","婦人科","呼吸","循環","消化","肝胆","血液","腎臓","神経","内分","代謝",
+  ["産科","婦人","呼吸","循環","消化","肝胆","血液","腎臓","神経","内分","代謝",
     "アレ","免疫","感染","中毒","救急","複合","小複","精神","皮膚","眼科","耳鼻",
-    "泌尿","整形","放射","麻酔","公衆","一般","小児"];
+    "泌尿","整形","放射","麻酔","公衆","一般"];
 
-
+  Color btncPed = Colors.blueAccent; Color btnbcPed = Colors.white;
   Color hissyucol1 = Colors.blue;Color hissyubcol1 = Colors.white;
   Color hissyucol2 = Colors.blue;Color hissyubcol2 = Colors.white;
   Color favocol1 = Colors.blue;Color favobcol1 = Colors.white;
@@ -79,10 +80,13 @@ class _FilterState extends State<Filter> {
 
 
   void all(){
+    if(_pediatrics == true){}else {btnforped();}
+    //TODO pedがtrue状態で遷移、戻るボタンで戻ってきたとき、且つ状態維持の場合、
+    //pedの状況はtrue startなのか、ボタンが押された状態でfalse状態なのか？
     for(final CategoryFilter category in _genre){
       if(_catfilters.contains(category.num.toString()) == false) {
         _catfilters.add(category.num.toString());}else{}
-      for(var i =1; i<30; i++) {
+      for(var i =0; i<29; i++) {
         setState(() {
           btncList[i] = Colors.white;
           btnbcList[i] = Colors.blueAccent;
@@ -92,8 +96,9 @@ class _FilterState extends State<Filter> {
     }}
 
   void clear() {
+    if(_pediatrics == false){}else{btnforped();}
     _catfilters.removeRange(0, _catfilters.length);
-    for(var i = 1; i<30; i++) {
+    for(var i = 0; i<29; i++) {
       setState(() {
         btncList[i] = Colors.blueAccent;
         btnbcList[i] = Colors.white;
@@ -104,37 +109,40 @@ class _FilterState extends State<Filter> {
 
   void filtercondition() async {
     MyDatabase db = MyDatabase();
-    await filtercondition1(db);
+    List<int> _kai1 = _period.map(int.parse).toList();
+    List<int> _hissyu1 = _compulsory.map(int.parse).toList();
+    List<int> _clip1 = _favorite.map(int.parse).toList();
+    List<int> _filters1 = _catfilters.map(int.parse).toList();
+    //_pediatrics = _catfilters.contains('29');
+    _questions = await db.selectQuestionFilesForFilter(
+        _filters1, _hissyu1, _kai1, _clip1, _gotou, _pediatrics);
     print('before');
+    print(_questions.length);
     print(_questions);
     print(moshilist2);
     if(_questions == null){
-      setState(() {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>
-              Result(4, null, null, null, null, null)),
+              Result(4, null, null)),
         );
-      });
     } else{
-      setState(() {
         //TODO なぜかエラー
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>
-              Result(4, _questions, null, null, null, null)),
-        );
-      });
+              Result(4, _questions, null)),
+       );
     }
   }
 
   Future filtercondition1(MyDatabase db) async {
-    List<int> _kai1 = _peri.map(int.parse).toList();
+    List<int> _kai1 = _period.map(int.parse).toList();
     List<int> _hissyu1 = _compulsory.map(int.parse).toList();
     List<int> _clip1 = _favorite.map(int.parse).toList();
     List<int> _filters1 = _catfilters.map(int.parse).toList();
     _questions = await db.selectQuestionFilesForFilter(
-        _filters1, _hissyu1, _kai1, _clip1, _gotou);
+        _filters1, _hissyu1, _kai1, _clip1, _gotou, _pediatrics);
 
     print('dataget');
     print(_questions);
@@ -157,6 +165,20 @@ class _FilterState extends State<Filter> {
       }});
   }
 
+  void btnforped(){
+    setState(() {
+      if(btncPed == Colors.blueAccent){
+        btncPed = Colors.white;
+        btnbcPed = Colors.blueAccent;
+        _pediatrics = true;
+       }else {
+        btncPed = Colors.blueAccent;
+        btnbcPed = Colors.white;
+        _pediatrics = false;
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +187,7 @@ class _FilterState extends State<Filter> {
     final adjustsizeh = MediaQuery.of(context).size.height*0.0011;
     // ignore: non_constant_identifier_names
     Widget Catbutton (
-        int num, Color col, Color bcol, String text, bool flag
+        int num, Color color, Color bcolor, String text, bool flag
         ) {
       return GestureDetector(
         onTap: () {
@@ -177,42 +199,81 @@ class _FilterState extends State<Filter> {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: col,
+                color: color,
                 width: width * 0.0025,
               ),
               top: BorderSide(
-                color: col,
+                color: color,
                 width: width * 0.0025,
               ),
               left: BorderSide(
-                color: col,
+                color: color,
                 width: width * 0.0025,
               ),
               right: BorderSide(
-                color: col,
+                color: color,
                 width: width * 0.0025,
               ),
             ),
-            color: bcol,
+            color: bcolor,
             borderRadius: BorderRadius.circular(15),
           ),
           alignment: Alignment.center,
           child: Text(
-            text, style: TextStyle(fontSize: 15, color: col),
+            text, style: TextStyle(fontSize: 15, color: color),
           ),
         ),
       );}
 
-    for(var i = 0; i<30; i++){
+      // ignore: non_constant_identifier_names
+      Widget CatButtonPed(){
+      return GestureDetector(
+        onTap: () {
+          btnforped();
+        },
+        child: Container(
+          height: height * 0.046,
+          width: width * 0.16,
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: btncPed,
+                width: width * 0.0025,
+              ),
+              top: BorderSide(
+                color: btncPed,
+                width: width * 0.0025,
+              ),
+              left: BorderSide(
+                color: btncPed,
+                width: width * 0.0025,
+              ),
+              right: BorderSide(
+                color: btncPed,
+                width: width * 0.0025,
+              ),
+            ),
+            color: btnbcPed,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            "小児", style: TextStyle(fontSize: 15, color: btncPed),
+          ),
+        ),
+      );}
+
+
+    for(var i = 0; i<28; i++){
       btncList.add(Colors.blueAccent);
       btnbcList.add(Colors.white);
       btnflagList.add(false);
     }
     List<Widget> catButtonList = [];
-    for(var i = 1; i<30; i++){
+    for(var i = 0; i<28; i++){
       catButtonList.add(Catbutton(i, btncList[i], btnbcList[i], catTextList[i], btnflagList[i]));
     }
-
+    catButtonList.add(CatButtonPed());
 
     return Scaffold(
       backgroundColor: Colors.cyan[100],
@@ -253,7 +314,6 @@ class _FilterState extends State<Filter> {
                               height: height*0.044,
                               width: width*0.19,
                               child:ElevatedButton(onPressed: (){
-                                //TODO 全選択ボタンの中身実装
                                 all();
                               },
                                 child: Text('全選択', style: TextStyle(fontSize: 14*adjustsizeh, color: Colors.white)),
@@ -274,7 +334,6 @@ class _FilterState extends State<Filter> {
                               height: height*0.044,
                               width: width*0.19,
                               child:ElevatedButton(onPressed: (){
-                                //TODO クリアボタンの中身実装
                                 clear();
                               }, child: Text('クリア', style: TextStyle(fontSize: 14*adjustsizeh, color: Colors.white)),
                                 style: OutlinedButton.styleFrom(
@@ -681,11 +740,11 @@ class _FilterState extends State<Filter> {
                                       if(kaicol1 == Colors.blue) {
                                         kaicol1 = Colors.white;
                                         kaibcol1 = Colors.blue;
-                                        _peri.add('1');
+                                        _period.add('1');
                                       } else {
                                         kaicol1 = Colors.blue;
                                         kaibcol1 = Colors.white;
-                                        _peri.remove('1');
+                                        _period.remove('1');
                                       }
                                     });
                                   },
@@ -724,11 +783,11 @@ class _FilterState extends State<Filter> {
                                       if(kaicol2 == Colors.blue) {
                                         kaicol2 = Colors.white;
                                         kaibcol2 = Colors.blue;
-                                        _peri.add('2');
+                                        _period.add('2');
                                       } else {
                                         kaicol2 = Colors.blue;
                                         kaibcol2 = Colors.white;
-                                        _peri.remove('2');
+                                        _period.remove('2');
                                       }
                                     });
                                   },
@@ -771,11 +830,11 @@ class _FilterState extends State<Filter> {
                                     if(kaicol3 == Colors.blue) {
                                       kaicol3 = Colors.white;
                                       kaibcol3 = Colors.blue;
-                                      _peri.add('3');
+                                      _period.add('3');
                                     } else {
                                       kaicol3 = Colors.blue;
                                       kaibcol3 = Colors.white;
-                                      _peri.remove('3');
+                                      _period.remove('3');
                                     }
                                   });
                                 },
@@ -814,11 +873,11 @@ class _FilterState extends State<Filter> {
                                     if(kaicol4 == Colors.blue) {
                                       kaicol4 = Colors.white;
                                       kaibcol4 = Colors.blue;
-                                      _peri.add('4');
+                                      _period.add('4');
                                     } else {
                                       kaicol4 = Colors.blue;
                                       kaibcol4 = Colors.white;
-                                      _peri.remove('4');
+                                      _period.remove('4');
                                     }
                                   });
                                 },

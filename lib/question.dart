@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yamato/result.dart';
 
 import 'answer.dart';
 import 'root.dart';
@@ -273,7 +274,18 @@ class _QuestionState extends State<Question> {
                     primary: Colors.white,
                   ),
 
-                  onPressed: () {Navigator.of(context).pop();},
+                  onPressed: () {
+                    if(widget.argumentMode == 2){
+                    Navigator.of(context).pop();
+                    }else  {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                          builder: (context) => Result(
+                            widget.argumentMode, null,widget.argumentTryingListNo,
+                          )));
+                    }
+                    },
                   icon: Icon(Icons.list,size: 40,color: Colors.lightBlue,),
                   label: Text("一覧", style: TextStyle(
                     color: Colors.blue,
