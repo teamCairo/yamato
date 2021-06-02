@@ -4,14 +4,21 @@ import 'package:yamato/db.dart';
 
 import 'filter.dart';
 
+class SubjectList {
+  const SubjectList(this.name, this.num);
+  final String name;
+  final int num;
+}
 // ignore: must_be_immutable
 class Result extends StatefulWidget {
-  Result(this.argumentMode, this.question1, this.argumentTryingListNo
-      );
+  Result(this.argumentMode, this.question1, this.argumentTryingListNo);
 
   final int argumentMode;
-  final List<QuestionHeader> question1;
+  final List
+ // <QuestionHeader>
+  question1;
   final int argumentTryingListNo;
+
 
   @override
   _ResultState createState() => _ResultState();
@@ -22,12 +29,47 @@ class _ResultState extends State<Result> {
   List question2 =[];
   List catlist2 = [];
   List moshilist2 = [];
-  List<bool> checkm = [];
+  List pediatrics2 = [];
+  List<bool> moshicheck = [];
+  List<String> subjectlist = [];
+  List<bool> pediaticscheck =[];
   List questionagain;
   List tryhistory;
   bool _ordercheck = false;
   bool initialdataread = false;
   final fav = Set<String>();
+
+  final List<SubjectList> _taisyohyo = <SubjectList>[
+    SubjectList("産科", 1),
+    SubjectList("婦人", 2),
+    SubjectList("呼吸", 3),
+    SubjectList("循環", 4),
+    SubjectList("消化", 5),
+    SubjectList("肝胆", 6),
+    SubjectList("血液", 7),
+    SubjectList("腎臓", 8),
+    SubjectList("神経", 9),
+    SubjectList("内分", 10),
+    SubjectList("代謝", 11),
+    SubjectList("アレ", 12),
+    SubjectList("免疫", 13),
+    SubjectList("感染", 14),
+    SubjectList("中毒", 15),
+    SubjectList("救急", 16),
+    SubjectList("複合", 17),
+    SubjectList("小複", 18),
+    SubjectList("精神", 19),
+    SubjectList("皮膚", 20),
+    SubjectList("眼科", 21),
+    SubjectList("耳鼻", 22),
+    SubjectList("泌尿", 23),
+    SubjectList("整形", 24),
+    SubjectList("放射", 25),
+    SubjectList("麻酔", 26),
+    SubjectList("公衆", 27),
+    SubjectList("一般", 28),
+    //SubjectList("小児科", 29),
+  ];
 
 
 
@@ -40,10 +82,24 @@ class _ResultState extends State<Result> {
     await waiting();
     for(var i = 0; i < moshilist2.length; i++) {
       if (moshilist2[i] == 0) {
-        checkm.add(false);
+        moshicheck.add(false);
       } else if (moshilist2[i] == 1) {
-        checkm.add(true);
+        moshicheck.add(true);
       } else {}
+    }
+    for(var i = 0;i<catlist2.length; i++){
+      for(final SubjectList list in _taisyohyo){
+        if(list.num == catlist2[i]) {
+          subjectlist.add(list.name);
+        }else{}
+        }
+    }
+    for(var i=0; i<pediatrics2.length; i++){
+      if(pediatrics2[i] == 0){
+        pediaticscheck.add(false);
+      } else{
+        pediaticscheck.add(true);
+      }
     }
     setState(() {
       initialdataread = true;
@@ -51,7 +107,7 @@ class _ResultState extends State<Result> {
 
     print(questionagain);
     print(tryhistory);
-    print(checkm);
+    print(moshicheck);
 
   }
 
@@ -63,6 +119,7 @@ class _ResultState extends State<Result> {
       for(var i = 0; i < question2.length; i++) {
         catlist2.add(question2[i].subjectId);
         moshilist2.add(question2[i].correctType1);
+        pediatrics2.add(question2[i].pediatricsType);
         if(question2[i].favorite == false){}else{
           fav.add("2021"+question2[i].period.toString()+question2[i].questionNo);
         }
@@ -81,13 +138,6 @@ class _ResultState extends State<Result> {
       print('q2');
       print(question2);
     }
-  }
-
-  Future insertdata1() async{
-    MyDatabase db = MyDatabase();
-    this.question2 = await dataget(db);
-    print('確認');
-    print(question2);
   }
 
   void gettry(MyDatabase db) async{
@@ -144,7 +194,8 @@ class _ResultState extends State<Result> {
       favoflag.add(question2[i].favorite);
     }
     // ignore: non_constant_identifier_names
-    Widget ListElement(int period, String number, int category, String text, bool moshi, bool flag, int ordernumber){
+    Widget ListElement(int period, String number, String subject,
+        String text, bool moshi, bool flag, bool pedflag, int ordernumber){
       final onoff = fav.contains('2021'+period.toString()+number);
       return InkWell(
         onTap: () {
@@ -162,7 +213,7 @@ class _ResultState extends State<Result> {
         },
         child: Card(
           child: Container(
-            height: height*0.11,
+            height: height*0.12,
             //0.097
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -196,12 +247,22 @@ class _ResultState extends State<Result> {
                                 Container(
                                   child: initialdataread == false ? Text('')
                                       :Text(
-                                    category.toString(),
+                                        subject,
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.blue),
                                   ),
+                                ),
+                                SizedBox(width: width*0.005,),
+                                initialdataread == false ||  pedflag == false ? Container()
+                                :Container(
+                                  width: width*0.2,
+                                  child: Text("（小児科）",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green[700]),),
                                 ),
                               ],
                             ),
@@ -237,7 +298,7 @@ class _ResultState extends State<Result> {
                           mainAxisAlignment:
                           MainAxisAlignment.center,
                           children: <Widget>[
-                            SizedBox(height: height*0.01),
+                            //SizedBox(height: height*0.01),
                             Container(
                               height: height*0.06,
                               width: width*0.15,
@@ -260,7 +321,6 @@ class _ResultState extends State<Result> {
                       SizedBox(width: width*0.02),
                       GestureDetector(
                           onTap: () {
-                            //TODO　favorite機能実装
                             setState(() {
                               MyDatabase db=MyDatabase();
                               changeFavorite(2021, period, number,!onoff,db);
@@ -288,8 +348,8 @@ class _ResultState extends State<Result> {
       if(question2 != null){
     for(var i=0; i<question2.length; i++){
       Elements.add(ListElement(question2[i].period, question2[i].questionNo,
-          question2[i].subjectId, question2[i].questionText,
-          checkm[i],question2[i].favorite, i));
+          subjectlist[i], question2[i].questionText,
+          moshicheck[i],question2[i].favorite, pediaticscheck[i], i));
     }}else{}
 
 
@@ -333,7 +393,6 @@ class _ResultState extends State<Result> {
               height: height*0.032,
               width: width*0.62,
               child: CheckboxListTile(
-                //TODO レイアウト相談
                 value: _ordercheck,
                 title: Text(
                   "順番をシャッフルする",
@@ -351,6 +410,7 @@ class _ResultState extends State<Result> {
                 },
               ),
             ),
+            SizedBox(height: height*0.013),
             Container(
               padding: const EdgeInsets.all(20),
               margin: EdgeInsets.all(4),
@@ -390,58 +450,21 @@ class _ResultState extends State<Result> {
       await db.deletequestiontrying(questiontrying);
     }
 
+    for(var i=0; i<question2.length; i++){
+      QuestionTrying qt = QuestionTrying(
+          id:null
+          ,businessYear:question2[i].businessYear
+          ,period:question2[i].period
+          ,questionNo:question2[i].questionNo
+          ,endFlg:false
+          ,correctType:null
+          ,singleAnswer:null
+          ,multipleAnswer:null
+          ,numberAnswer:null);
+      db.insertquestiontrying(qt);
+    }
 
     //TODO 一旦サンプルデータを追加。実際のデータに修正が必要。
-
-
-    QuestionTrying qt0 = QuestionTrying(
-        id:null
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'A05'
-        ,endFlg:false
-        ,correctType:null
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt0);
-
-
-    QuestionTrying qt1 = QuestionTrying(
-        id:null
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'C10'
-        ,endFlg:false
-        ,correctType:null
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt1);
-
-    QuestionTrying qt2 = QuestionTrying(
-        id:null
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'B15'
-        ,endFlg:false
-        ,correctType:null
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt2);
-
-    QuestionTrying qt3 = QuestionTrying(
-        id:null
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'D20'
-        ,endFlg:false
-        ,correctType:null
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt3);
 
     Navigator.push(
         context,

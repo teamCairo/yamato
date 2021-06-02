@@ -3,8 +3,8 @@ import 'package:yamato/db.dart';
 import 'package:yamato/result.dart';
 
 
-class CategoryFilter {
-  const CategoryFilter(this.name, this.num);
+class SubjectFilter {
+  const SubjectFilter(this.name, this.num);
   final String name;
   final int num;
 }
@@ -17,56 +17,56 @@ class Filter extends StatefulWidget {
 
 class _FilterState extends State<Filter> {
 
-  final List<CategoryFilter> _genre = <CategoryFilter>[
-    CategoryFilter("循環",1,),
-    CategoryFilter("呼吸",2,),
-    CategoryFilter("消化",3,),
-    CategoryFilter("腎臓",4,),
-    CategoryFilter("内代",5,),
-    CategoryFilter("神経",6,),
-    CategoryFilter("血液",7,),
-    CategoryFilter("免疫",8,),
-    CategoryFilter("感染",9,),
-    CategoryFilter("中毒",10),
-    CategoryFilter("救急",11),
-    CategoryFilter("小児",12,),
-    CategoryFilter("産科",13,),
-    CategoryFilter("婦人",14,),
-    CategoryFilter("泌尿",15,),
-    CategoryFilter("眼科",16,),
-    CategoryFilter("耳鼻",17,),
-    CategoryFilter("皮膚",18,),
-    CategoryFilter("精神",19,),
-    CategoryFilter("整形",20,),
-    CategoryFilter("麻酔",21,),
-    CategoryFilter("放射",22,),
-    CategoryFilter("公衛",23,),
-    CategoryFilter("医総",24,),
-    CategoryFilter("植物",25,),
-    CategoryFilter("動物",26,),
-    CategoryFilter("人類",27,),
-    CategoryFilter("細胞",28,),
-    CategoryFilter('適当',29,),
-    CategoryFilter('参考',30,),
+  final List<SubjectFilter> _elements = <SubjectFilter>[
+    SubjectFilter("産科",1,),
+    SubjectFilter("婦人",2,),
+    SubjectFilter("呼吸",3,),
+    SubjectFilter("循環",4,),
+    SubjectFilter("消化",5,),
+    SubjectFilter("肝胆",6,),
+    SubjectFilter("血液",7,),
+    SubjectFilter("腎臓",8,),
+    SubjectFilter("神経",9,),
+    SubjectFilter("内分",10),
+    SubjectFilter("代謝",11),
+    SubjectFilter("アレ",12,),
+    SubjectFilter("免疫",13,),
+    SubjectFilter("感染",14,),
+    SubjectFilter("中毒",15,),
+    SubjectFilter("救急",16,),
+    SubjectFilter("複合",17,),
+    SubjectFilter("小複",18,),
+    SubjectFilter("精神",19,),
+    SubjectFilter("皮膚",20,),
+    SubjectFilter("眼科",21,),
+    SubjectFilter("耳鼻",22,),
+    SubjectFilter("泌尿",23,),
+    SubjectFilter("整形",24,),
+    SubjectFilter("放射",25,),
+    SubjectFilter("麻酔",26,),
+    SubjectFilter("公衆",27,),
+    SubjectFilter("一般",28,),
   ];
 
-  List<String> _catfilters = <String>[];
+  List<String> _subjectfilters = <String>[];
   List<String> _compulsory = <String>[];
   List<String> _favorite = <String>[];
   List<String> _period = <String>[];
   bool _pediatrics;
-  int _gotou = 0;
-  List<QuestionHeader> _questions = [];
+  int _moshi = 0;
+  List
+ // <QuestionHeader>
+  _questions = [];
   List<int> moshilist2 = [];
-  List<Color> btncList = [];
-  List<Color> btnbcList = [];
+  List<Color> btncolorList = [];
+  List<Color> btnsubcolorList = [];
   List<bool> btnflagList = [];
-  List<String> catTextList =
+  List<String> subjectTextList =
   ["産科","婦人","呼吸","循環","消化","肝胆","血液","腎臓","神経","内分","代謝",
     "アレ","免疫","感染","中毒","救急","複合","小複","精神","皮膚","眼科","耳鼻",
     "泌尿","整形","放射","麻酔","公衆","一般"];
 
-  Color btncPed = Colors.blueAccent; Color btnbcPed = Colors.white;
+  Color btncolorPed = Colors.blueAccent; Color btnsubcolorPed = Colors.white;
   Color hissyucol1 = Colors.blue;Color hissyubcol1 = Colors.white;
   Color hissyucol2 = Colors.blue;Color hissyubcol2 = Colors.white;
   Color favocol1 = Colors.blue;Color favobcol1 = Colors.white;
@@ -81,15 +81,13 @@ class _FilterState extends State<Filter> {
 
   void all(){
     if(_pediatrics == true){}else {btnforped();}
-    //TODO pedがtrue状態で遷移、戻るボタンで戻ってきたとき、且つ状態維持の場合、
-    //pedの状況はtrue startなのか、ボタンが押された状態でfalse状態なのか？
-    for(final CategoryFilter category in _genre){
-      if(_catfilters.contains(category.num.toString()) == false) {
-        _catfilters.add(category.num.toString());}else{}
+    for(final SubjectFilter subject in _elements){
+      if(_subjectfilters.contains(subject.num.toString()) == false) {
+        _subjectfilters.add(subject.num.toString());}else{}
       for(var i =0; i<29; i++) {
         setState(() {
-          btncList[i] = Colors.white;
-          btnbcList[i] = Colors.blueAccent;
+          btncolorList[i] = Colors.white;
+          btnsubcolorList[i] = Colors.blueAccent;
           btnflagList[i] = true;
         });
       }
@@ -97,74 +95,73 @@ class _FilterState extends State<Filter> {
 
   void clear() {
     if(_pediatrics == false){}else{btnforped();}
-    _catfilters.removeRange(0, _catfilters.length);
+    _subjectfilters.removeRange(0, _subjectfilters.length);
     for(var i = 0; i<29; i++) {
       setState(() {
-        btncList[i] = Colors.blueAccent;
-        btnbcList[i] = Colors.white;
+        btncolorList[i] = Colors.blueAccent;
+        btnsubcolorList[i] = Colors.white;
         btnflagList[i] = false;
       });
     }
   }
 
   void filtercondition(MyDatabase db) async {
-    //
-    List<int> _kai1 = _period.map(int.parse).toList();
-    List<int> _hissyu1 = _compulsory.map(int.parse).toList();
-    List<int> _clip1 = _favorite.map(int.parse).toList();
-    List<int> _filters1 = _catfilters.map(int.parse).toList();
-    _questions = await db.selectQuestionFilesForFilter(
-        _filters1, _hissyu1, _kai1, _clip1, _gotou, _pediatrics);
-    print('before');
-    print(_questions.length);
-    print(_questions);
-    print(moshilist2);
+
+   List<int> _kai1 = _period.map(int.parse).toList();
+   List<int> _hissyu1 = _compulsory.map(int.parse).toList();
+   List<int> _clip1 = _favorite.map(int.parse).toList();
+   List<int> _filters1 = _subjectfilters.map(int.parse).toList();
+   _questions = await db.selectQuestionFilesForFilter(
+        _filters1, _hissyu1, _kai1, _clip1, _moshi, _pediatrics);
+   print('before');
+   print(_questions.length);
+   print(_questions);
+   print(moshilist2);
     //var indexLength = _questions[0].length;
-    if(_questions.length == 0){
+
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>
-              Result(4, null, null)),
-        );
-    }else if(_questions.length > 1){
-        //TODO なぜかエラー
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>
-              Result(4, _questions, null)),
+            // _questions == null
+              _questions == null   ? Result(4, null, null)
+         :Result(4, _questions , null)),
        );
-    }else {
-      
-    }
   }
 
 
-  void btnonoff(int n){
+
+
+
+
+
+
+
+  void btnonoff(int btnNumber){
     setState(() {
-      if(btncList[n] == Colors.blueAccent){
-        btncList[n] = Colors.white;
-        btnbcList[n] = Colors.blueAccent;
-        btnflagList[n] = true;
-        if(_catfilters.contains(n.toString()) == false){
-          _catfilters.add(n.toString());
+      if(btncolorList[btnNumber-1] == Colors.blueAccent){
+        btncolorList[btnNumber-1] = Colors.white;
+        btnsubcolorList[btnNumber-1] = Colors.blueAccent;
+        btnflagList[btnNumber-1] = true;
+        if(_subjectfilters.contains(btnNumber.toString()) == false){
+          _subjectfilters.add(btnNumber.toString());
         }else{}
       }else{
-        btncList[n] = Colors.blueAccent;
-        btnbcList[n] = Colors.white;
-        _catfilters.remove(n.toString());
-        btnflagList[n] = false;
+        btncolorList[btnNumber-1] = Colors.blueAccent;
+        btnsubcolorList[btnNumber-1] = Colors.white;
+        _subjectfilters.remove(btnNumber.toString());
+        btnflagList[btnNumber-1] = false;
       }});
   }
 
   void btnforped(){
     setState(() {
-      if(btncPed == Colors.blueAccent){
-        btncPed = Colors.white;
-        btnbcPed = Colors.blueAccent;
+      if(btncolorPed == Colors.blueAccent){
+        btncolorPed = Colors.white;
+        btnsubcolorPed = Colors.blueAccent;
         _pediatrics = true;
        }else {
-        btncPed = Colors.blueAccent;
-        btnbcPed = Colors.white;
+        btncolorPed = Colors.blueAccent;
+        btnsubcolorPed = Colors.white;
         _pediatrics = false;
       }
     });
@@ -177,7 +174,7 @@ class _FilterState extends State<Filter> {
     final width = MediaQuery.of(context).size.width;
     final adjustsizeh = MediaQuery.of(context).size.height*0.0011;
     // ignore: non_constant_identifier_names
-    Widget Catbutton (
+    Widget Filterbutton (
         int num, Color color, Color bcolor, String text, bool flag
         ) {
       return GestureDetector(
@@ -217,7 +214,7 @@ class _FilterState extends State<Filter> {
       );}
 
       // ignore: non_constant_identifier_names
-      Widget CatButtonPed(){
+      Widget FilterButtonPed(){
       return GestureDetector(
         onTap: () {
           btnforped();
@@ -228,43 +225,43 @@ class _FilterState extends State<Filter> {
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
-                color: btncPed,
+                color: btncolorPed,
                 width: width * 0.0025,
               ),
               top: BorderSide(
-                color: btncPed,
+                color: btncolorPed,
                 width: width * 0.0025,
               ),
               left: BorderSide(
-                color: btncPed,
+                color: btncolorPed,
                 width: width * 0.0025,
               ),
               right: BorderSide(
-                color: btncPed,
+                color: btncolorPed,
                 width: width * 0.0025,
               ),
             ),
-            color: btnbcPed,
+            color: btnsubcolorPed,
             borderRadius: BorderRadius.circular(15),
           ),
           alignment: Alignment.center,
           child: Text(
-            "小児", style: TextStyle(fontSize: 15, color: btncPed),
+            "小児", style: TextStyle(fontSize: 15, color: btncolorPed),
           ),
         ),
       );}
 
 
     for(var i = 0; i<28; i++){
-      btncList.add(Colors.blueAccent);
-      btnbcList.add(Colors.white);
+      btncolorList.add(Colors.blueAccent);
+      btnsubcolorList.add(Colors.white);
       btnflagList.add(false);
     }
-    List<Widget> catButtonList = [];
+    List<Widget> filterButtonList = [];
     for(var i = 0; i<28; i++){
-      catButtonList.add(Catbutton(i, btncList[i], btnbcList[i], catTextList[i], btnflagList[i]));
+      filterButtonList.add(Filterbutton(i+1, btncolorList[i], btnsubcolorList[i], subjectTextList[i], btnflagList[i]));
     }
-    catButtonList.add(CatButtonPed());
+    filterButtonList.add(FilterButtonPed());
 
     return Scaffold(
       backgroundColor: Colors.cyan[100],
@@ -353,7 +350,7 @@ class _FilterState extends State<Filter> {
                             runSpacing: height*0.018,
                             //0.027
                             //3.5
-                            children:catButtonList,
+                            children:filterButtonList,
                           ),
                         ),
                       ),
@@ -612,7 +609,7 @@ class _FilterState extends State<Filter> {
                                     if(gotoucol2 == Colors.blue && gotoucol1 == Colors.blue){
                                       gotoucol1 = Colors.white;
                                       gotoubcol1 = Colors.blue;
-                                      _gotou = 0;
+                                      _moshi = 0;
                                     } else if(gotoucol2 == Colors.blue && gotoucol1 == Colors.white){
                                       gotoucol1 = Colors.blue;
                                       gotoubcol1 = Colors.white;
@@ -660,17 +657,17 @@ class _FilterState extends State<Filter> {
                                     gotoucol1 == Colors.blue && gotoucol2 == Colors.blue) {
                                       gotoucol2 = Colors.white;
                                       gotoubcol2 = Colors.blue;
-                                      _gotou = 1;
+                                      _moshi = 1;
                                     } else if(gotoucol1 == Colors.blue && gotoucol2 == Colors.white) {
                                       gotoucol2 = Colors.blue;
                                       gotoubcol2 = Colors.white;
-                                      _gotou = 0;
+                                      _moshi = 0;
                                     } else if(gotoucol1 == Colors.white && gotoucol2 == Colors.blue) {
                                       gotoucol1 = Colors.blue;
                                       gotoubcol1 = Colors.white;
                                       gotoucol2 = Colors.white;
                                       gotoubcol2 = Colors.blue;
-                                      _gotou = 1;
+                                      _moshi = 1;
                                     } else {}
                                   });
                                 },

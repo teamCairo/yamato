@@ -221,33 +221,39 @@ class MyDatabase extends _$MyDatabase {
   Future<List<QuestionHeader>> selectQuestionFilesForFilter(List<int> subject, List<int> compulsory , List<int> period, List<int> favorite, int correctType, bool pediatrics) {
     //Variable.withInt(period),Variable.withInt(subjectId),Variable.withInt(compulsoryType),
     String _select = 'SELECT *'
-        +' From question_Headers '
-        +' WHERE correct_type1 = ? '
-        +' AND ';
+        + ' From question_Headers '
+        + ' WHERE correct_type1 = ? '
+        + ' AND ';
+
+    if(subject.length == 0 && pediatrics == true){
+    _select += 'pediatrics_type IN(1)';
+    }else{
     _select += '(subject_id  IN(';
 
-    int t = subject.length-1;
-    if(t+1 == 1){
+    int t = subject.length - 1;
+    if (t + 1 == 1) {
       _select += subject[0].toString();
-    }else if(t+1 == 0){
-      for(var u = 1; u < 30; u++){
-      _select += u.toString()+',';}
+    } else if (t + 1 == 0) {
+      for (var u = 1; u < 30; u++) {
+        _select += u.toString() + ',';
+      }
       _select += '30';
-    }else if(t+1 > 1){
+    } else if (t + 1 > 1) {
       for (var i = 0; i < t; i++) {
         _select += subject[i].toString() + ',';
       }
       _select += subject[t].toString();
     }
 
-    if(pediatrics == true){
+    if (pediatrics == true) {
       _select += ') OR  pediatrics_type IN(1)';
-    } else if(pediatrics == false){
+    } else if (pediatrics == false) {
       _select += ')';
     } else {
       _select += ')';
     }
     _select += ')';
+  }
 
 
 
