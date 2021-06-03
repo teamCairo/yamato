@@ -141,7 +141,6 @@ class MyDatabase extends _$MyDatabase {
   }
 
 
-
   Stream<List<QuestionHeader>> selectQuestionHeaderByKeyWatch(int businessYear,int period, String questionNo) {
     return
       customSelect(
@@ -282,9 +281,9 @@ class MyDatabase extends _$MyDatabase {
     if(p == 0){
       _select += "IN (0, 1)";
     }  else if(p ==1 && favorite[0] ==0){
-      _select += " IN (0) ";
-    } else if(p ==1 && favorite[0] ==1){
       _select += " IN (1) ";
+    } else if(p ==1 && favorite[0] ==1){
+      _select += " IN (0) ";
     }else {
       _select += "IN (0, 1) ";
     }

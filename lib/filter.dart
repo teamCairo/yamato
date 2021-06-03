@@ -78,6 +78,12 @@ class _FilterState extends State<Filter> {
   Color kaicol3 = Colors.blue;Color kaibcol3 = Colors.white;
   Color kaicol4 = Colors.blue;Color kaibcol4 = Colors.white;
 
+  void initState() {
+    super.initState();
+    if(btncolorPed == Colors.blueAccent){
+      _pediatrics = false;
+    } else{ _pediatrics =true;}
+  }
 
   void all(){
     if(_pediatrics == true){}else {btnforped();}
@@ -122,19 +128,11 @@ class _FilterState extends State<Filter> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>
-            // _questions == null
-              _questions == null   ? Result(4, null, null)
-         :Result(4, _questions , null)),
+             _questions == null ? Result(4, null, null)
+         :Result(4, _questions , null)
+        ),
        );
   }
-
-
-
-
-
-
-
-
 
   void btnonoff(int btnNumber){
     setState(() {
