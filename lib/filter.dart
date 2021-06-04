@@ -54,9 +54,10 @@ class _FilterState extends State<Filter> {
   List<String> _period = <String>[];
   bool _pediatrics;
   int _moshi = 0;
-  List
- // <QuestionHeader>
-  _questions = [];
+  List<QuestionHeader>  _questions = [];
+  List<int> yearlist = [];
+  List<int> periodlist = [];
+  List<String> numberlist = [];
   List<int> moshilist2 = [];
   List<Color> btncolorList = [];
   List<Color> btnsubcolorList = [];
@@ -111,7 +112,7 @@ class _FilterState extends State<Filter> {
     }
   }
 
-  void filtercondition(MyDatabase db) async {
+  Future filtercondition(MyDatabase db) async {
 
    List<int> _kai1 = _period.map(int.parse).toList();
    List<int> _hissyu1 = _compulsory.map(int.parse).toList();
@@ -119,19 +120,25 @@ class _FilterState extends State<Filter> {
    List<int> _filters1 = _subjectfilters.map(int.parse).toList();
    _questions = await db.selectQuestionFilesForFilter(
         _filters1, _hissyu1, _kai1, _clip1, _moshi, _pediatrics);
-   print('before');
-   print(_questions.length);
-   print(_questions);
-   print(moshilist2);
-    //var indexLength = _questions[0].length;
+   yearlist =[];
+   periodlist = [];
+   numberlist = [];
+   for(var i=0; i<_questions.length; i++){
+   yearlist.add(_questions[i].businessYear);
+   periodlist.add(_questions[i].period);
+   numberlist.add(_questions[i].questionNo);}
+  }
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>
-             _questions == null ? Result(4, null, null)
-         :Result(4, _questions , null)
-        ),
-       );
+  void filtercondition1() async{
+    MyDatabase db = MyDatabase();
+    await filtercondition(db);
+   Navigator.push(
+     context,
+     MaterialPageRoute(builder: (context) =>
+     _questions == null ? Result(4, null, null, null, null)
+         :Result(4, yearlist, periodlist, numberlist , null)
+     ),
+   );
   }
 
   void btnonoff(int btnNumber){
@@ -907,7 +914,7 @@ class _FilterState extends State<Filter> {
                     width: width*0.44,
                     child: ElevatedButton(onPressed: () {
                       MyDatabase db = MyDatabase();
-                      filtercondition(db);
+                      filtercondition1();
                     },
                       style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

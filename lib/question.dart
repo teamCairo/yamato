@@ -282,7 +282,7 @@ class _QuestionState extends State<Question> {
                           context,
                           MaterialPageRoute(
                           builder: (context) => Result(
-                            widget.argumentMode, null,widget.argumentTryingListNo,
+                            widget.argumentMode, null, null, null, widget.argumentTryingListNo,
                           )));
                     }
                     },

@@ -11,12 +11,12 @@ class Subjects {
 }
 // ignore: must_be_immutable
 class Result extends StatefulWidget {
-  Result(this.argumentMode, this.question1, this.argumentTryingListNo);
+  Result(this.argumentMode, this.questionYear, this.questionPeriod, this.questionNo, this.argumentTryingListNo);
 
   final int argumentMode;
-  final List
- // <QuestionHeader>
-  question1;
+  final List<String>questionNo;
+  final List <int>questionPeriod;
+  final List<int>questionYear;
   final int argumentTryingListNo;
 
 
@@ -101,7 +101,7 @@ class _ResultState extends State<Result> {
           subjectNameList.add(list.name);
         }else{}
         }
-        }
+      }
     }
     if(pediatrics2 == null){}else{
     for(var i=0; i<pediatrics2.length; i++){
@@ -114,11 +114,6 @@ class _ResultState extends State<Result> {
     setState(() {
       initialdataread = true;
     });
-
-    print(questionagain);
-    print(tryhistory);
-    print(moshimisscheck);
-
   }
 
   Future distribution() async{
@@ -144,14 +139,18 @@ class _ResultState extends State<Result> {
     if(widget.argumentMode != 2 && widget.argumentMode != 4){
       MyDatabase db = MyDatabase();
        await dataget(db);
-    }else if(widget.argumentMode == 4){}
-    if (widget.question1 != null) {
-      this.question2 = widget.question1;
-      print('q2');
-      print(question2);
+    }else if(widget.argumentMode == 4){
+      MyDatabase db = MyDatabase();
+      question2 = [];
+    for(var i=0; i<widget.questionYear.length; i++){
+      List<QuestionHeader> question1 = await db.selectQuestionHeaderByKey(widget.questionYear[i],
+    widget.questionPeriod[i], widget.questionNo[i]);
+    if(question2.contains(question1[0])){}else{
+    question2.add(question1[0]);
+    }
+    }
     }
   }
-
 
 
   Future dataget(MyDatabase db) async{
@@ -170,8 +169,6 @@ class _ResultState extends State<Result> {
   Future changeFavorite(int businessYear, int period, String questionNo,bool favoriteValue,MyDatabase db) async {
 
     List<QuestionHeader> qhforFavoriteList =  await db.selectQuestionHeaderByKey(businessYear,period,questionNo);
-    print(qhforFavoriteList[0]);
-    print('前');
 
     QuestionHeader qhforFavorite = QuestionHeader(
         businessYear:qhforFavoriteList[0].businessYear
@@ -189,11 +186,6 @@ class _ResultState extends State<Result> {
         ,favorite:favoriteValue);
 //TODO 情報取得・更新不具合修正
     db.updatequestionheader(qhforFavorite);
-    print(qhforFavoriteList[0]);
-    print('00000');
-    if(qhforFavoriteList.length <= 1){}else{
-    print(qhforFavoriteList[1]);}
-    print('後');
   }
 
   @override
@@ -396,13 +388,10 @@ class _ResultState extends State<Result> {
           children: <Widget>[
             Expanded(
               child:question2 == null || subjectNameList == null ||
-                    moshimisscheck == null || pediaticscheck == null ? Container()
+                    moshimisscheck == null || pediaticscheck == null
+                  ? Container()
                   :ListView(
-                  //padding: const EdgeInsets.all(8),
-                  //itemCount: question2 == null ? 0 :question2.length,
-                //  itemBuilder: (BuildContext context, int index) {
                     children: Elements,
-                 // }
                   ),
             ),
             SizedBox(
