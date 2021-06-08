@@ -194,6 +194,7 @@ class _FinishState extends State<Finish> {
         )
       ),
       Container(
+        color:Colors.red,
         padding: const EdgeInsets.all(20),
         margin: EdgeInsets.all(4),
         child: SizedBox(
