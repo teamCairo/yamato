@@ -220,8 +220,7 @@ class _ResultState extends State<Result> {
         },
         child: Card(
           child: Container(
-            height: height*0.12,
-            //0.097
+            height: height*0.13,
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -323,8 +322,8 @@ class _ResultState extends State<Result> {
                                         fontWeight:
                                         FontWeight.w600)),
                                 SizedBox(height: height*0.01),
-                                correctType == false ? Icon(Icons.radio_button_off, color: Colors.red, size: 30)
-                                    :Icon(Icons.close, color: Colors.blue, size: 30),
+                                correctType == false ? Icon(Icons.radio_button_off, color: Colors.red, size: 30*adjustsizeh)
+                                    :Icon(Icons.close, color: Colors.blue, size: 30*adjustsizeh),
                               ]),
                             ),
                             SizedBox(height: height*0.01),
