@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamato/question.dart';
 import 'package:yamato/db.dart';
+import 'package:yamato/root.dart';
 
 import 'filter.dart';
 
@@ -192,6 +193,7 @@ class _ResultState extends State<Result> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final adjustsizeh = MediaQuery.of(context).size.height*0.0011;
     // ignore: non_constant_identifier_names
     List<Widget> Elements =[];
     //List<bool> favoflag = [];
@@ -242,7 +244,7 @@ class _ResultState extends State<Result> {
                                       :Text("第"+period.toString()+"回"+'/'+questionNo,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 14,
+                                          fontSize: 14*adjustsizeh,
                                           fontWeight: FontWeight.w600,
                                           color: Colors.black54)),
                                 ),
@@ -254,7 +256,7 @@ class _ResultState extends State<Result> {
                                       :Text(
                                         subject,
                                     style: TextStyle(
-                                        fontSize: 16,
+                                        fontSize: 16*adjustsizeh,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.blue),
                                   ),
@@ -265,7 +267,7 @@ class _ResultState extends State<Result> {
                                   width: width*0.2,
                                   child: Text("（小児科）",
                                     style: TextStyle(
-                                        fontSize: 14,
+                                        fontSize: 14*adjustsizeh,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.green[700]),),
                                 ),
@@ -274,15 +276,18 @@ class _ResultState extends State<Result> {
                           ),
                           Container(
                             width: width*0.65,
-                            child: Row(children: <Widget>[
-                              SizedBox(
+                            child:Column(children: <Widget>[
+                             Container(
+                              child: Row(
+                                children: <Widget>[
+                               SizedBox(
                                 width: width*0.05,
-                              ),
-                              Flexible(
+                                ),
+                               Flexible(
                                 child:initialdataread == false ? Text('')
                                     :Text(text,
                                   style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 16*adjustsizeh,
                                     color: Colors.indigo[900],
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -291,9 +296,12 @@ class _ResultState extends State<Result> {
                                 ),
                               )
                             ]),
+                            ),
+                              SizedBox(height: height*0.01,),
+                           ]),
                           ),
-                        ],
-                      )),
+                        ],)
+                  ),
                   initialdataread == false ? Container()
                       :Container(
                     child: Row(children: <Widget>[
@@ -310,7 +318,7 @@ class _ResultState extends State<Result> {
                               child: Column(children: <Widget>[
                                 Text('＜模試＞',
                                     style: TextStyle(
-                                        fontSize: 11,
+                                        fontSize: 11*adjustsizeh,
                                         color: Colors.indigo[800],
                                         fontWeight:
                                         FontWeight.w600)),
@@ -364,7 +372,16 @@ class _ResultState extends State<Result> {
         backgroundColor: Colors.cyan[100],
         appBar: AppBar(
           elevation: 8,
-          leading: Icon(Icons.home_sharp),
+          leading:IconButton(
+            icon:Icon(Icons.home_sharp)
+            ,onPressed:() {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RootWidget()
+                    ,maintainState:false)
+            );
+          },),
           title: question2 == null ? Text('') :Text("検索結果：${question2.length}問"),
           backgroundColor: Colors.lightBlue[400],
           actions: [
@@ -394,47 +411,61 @@ class _ResultState extends State<Result> {
                     children: Elements,
                   ),
             ),
-            SizedBox(
-              height: height*0.032,
-              width: width*0.62,
-              child: CheckboxListTile(
-                value: _ordercheck,
-                title: Text(
-                  "順番をシャッフルする",
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    //color: Colors.indigo[900],
-                  ),
-                ),
-                controlAffinity: ListTileControlAffinity.leading,
-                onChanged: (bool value) {
-                  setState(() {
-                    _ordercheck = value;
-                  });
-                },
-              ),
-            ),
-            SizedBox(height: height*0.013),
             Container(
-              padding: const EdgeInsets.all(20),
-              margin: EdgeInsets.all(4),
-              child: SizedBox(
-                height: height*0.065,
-                width: width*0.7,
-                child: ElevatedButton(
-                  onPressed: () {
-                    startStudy();
-                  },
-                  child: Text(
-                    "演習を始める",
-                    style: TextStyle(
-                      fontSize: 20,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                 SizedBox(height: height*0.01,),
+                 Container(
+                   height: height*0.03,
+                   width: width,
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children:<Widget>[
+                    Checkbox(
+                     activeColor: Colors.blueAccent,
+                     value: _ordercheck,
+                     onChanged: (bool value) {
+                     setState(() {
+                       _ordercheck = value;
+                        });
+                      },
+                    ),
+
+                   Text(
+                     "順番をシャッフルする",
+                     style: TextStyle(
+                       fontSize: 13*adjustsizeh,
+                       fontWeight: FontWeight.bold,
+                       color: Colors.indigo[900],
+                        ),
+                      ),
+                    SizedBox(width: width*0.06),
+
+                  ]),
+               ),
+               SizedBox(height: height*0.013),
+               Container(
+                 padding:  EdgeInsets.fromLTRB(20, 5, 20, 20),
+                 margin: EdgeInsets.all(4),
+                 child: SizedBox(
+                   height: height*0.065,
+                   width: width*0.7,
+                   child: ElevatedButton(
+                     onPressed: () {
+                       startStudy();
+                     },
+                     child: Text(
+                       "演習を始める",
+                       style: TextStyle(
+                         fontSize: 20*adjustsizeh,
                     ),
                   ),
                 ),
               ),
             ),
+           ])),
           ],
         ),
       );

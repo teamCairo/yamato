@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yamato/db.dart';
 import 'package:yamato/result.dart';
+import 'package:yamato/root.dart';
 
 
 class SubjectFilter {
@@ -213,7 +214,7 @@ class _FilterState extends State<Filter> {
           ),
           alignment: Alignment.center,
           child: Text(
-            text, style: TextStyle(fontSize: 15, color: color),
+            text, style: TextStyle(fontSize: 15*adjustsizeh, color: color),
           ),
         ),
       );}
@@ -251,7 +252,7 @@ class _FilterState extends State<Filter> {
           ),
           alignment: Alignment.center,
           child: Text(
-            "小児", style: TextStyle(fontSize: 15, color: btncolorPed),
+            "小児", style: TextStyle(fontSize: 15*adjustsizeh, color: btncolorPed),
           ),
         ),
       );}
@@ -272,10 +273,28 @@ class _FilterState extends State<Filter> {
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
         elevation: 8,
-        leading:Icon(Icons.home_sharp),
+        leading:IconButton(
+          icon:Icon(Icons.home_sharp)
+          ,onPressed:() {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => RootWidget()
+                  ,maintainState:false)
+          );
+        },),
         title: Text("検索条件"),
         backgroundColor: Colors.blueAccent,
         actions: [
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: IconButton(
+              icon: Icon(Icons.close),
+              onPressed: () => {
+              Navigator.of(context).pop()
+                },
+            ),
+          ),
         ],
       ),
       body:Center(
@@ -352,7 +371,8 @@ class _FilterState extends State<Filter> {
                             spacing: width*0.018,
                             //0.02
                             //25.0
-                            runSpacing: height*0.018,
+                            runSpacing: height*0.02,
+                            //0.018
                             //0.027
                             //3.5
                             children:filterButtonList,
@@ -702,7 +722,7 @@ class _FilterState extends State<Filter> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   alignment: Alignment.center,
-                                  child: Text('間違えた問題のみ',  style: TextStyle(fontSize: 14, color: gotoucol2),),
+                                  child: Text('間違えた問題のみ',  style: TextStyle(fontSize: 14*adjustsizeh, color: gotoucol2),),
                                 ),),
                             ],
                           ),
@@ -857,7 +877,7 @@ class _FilterState extends State<Filter> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   alignment: Alignment.center,
-                                  child: Text('第３回',  style: TextStyle(fontSize: 14, color: kaicol3),),
+                                  child: Text('第３回',  style: TextStyle(fontSize: 14*adjustsizeh, color: kaicol3),),
                                 ),),
                               SizedBox(width: width*0.03,),
                               GestureDetector(
@@ -900,7 +920,7 @@ class _FilterState extends State<Filter> {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   alignment: Alignment.center,
-                                  child: Text('第４回',  style: TextStyle(fontSize: 14, color: kaicol4),),
+                                  child: Text('第４回',  style: TextStyle(fontSize: 14*adjustsizeh, color: kaicol4),),
                                 ),),],
                           ),
                         ]),
@@ -913,13 +933,12 @@ class _FilterState extends State<Filter> {
                     height: height*0.065,
                     width: width*0.44,
                     child: ElevatedButton(onPressed: () {
-                      MyDatabase db = MyDatabase();
                       filtercondition1();
                     },
                       style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),),
-                      child: Text('検索', style: TextStyle(fontSize: 18),),),),
+                      child: Text('検索', style: TextStyle(fontSize: 18*adjustsizeh),),),),
                 ],
               ),
               ),
