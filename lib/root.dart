@@ -34,7 +34,6 @@ class _RootWidgetState extends State<RootWidget> {
     final headeryColor = Colors.lightBlue;
     final backColor = Colors.lightBlue;
     final double elev = 8;
-    final double iconsize = 45;
     final double radius = 20;
     final double fontSize = 15;
     //Color(0xFFFAFAFA)
@@ -43,6 +42,7 @@ class _RootWidgetState extends State<RootWidget> {
     final double btnHeight = [screenWidth/3,screenHeight/6].reduce(min);
     print(btnWidth);
     print(btnHeight);
+    final double iconsize = btnHeight/2.5;
     //TODO パラメータが一つも入力されていないときは強制的にパラメータ入力画面を出す。（入力されないと操作できない（もしくはシリアルコード入力ボタンしか使えない）ようにする。）
 
 
