@@ -132,8 +132,8 @@ class _RootWidgetState extends State<RootWidget> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                padding: const EdgeInsets.all(5),
-                margin: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(7),
+                margin: EdgeInsets.all(7),
                 child: SizedBox(
                   width: btnWidth,
                   height: btnHeight,
@@ -159,8 +159,8 @@ class _RootWidgetState extends State<RootWidget> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(5),
-                margin: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(7),
+                margin: EdgeInsets.all(7),
                 child: SizedBox(
                   width: btnWidth,
                   height: btnHeight,
@@ -194,8 +194,8 @@ class _RootWidgetState extends State<RootWidget> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                padding: const EdgeInsets.all(5),
-                margin: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(7),
+                margin: EdgeInsets.all(7),
                 child: SizedBox(
                   width: btnWidth,
                   height: btnHeight,
@@ -221,8 +221,8 @@ class _RootWidgetState extends State<RootWidget> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.all(5),
-                margin: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(7),
+                margin: EdgeInsets.all(7),
                 child: SizedBox(
                   width: btnWidth,
                   height: btnHeight,
