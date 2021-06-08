@@ -14,7 +14,25 @@ class _AnswerListState extends State<AnswerList> {
   final double elev = 20;
   bool initialDataRead = false;
   List<AnswerListInfo> answerListInfoList = [];
+  final fav = Set<String>();
 
+  @override
+  void initState(){
+    super.initState();
+    favoriteget();
+  }
+
+  Future favoriteget() async{
+    MyDatabase db = MyDatabase();
+    this.answerListInfoList = await db.selectAnswerListInfoAll();
+    for(var i=0; i<answerListInfoList.length; i++){
+      if(answerListInfoList[i].favorite == false){} else{
+        fav.add(answerListInfoList[i].businessYear.toString()
+            +answerListInfoList[i].period.toString()
+            +answerListInfoList[i].questionNo);}}
+    print(fav);
+    print('ka');
+  }
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -25,8 +43,10 @@ class _AnswerListState extends State<AnswerList> {
       loadAsset();
     } else {}
 
+
     Widget ListElement(int businessYear, int period, String questionNo,
-        int subjectId, String questionText, int correctType, bool favorite) {
+        int subjectId, String questionText, int correctType) {
+      final onoff = fav.contains(businessYear.toString()+period.toString()+questionNo);
       return InkWell(
         onTap: () {
           Navigator.of(context).push(
@@ -165,11 +185,15 @@ class _AnswerListState extends State<AnswerList> {
                                 onTap: () {
                                   setState(() {
                                     MyDatabase db = MyDatabase();
-                                    changeFavorite(businessYear, period,
-                                        questionNo, !favorite, db);
+                                    changeFavorite(businessYear, period, questionNo,!onoff,db);
+                                    if(onoff == false){
+                                      fav.add(businessYear.toString()+period.toString()+questionNo);
+                                    }else{
+                                      fav.remove(businessYear.toString()+period.toString()+questionNo);
+                                    }
                                   });
                                 },
-                                child: favorite == false
+                                child: onoff == false
                                     ? Icon(
                                         Icons.star_border,
                                         //favoriteIcon
@@ -201,10 +225,11 @@ class _AnswerListState extends State<AnswerList> {
             answerListInfoList[i].questionNo,
             answerListInfoList[i].subjectId,
             answerListInfoList[i].questionText,
-            answerListInfoList[i].correctType,
-            answerListInfoList[i].favorite));
+            answerListInfoList[i].correctType));
       }
+
     } else {}
+
 
     return Scaffold(
         backgroundColor: Colors.cyan[100],
@@ -222,7 +247,7 @@ class _AnswerListState extends State<AnswerList> {
           },),
           title: answerListInfoList == null
               ? Text('')
-              : Text("検索結果：${answerListInfoList.length}問"),
+              : Text("結果一覧"),
           backgroundColor: Colors.lightBlue[400],
           actions: [],
         ),
@@ -272,6 +297,8 @@ class _AnswerListState extends State<AnswerList> {
       initialDataRead = true;
     });
   }
+
+
 
   void changeFavorite(int businessYear, int period, String questionNo,
       bool favoriteValue, MyDatabase db) async {

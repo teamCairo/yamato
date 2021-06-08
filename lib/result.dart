@@ -4,14 +4,21 @@ import 'package:yamato/db.dart';
 
 import 'filter.dart';
 
+class Subjects {
+  const Subjects(this.name, this.num);
+  final String name;
+  final int num;
+}
 // ignore: must_be_immutable
 class Result extends StatefulWidget {
-  Result(this.argumentMode, this.question1, this.argumentTryingListNo
-      );
+  Result(this.argumentMode, this.questionYear, this.questionPeriod, this.questionNo, this.argumentTryingListNo);
 
   final int argumentMode;
-  final List<QuestionHeader> question1;
+  final List<String>questionNo;
+  final List <int>questionPeriod;
+  final List<int>questionYear;
   final int argumentTryingListNo;
+
 
   @override
   _ResultState createState() => _ResultState();
@@ -20,95 +27,148 @@ class Result extends StatefulWidget {
 class _ResultState extends State<Result> {
 
   List question2 =[];
-  List catlist2 = [];
+  List periodlist2 = [];
+  List qnumberlist2 =[];
+  List qtextlist2 = [];
+  List subjectlist2 = [];
   List moshilist2 = [];
-  List<bool> checkm = [];
-  List questionagain;
+  List pediatrics2 = [];
+  List favoritelist2 = [];
+  List<bool> moshimisscheck = [];
+  List<String> subjectNameList = [];
+  List<bool> pediaticscheck =[];
+  List<QuestionHeader> questionagain;
   List tryhistory;
   bool _ordercheck = false;
   bool initialdataread = false;
   final fav = Set<String>();
 
+  final List<Subjects> _taisyohyo = <Subjects>[
+    Subjects("産科", 1),
+    Subjects("婦人", 2),
+    Subjects("呼吸", 3),
+    Subjects("循環", 4),
+    Subjects("消化", 5),
+    Subjects("肝胆", 6),
+    Subjects("血液", 7),
+    Subjects("腎臓", 8),
+    Subjects("神経", 9),
+    Subjects("内分", 10),
+    Subjects("代謝", 11),
+    Subjects("アレ", 12),
+    Subjects("免疫", 13),
+    Subjects("感染", 14),
+    Subjects("中毒", 15),
+    Subjects("救急", 16),
+    Subjects("複合", 17),
+    Subjects("小複", 18),
+    Subjects("精神", 19),
+    Subjects("皮膚", 20),
+    Subjects("眼科", 21),
+    Subjects("耳鼻", 22),
+    Subjects("泌尿", 23),
+    Subjects("整形", 24),
+    Subjects("放射", 25),
+    Subjects("麻酔", 26),
+    Subjects("公衆", 27),
+    Subjects("一般", 28),
+    //Subjects("小児科", 29),
+  ];
+
 
 
   void initState() {
     super.initState();
-    morewait();
+    datainprocess();
   }
 
-  Future<void> morewait() async{
-    await waiting();
+  Future<void> datainprocess() async{
+
+    await distribution();
+
+    if(moshilist2 == null){}else{
     for(var i = 0; i < moshilist2.length; i++) {
       if (moshilist2[i] == 0) {
-        checkm.add(false);
+        moshimisscheck.add(false);
       } else if (moshilist2[i] == 1) {
-        checkm.add(true);
+        moshimisscheck.add(true);
       } else {}
+    } }
+    if(subjectlist2 == null){}else{
+    for(var i = 0;i<subjectlist2.length; i++){
+      for(final Subjects list in _taisyohyo){
+        if(list.num == subjectlist2[i]) {
+          subjectNameList.add(list.name);
+        }else{}
+        }
+      }
     }
+    if(pediatrics2 == null){}else{
+    for(var i=0; i<pediatrics2.length; i++){
+      if(pediatrics2[i] == 0){
+        pediaticscheck.add(false);
+      } else{
+        pediaticscheck.add(true);
+      }
+    }}
     setState(() {
       initialdataread = true;
     });
-
-    print(questionagain);
-    print(tryhistory);
-    print(checkm);
-
   }
 
-  Future waiting() async{
+  Future distribution() async{
     await insertdata();
-
     if (question2 == null) {
     } else {
       for(var i = 0; i < question2.length; i++) {
-        catlist2.add(question2[i].subjectId);
+        qnumberlist2.add(question2[i].questionNo);
+        qtextlist2.add(question2[i].questionText);
+        subjectlist2.add(question2[i].subjectId);
         moshilist2.add(question2[i].correctType1);
+        favoritelist2.add(question2[i].favorite);
+        pediatrics2.add(question2[i].pediatricsType);
         if(question2[i].favorite == false){}else{
-          fav.add("2021"+question2[i].period.toString()+question2[i].questionNo);
+          fav.add(question2[i].businessYear.toString()+question2[i].period.toString()+question2[i].questionNo);
         }
       }
     }
   }
 
   // ignore: missing_return
-  Future insertdata(){
+  Future insertdata() async {
     if(widget.argumentMode != 2 && widget.argumentMode != 4){
       MyDatabase db = MyDatabase();
-      gettry(db);
-    }else if(widget.argumentMode == 4){}
-    if (widget.question1 != null) {
-      this.question2 = widget.question1;
-      print('q2');
-      print(question2);
+       await dataget(db);
+    }else if(widget.argumentMode == 4){
+      MyDatabase db = MyDatabase();
+      question2 = [];
+    for(var i=0; i<widget.questionYear.length; i++){
+      List<QuestionHeader> question1 = await db.selectQuestionHeaderByKey(widget.questionYear[i],
+    widget.questionPeriod[i], widget.questionNo[i]);
+    if(question2.contains(question1[0])){}else{
+    question2.add(question1[0]);
+    }
+    }
     }
   }
 
-  Future insertdata1() async{
-    MyDatabase db = MyDatabase();
-    this.question2 = await dataget(db);
-    print('確認');
-    print(question2);
-  }
-
-  void gettry(MyDatabase db) async{
-    tryhistory = await db.getAllquestiontryings();
-    dataget(db);
-  }
 
   Future dataget(MyDatabase db) async{
+    tryhistory = await db.getAllquestiontryings();
     for(var i=0; i<tryhistory.length; i++){
       questionagain = await db.selectQuestionHeaderByKey(
-       // widget.year, widget.peri, widget.qnum
       tryhistory[i].businessYear, tryhistory[i].period, tryhistory[i].questionNo
     );
-    question2.add(questionagain);}
+      if(questionagain[0].favorite == false){}else{
+        fav.add(questionagain[0].businessYear.toString()
+            +questionagain[0].period.toString()+questionagain[0].questionNo);}
+    question2.add(questionagain[0]);
+      }
   }
 
   Future changeFavorite(int businessYear, int period, String questionNo,bool favoriteValue,MyDatabase db) async {
 
     List<QuestionHeader> qhforFavoriteList =  await db.selectQuestionHeaderByKey(businessYear,period,questionNo);
-    print(qhforFavoriteList[0]);
-    print('前');
 
     QuestionHeader qhforFavorite = QuestionHeader(
         businessYear:qhforFavoriteList[0].businessYear
@@ -126,11 +186,6 @@ class _ResultState extends State<Result> {
         ,favorite:favoriteValue);
 //TODO 情報取得・更新不具合修正
     db.updatequestionheader(qhforFavorite);
-    print(qhforFavoriteList[0]);
-    print('00000');
-    if(qhforFavoriteList.length <= 1){}else{
-    print(qhforFavoriteList[1]);}
-    print('後');
   }
 
   @override
@@ -139,22 +194,23 @@ class _ResultState extends State<Result> {
     final width = MediaQuery.of(context).size.width;
     // ignore: non_constant_identifier_names
     List<Widget> Elements =[];
-    List<bool> favoflag = [];
-    for(var i=0; i<question2.length;i++){
-      favoflag.add(question2[i].favorite);
-    }
+    //List<bool> favoflag = [];
+   // for(var i=0; i<question2.length;i++){
+    //  favoflag.add(question2[i].favorite);
+  //  }
     // ignore: non_constant_identifier_names
-    Widget ListElement(int period, String number, int category, String text, bool moshi, bool flag, int ordernumber){
-      final onoff = fav.contains('2021'+period.toString()+number);
+    Widget ListElement(int year, int period, String questionNo, String subject,
+        String text, bool correctType, bool pedflag, int ordernumber){
+      final onoff = fav.contains(year.toString()+period.toString()+questionNo);
       return InkWell(
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => Question(
                   argumentMode: 2,
-                  argumentBusinessYear: 2021,
+                  argumentBusinessYear: year,
                   argumentPeriod: period,
-                  argumentQuestionNo: number,
+                  argumentQuestionNo: questionNo,
                   argumentTryingListNo: null
               ),
             ),
@@ -162,7 +218,7 @@ class _ResultState extends State<Result> {
         },
         child: Card(
           child: Container(
-            height: height*0.11,
+            height: height*0.12,
             //0.097
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,7 +239,7 @@ class _ResultState extends State<Result> {
                                 Container(
                                   width: width*0.25,
                                   child: initialdataread == false ? Text('')
-                                      :Text("第"+period.toString()+"回"+'/'+number,
+                                      :Text("第"+period.toString()+"回"+'/'+questionNo,
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: 14,
@@ -196,12 +252,22 @@ class _ResultState extends State<Result> {
                                 Container(
                                   child: initialdataread == false ? Text('')
                                       :Text(
-                                    category.toString(),
+                                        subject,
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.blue),
                                   ),
+                                ),
+                                SizedBox(width: width*0.005,),
+                                initialdataread == false ||  pedflag == false ? Container()
+                                :Container(
+                                  width: width*0.2,
+                                  child: Text("（小児科）",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green[700]),),
                                 ),
                               ],
                             ),
@@ -237,7 +303,7 @@ class _ResultState extends State<Result> {
                           mainAxisAlignment:
                           MainAxisAlignment.center,
                           children: <Widget>[
-                            SizedBox(height: height*0.01),
+                            //SizedBox(height: height*0.01),
                             Container(
                               height: height*0.06,
                               width: width*0.15,
@@ -249,7 +315,7 @@ class _ResultState extends State<Result> {
                                         fontWeight:
                                         FontWeight.w600)),
                                 SizedBox(height: height*0.01),
-                                moshi == false ? Icon(Icons.radio_button_off, color: Colors.red, size: 30)
+                                correctType == false ? Icon(Icons.radio_button_off, color: Colors.red, size: 30)
                                     :Icon(Icons.close, color: Colors.blue, size: 30),
                               ]),
                             ),
@@ -260,17 +326,14 @@ class _ResultState extends State<Result> {
                       SizedBox(width: width*0.02),
                       GestureDetector(
                           onTap: () {
-                            //TODO　favorite機能実装
                             setState(() {
                               MyDatabase db=MyDatabase();
-                              changeFavorite(2021, period, number,!onoff,db);
-                              //datareadforfav =false;
+                              changeFavorite(year, period, questionNo,!onoff,db);
                               if(onoff == false){
-                                fav.add('2021'+period.toString()+number);
+                                fav.add(year.toString()+period.toString()+questionNo);
                               }else{
-                                fav.remove('2021'+period.toString()+number);
+                                fav.remove(year.toString()+period.toString()+questionNo);
                               }
-
                             });
                           },
                           child:onoff == false ?
@@ -285,12 +348,16 @@ class _ResultState extends State<Result> {
         ),
       );}
 
-      if(question2 != null){
+      if(question2 != null && subjectNameList != null && moshimisscheck != null && pediaticscheck != null
+      && question2.length == subjectNameList.length
+      ){
     for(var i=0; i<question2.length; i++){
-      Elements.add(ListElement(question2[i].period, question2[i].questionNo,
-          question2[i].subjectId, question2[i].questionText,
-          checkm[i],question2[i].favorite, i));
-    }}else{}
+      Elements.add(ListElement(question2[i].businessYear, question2[i].period, question2[i].questionNo,
+          subjectNameList[i],question2[i].questionText,moshimisscheck[i], pediaticscheck[i], i));
+    }}else{
+        Elements.add(ListElement(null , null, null,
+            null, null , null , null , 0));
+      }
 
 
       return Scaffold(
@@ -320,20 +387,17 @@ class _ResultState extends State<Result> {
         body: Column(
           children: <Widget>[
             Expanded(
-              child:question2 == null ? Container()
+              child:question2 == null || subjectNameList == null ||
+                    moshimisscheck == null || pediaticscheck == null
+                  ? Container()
                   :ListView(
-                  //padding: const EdgeInsets.all(8),
-                  //itemCount: question2 == null ? 0 :question2.length,
-                //  itemBuilder: (BuildContext context, int index) {
                     children: Elements,
-                 // }
                   ),
             ),
             SizedBox(
               height: height*0.032,
               width: width*0.62,
               child: CheckboxListTile(
-                //TODO レイアウト相談
                 value: _ordercheck,
                 title: Text(
                   "順番をシャッフルする",
@@ -351,6 +415,7 @@ class _ResultState extends State<Result> {
                 },
               ),
             ),
+            SizedBox(height: height*0.013),
             Container(
               padding: const EdgeInsets.all(20),
               margin: EdgeInsets.all(4),
@@ -390,68 +455,33 @@ class _ResultState extends State<Result> {
       await db.deletequestiontrying(questiontrying);
     }
 
-
-    //TODO 一旦サンプルデータを追加。実際のデータに修正が必要。
-
-
-    QuestionTrying qt0 = QuestionTrying(
-        id:null
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'A05'
-        ,endFlg:false
-        ,correctType:null
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt0);
+    for(var i=0; i<question2.length; i++){
+      QuestionTrying qt = QuestionTrying(
+          id:null
+          ,businessYear:question2[i].businessYear
+          ,period:question2[i].period
+          ,questionNo:question2[i].questionNo
+          ,endFlg:false
+          ,correctType:null
+          ,singleAnswer:null
+          ,multipleAnswer:null
+          ,numberAnswer:null);
+      db.insertquestiontrying(qt);
+    }
 
 
-    QuestionTrying qt1 = QuestionTrying(
-        id:null
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'C10'
-        ,endFlg:false
-        ,correctType:null
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt1);
-
-    QuestionTrying qt2 = QuestionTrying(
-        id:null
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'B15'
-        ,endFlg:false
-        ,correctType:null
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt2);
-
-    QuestionTrying qt3 = QuestionTrying(
-        id:null
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'D20'
-        ,endFlg:false
-        ,correctType:null
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt3);
-
+  if(question2 != null) {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => Question(
-                argumentMode: 1,
-                argumentBusinessYear: null,
-                argumentPeriod: null,
-                argumentQuestionNo: null,
-                argumentTryingListNo: 1)));
+            builder: (context) =>
+                Question(
+                    argumentMode: 1,
+                    argumentBusinessYear: null,
+                    argumentPeriod: null,
+                    argumentQuestionNo: null,
+                    argumentTryingListNo: 1)));
+  } else {}
   }
 }
 

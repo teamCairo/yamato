@@ -291,7 +291,7 @@ class _AnswerState extends State<Answer> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => Result(
-                            widget.argumentMode, null,widget.argumentTryingListNo,
+                            widget.argumentMode, null, null, null, widget.argumentTryingListNo,
                           )));}else {
                       int count =0;
                       Navigator.popUntil(context, (_) => count++ >=2);
