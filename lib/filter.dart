@@ -935,9 +935,9 @@ class _FilterState extends State<Filter> {
                     child: ElevatedButton(onPressed: () {
                       filtercondition1();
                     },
-                      style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),),
+                     // style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
+                       // borderRadius: BorderRadius.circular(10),
+                     // ),),
                       child: Text('検索', style: TextStyle(fontSize: 18*adjustsizeh),),),),
                 ],
               ),
