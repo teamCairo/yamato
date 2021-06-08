@@ -260,12 +260,16 @@ class _AnswerState extends State<Answer> {
               child: ElevatedButton.icon(
                 onPressed:() {
                   if(widget.argumentMode==2||tryingListNo==1 ){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Result(
-                              widget.argumentMode, null, null, null, widget.argumentTryingListNo,
-                            )));
+                    if(widget.argumentMode != 2){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Result(
+                                widget.argumentMode, null, null, null, widget.argumentTryingListNo,
+                              )));}else {
+                      int count =0;
+                      Navigator.popUntil(context, (_) => count++ >=2);
+                    }
                   }else{
 
                     print("2個目");
