@@ -78,7 +78,7 @@ class DataMigrant {
         ,compulsoryType:1
         ,answerType:3
         ,questionText:'この問題のNoは2'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -123,7 +123,7 @@ class DataMigrant {
         ,compulsoryType:0
         ,answerType:3
         ,questionText:'この問題のNoは5'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -168,7 +168,7 @@ class DataMigrant {
         ,compulsoryType:0
         ,answerType:3
         ,questionText:'この問題のNoは8'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -213,7 +213,7 @@ class DataMigrant {
         ,compulsoryType:1
         ,answerType:3
         ,questionText:'この問題のNoは11'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -258,7 +258,7 @@ class DataMigrant {
         ,compulsoryType:1
         ,answerType:3
         ,questionText:'この問題のNoは14'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -303,7 +303,7 @@ class DataMigrant {
         ,compulsoryType:0
         ,answerType:3
         ,questionText:'この問題のNoは17'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -348,7 +348,7 @@ class DataMigrant {
         ,compulsoryType:0
         ,answerType:3
         ,questionText:'この問題のNoは20'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -393,7 +393,7 @@ class DataMigrant {
         ,compulsoryType:1
         ,answerType:3
         ,questionText:'この問題のNoは23'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -438,7 +438,7 @@ class DataMigrant {
         ,compulsoryType:1
         ,answerType:3
         ,questionText:'この問題のNoは26'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -483,7 +483,7 @@ class DataMigrant {
         ,compulsoryType:0
         ,answerType:3
         ,questionText:'この問題のNoは29'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -528,7 +528,7 @@ class DataMigrant {
         ,compulsoryType:0
         ,answerType:3
         ,questionText:'この問題のNoは32'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -573,7 +573,7 @@ class DataMigrant {
         ,compulsoryType:1
         ,answerType:3
         ,questionText:'この問題のNoは35'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -618,7 +618,7 @@ class DataMigrant {
         ,compulsoryType:1
         ,answerType:3
         ,questionText:'この問題のNoは38'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -663,7 +663,7 @@ class DataMigrant {
         ,compulsoryType:0
         ,answerType:3
         ,questionText:'この問題のNoは41'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -708,7 +708,7 @@ class DataMigrant {
         ,compulsoryType:0
         ,answerType:3
         ,questionText:'この問題のNoは44'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -753,7 +753,7 @@ class DataMigrant {
         ,compulsoryType:1
         ,answerType:3
         ,questionText:'この問題のNoは47'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -798,7 +798,7 @@ class DataMigrant {
         ,compulsoryType:0
         ,answerType:3
         ,questionText:'この問題のNoは50'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -843,7 +843,7 @@ class DataMigrant {
         ,compulsoryType:0
         ,answerType:3
         ,questionText:'この問題のNoは53'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -888,7 +888,7 @@ class DataMigrant {
         ,compulsoryType:1
         ,answerType:3
         ,questionText:'この問題のNoは56'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -933,7 +933,7 @@ class DataMigrant {
         ,compulsoryType:1
         ,answerType:3
         ,questionText:'この問題のNoは59'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -978,7 +978,7 @@ class DataMigrant {
         ,compulsoryType:0
         ,answerType:3
         ,questionText:'この問題のNoは62'
-        ,numberAnswer:100
+        ,numberAnswer:99
         ,correctType1:0
         ,correctType2:9
         ,correctType3:9
@@ -1014,6 +1014,7 @@ class DataMigrant {
         ,correctType3:9
         ,favorite:false);
     db.insertquestionheader(qh64);
+
 
 
 
