@@ -7,6 +7,7 @@ import 'package:yamato/incorrectcheck.dart';
 import 'package:yamato/datamigrant.dart';
 import 'package:yamato/question.dart';
 import 'package:yamato/finish.dart';
+import 'Dart:math';
 
 import 'filter.dart';
 
@@ -20,9 +21,14 @@ class RootWidget extends StatefulWidget {
 class _RootWidgetState extends State<RootWidget> {
   var _textController = TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+
+    print(screenHeight);
+    print(screenWidth);
 
     final primaryColor = Colors.white;
     final headeryColor = Colors.lightBlue;
@@ -33,8 +39,10 @@ class _RootWidgetState extends State<RootWidget> {
     final double fontSize = 15;
     //Color(0xFFFAFAFA)
 
-    final double btnWidth = 120;
-    final double btnHeight = 120;
+    final double btnWidth = [screenWidth/3,screenHeight/6].reduce(min);
+    final double btnHeight = [screenWidth/3,screenHeight/6].reduce(min);
+    print(btnWidth);
+    print(btnHeight);
     //TODO パラメータが一つも入力されていないときは強制的にパラメータ入力画面を出す。（入力されないと操作できない（もしくはシリアルコード入力ボタンしか使えない）ようにする。）
 
 
@@ -108,14 +116,17 @@ class _RootWidgetState extends State<RootWidget> {
         //child: Container(
         //padding: const EdgeInsets.all(32),
         //margin: EdgeInsets.all(32),
-        child: Column(mainAxisSize: MainAxisSize.min, children: [
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
           Container(
             padding: const EdgeInsets.all(3),
             margin: EdgeInsets.all(10),
             child: Image.asset('assets/image/montore_visual.jpg',
                 fit: BoxFit.contain),
-            height: 280.0,
-            width: 500.0,
+            height: screenHeight/2.6,
+            width: screenWidth*1.3,
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
