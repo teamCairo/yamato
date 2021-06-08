@@ -60,6 +60,10 @@ class _AnswerState extends State<Answer> {
   @override
   Widget build(BuildContext context) {
 
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final adjustsizeh = MediaQuery.of(context).size.height * 0.0011;
+
     MyDatabase db = MyDatabase();
 
     IconData favoriteIcon;
@@ -172,6 +176,8 @@ class _AnswerState extends State<Answer> {
           color:Colors.cyan[100],
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children:initialDataRead==false ? <Widget>[] : <Widget>[
                 Container(
                   child: Center(
@@ -200,37 +206,44 @@ class _AnswerState extends State<Answer> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.fromLTRB(20, 5, 20, 20),
                   margin: EdgeInsets.all(4),
-                  child:SizedBox(
-                    width: 280,
-                    height: 60,
-                    child: ElevatedButton(onPressed: () {
+                  child: SizedBox(
+                    height: height * 0.065,
+                    width: width * 0.7,
+                    child: ElevatedButton(
+                      onPressed: () {
 
-                      if(widget.argumentMode==2){
-                        //単発問題
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
+                        if(widget.argumentMode==2){
+                          //単発問題
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
 
-                      }else if(tryingListNo==tryingListCount){
-                        //最終問題
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => Finish()));
+                        }else if(tryingListNo==tryingListCount){
+                          //最終問題
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => Finish()));
 
 
-                      }else{
-                        //最終問題でない
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (context) => Question(
-                            argumentMode: 1,
-                            argumentBusinessYear: null,
-                            argumentPeriod: null,
-                            argumentQuestionNo: null,
-                            argumentTryingListNo: tryingListNo+1)));
-                      }
-
-                    }, child: Text(mainButtonText, style: TextStyle(fontSize:  20,),),),
-                  ),
+                        }else{
+                          //最終問題でない
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => Question(
+                              argumentMode: 1,
+                              argumentBusinessYear: null,
+                              argumentPeriod: null,
+                              argumentQuestionNo: null,
+                              argumentTryingListNo: tryingListNo+1)));
+                        }
+                      },
+                      child: Text(
+                        mainButtonText,
+                        style: TextStyle(
+                          fontSize: 20 * adjustsizeh,
+                        ),
+                      ),
+                    ),
+                  ),//size
                 ),
               ],
             ),
@@ -245,17 +258,30 @@ class _AnswerState extends State<Answer> {
               height: 40,
               margin: const EdgeInsets.all(4.0),
               child: ElevatedButton.icon(
-                onPressed:widget.argumentMode==2||tryingListNo==1 ? null : () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Question(
-                              argumentMode: 1,
-                              argumentBusinessYear: null,
-                              argumentPeriod: null,
-                              argumentQuestionNo: null,
-                              argumentTryingListNo: widget.argumentTryingListNo-1)
-                          ,maintainState:false));
+                onPressed:() {
+                  if(widget.argumentMode==2||tryingListNo==1 ){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Result(
+                              widget.argumentMode, null, null, null, widget.argumentTryingListNo,
+                            )));
+                  }else{
+
+                    print("2個目");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Question(
+                                argumentMode: 1,
+                                argumentBusinessYear: null,
+                                argumentPeriod: null,
+                                argumentQuestionNo: null,
+                                argumentTryingListNo: widget.argumentTryingListNo-1)
+                            ,maintainState:false)
+                    );
+
+                  }
                 },
                 label: Text("前へ",
                     style: TextStyle(
@@ -296,7 +322,6 @@ class _AnswerState extends State<Answer> {
                       int count =0;
                       Navigator.popUntil(context, (_) => count++ >=2);
                     }},
-                  //TODO　一覧ボタンの処理　連続演習モードで、一覧画面からきている場合：一覧画面までPopする、一覧画面から単発の問題をやっている場合、も同様。　続きから解くからやっている場合は？ 一覧画面側の処理が固まってから実装
                   icon: Icon(Icons.list,size: 40,color: Colors.lightBlue,),
                   label: Text("一覧", style: TextStyle(
                     color: Colors.blue,
