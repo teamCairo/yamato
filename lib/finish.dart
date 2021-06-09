@@ -30,8 +30,7 @@ class _FinishState extends State<Finish> {
     final adjustsizeh = MediaQuery.of(context).size.height * 0.0011;
 
 
-    final fontSize1 = MediaQuery.of(context).size.height/25;
-    final fontSize2 = MediaQuery.of(context).size.width/12;
+    final fontSize = MediaQuery.of(context).size.width/12;
     if (dataReadFlg) {
       //データ取得後の処理
 
@@ -112,18 +111,19 @@ class _FinishState extends State<Finish> {
                                   "問題数：",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
-                                    fontSize: fontSize2,
+                                    fontSize: fontSize,
                                   ),
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 30),
                                 child: Text(
                                   "  ${questionNumber.toString()}".substring(
                                       (questionNumber.toString()).length - 1,
                                       (questionNumber.toString()).length + 2),
                                   style: TextStyle(
-                                    fontSize: fontSize2,
+                                    fontSize: fontSize,
                                   ),
                                 ),
                               ),
@@ -137,16 +137,17 @@ class _FinishState extends State<Finish> {
                                   "正解　：",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
-                                    fontSize: fontSize2,
+                                    fontSize: fontSize,
                                   ),
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 30),
                                 child: Text(
                                   "  ${correctNumber.toString()}".substring((correctNumber.toString()).length-1,(correctNumber.toString()).length+2),
                                   style: TextStyle(
-                                    fontSize: fontSize2,
+                                    fontSize: fontSize,
                                   ),
                                 ),
                               ),
@@ -160,16 +161,17 @@ class _FinishState extends State<Finish> {
                                   "不正解：",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
-                                    fontSize: fontSize2,
+                                    fontSize: fontSize,
                                   ),
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 30),
                                 child: Text(
                                   "  ${incorrectNumber.toString()}".substring((incorrectNumber.toString()).length-1,(incorrectNumber.toString()).length+2),
                                   style: TextStyle(
-                                    fontSize: fontSize2,
+                                    fontSize: fontSize,
                                   ),
                                 ),
                               ),
@@ -183,16 +185,17 @@ class _FinishState extends State<Finish> {
                                       "未解答：",
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
-                                        fontSize: fontSize2,
+                                        fontSize: fontSize,
                                       ),
                                     ),
                                   ),
                               Container(
-                                padding: const EdgeInsets.all(10),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 30),
                                 child: Text(
                                   "  ${unAnseredNumber.toString()}".substring((unAnseredNumber.toString()).length-1,(unAnseredNumber.toString()).length+2),
                                   style: TextStyle(
-                                    fontSize: fontSize2,
+                                    fontSize: fontSize,
                                   ),
                                 ),
                               ),
