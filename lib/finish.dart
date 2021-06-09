@@ -64,8 +64,8 @@ class _FinishState extends State<Finish> {
         ),
         body: Center(
             child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
               Expanded(
                   child: Container(
@@ -88,7 +88,7 @@ class _FinishState extends State<Finish> {
                               Container(
                                 padding:
                                     const EdgeInsets.fromLTRB(30, 10, 10, 10),
-                                child: Text("${correctPercent.toString()}",
+                                child: Text(dataReadFlg ? "${correctPercent.toString()}" :"",
                                     style: TextStyle(
                                         fontSize: fontsizeLarge,
                                         fontWeight: FontWeight.w300)),
@@ -96,7 +96,7 @@ class _FinishState extends State<Finish> {
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 35, horizontal: 10),
-                                child: Text("%",
+                                child: Text(dataReadFlg ? "%" :"",
                                     style: TextStyle(
                                       fontSize: fontsizepercent,
                                     )),
@@ -118,10 +118,11 @@ class _FinishState extends State<Finish> {
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 12, horizontal: 30),
-                                child: Text(
-                                  "  ${questionNumber.toString()}".substring(
-                                      (questionNumber.toString()).length - 1,
-                                      (questionNumber.toString()).length + 2),
+                                child: Text(dataReadFlg ? "  "
+                                    "${questionNumber.toString()}".substring(
+                                    (questionNumber.toString()).length - 1,
+                                    (questionNumber.toString()).length + 2) :"",
+
                                   style: TextStyle(
                                     fontSize: fontSize,
                                   ),
@@ -144,8 +145,10 @@ class _FinishState extends State<Finish> {
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 12, horizontal: 30),
-                                child: Text(
-                                  "  ${correctNumber.toString()}".substring((correctNumber.toString()).length-1,(correctNumber.toString()).length+2),
+                                child: Text(dataReadFlg ? "  "
+                                    "${correctNumber.toString()}".substring(
+                                    (correctNumber.toString()).length - 1,
+                                    (correctNumber.toString()).length + 2) :"",
                                   style: TextStyle(
                                     fontSize: fontSize,
                                   ),
@@ -168,8 +171,10 @@ class _FinishState extends State<Finish> {
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 12, horizontal: 30),
-                                child: Text(
-                                  "  ${incorrectNumber.toString()}".substring((incorrectNumber.toString()).length-1,(incorrectNumber.toString()).length+2),
+                                child: Text(dataReadFlg ? "  "
+                                    "${incorrectNumber.toString()}".substring(
+                                    (incorrectNumber.toString()).length - 1,
+                                    (incorrectNumber.toString()).length + 2) :"",
                                   style: TextStyle(
                                     fontSize: fontSize,
                                   ),
@@ -192,8 +197,10 @@ class _FinishState extends State<Finish> {
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 12, horizontal: 30),
-                                child: Text(
-                                  "  ${unAnseredNumber.toString()}".substring((unAnseredNumber.toString()).length-1,(unAnseredNumber.toString()).length+2),
+                                child: Text(dataReadFlg ? "  "
+                                    "${unAnseredNumber.toString()}".substring(
+                                    (unAnseredNumber.toString()).length - 1,
+                                    (unAnseredNumber.toString()).length + 2) :"",
                                   style: TextStyle(
                                     fontSize: fontSize,
                                   ),

@@ -112,7 +112,8 @@ class _RootWidgetState extends State<RootWidget> {
           ),
         ],
       ),
-      body: Center(
+      body:SingleChildScrollView(
+    child: Center(
         //child: Container(
         //padding: const EdgeInsets.all(32),
         //margin: EdgeInsets.all(32),
@@ -299,6 +300,7 @@ class _RootWidgetState extends State<RootWidget> {
         ]),
       ),
       //),
+    )
     );
   }
 
