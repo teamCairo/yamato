@@ -24,6 +24,11 @@ class _FinishState extends State<Finish> {
 
   @override
   Widget build(BuildContext context) {
+
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
+    final adjustsizeh = MediaQuery.of(context).size.height * 0.0011;
+
     if (dataReadFlg) {
       //データ取得後の処理
 
@@ -192,28 +197,29 @@ class _FinishState extends State<Finish> {
                           )
                         ])
                       ])))),
-              Container(
-                padding: const EdgeInsets.all(20),
-                margin: EdgeInsets.all(4),
-                child: SizedBox(
-                  width: 280,
-                  height: 60,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AnswerList()));
-                    },
-                    child: Text(
-                      "解答を確認",
-                      style: TextStyle(
-                        fontSize: 20,
+
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 5, 20, 20),
+                    margin: EdgeInsets.all(4),
+                    child: SizedBox(
+                      height: height * 0.065,
+                      width: width * 0.7,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AnswerList()));
+                        },
+                        child: Text(
+                          "解答を確認",
+                          style: TextStyle(
+                            fontSize: 20 * adjustsizeh,
+                          ),
+                        ),
                       ),
-                    ),
+                    ),//size
                   ),
-                ),
-              )
             ])));
   }
 
