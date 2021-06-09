@@ -30,7 +30,8 @@ class _FinishState extends State<Finish> {
     final adjustsizeh = MediaQuery.of(context).size.height * 0.0011;
 
 
-    final fontSize = MediaQuery.of(context).size.width/12;
+    //final fontSize = MediaQuery.of(context).size.width/12;
+    final fontSize = MediaQuery.of(context).size.height/24;
     if (dataReadFlg) {
       //データ取得後の処理
 
