@@ -196,7 +196,7 @@ class _QuestionState extends State<Question> {
                                         child: Text(
                                           outputtext,
                                           style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 20*adjustsizeh,
                                           ),
                                         ),
                                       ),
