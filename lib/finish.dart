@@ -112,7 +112,7 @@ class _FinishState extends State<Finish> {
                                   "問題数：",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
-                                    fontSize: fontSize1,
+                                    fontSize: fontSize2,
                                   ),
                                 ),
                               ),
@@ -123,7 +123,7 @@ class _FinishState extends State<Finish> {
                                       (questionNumber.toString()).length - 1,
                                       (questionNumber.toString()).length + 2),
                                   style: TextStyle(
-                                    fontSize: fontSize1,
+                                    fontSize: fontSize2,
                                   ),
                                 ),
                               ),
@@ -160,7 +160,7 @@ class _FinishState extends State<Finish> {
                                   "不正解：",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
-                                    fontSize: fontsizeNormal,
+                                    fontSize: fontSize2,
                                   ),
                                 ),
                               ),
@@ -169,7 +169,7 @@ class _FinishState extends State<Finish> {
                                 child: Text(
                                   "  ${incorrectNumber.toString()}".substring((incorrectNumber.toString()).length-1,(incorrectNumber.toString()).length+2),
                                   style: TextStyle(
-                                    fontSize: fontsizeNormal,
+                                    fontSize: fontSize2,
                                   ),
                                 ),
                               ),
@@ -183,7 +183,7 @@ class _FinishState extends State<Finish> {
                                       "未解答：",
                                       textAlign: TextAlign.right,
                                       style: TextStyle(
-                                        fontSize: fontsizeNormal,
+                                        fontSize: fontSize2,
                                       ),
                                     ),
                                   ),
@@ -192,7 +192,7 @@ class _FinishState extends State<Finish> {
                                 child: Text(
                                   "  ${unAnseredNumber.toString()}".substring((unAnseredNumber.toString()).length-1,(unAnseredNumber.toString()).length+2),
                                   style: TextStyle(
-                                    fontSize: fontsizeNormal,
+                                    fontSize: fontSize2,
                                   ),
                                 ),
                               ),
