@@ -29,6 +29,9 @@ class _FinishState extends State<Finish> {
     final width = MediaQuery.of(context).size.width;
     final adjustsizeh = MediaQuery.of(context).size.height * 0.0011;
 
+
+    final fontSize1 = MediaQuery.of(context).size.height/25;
+    final fontSize2 = MediaQuery.of(context).size.width/12;
     if (dataReadFlg) {
       //データ取得後の処理
 
@@ -109,7 +112,7 @@ class _FinishState extends State<Finish> {
                                   "問題数：",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
-                                    fontSize: fontsizeNormal,
+                                    fontSize: fontSize1,
                                   ),
                                 ),
                               ),
@@ -120,7 +123,7 @@ class _FinishState extends State<Finish> {
                                       (questionNumber.toString()).length - 1,
                                       (questionNumber.toString()).length + 2),
                                   style: TextStyle(
-                                    fontSize: fontsizeNormal,
+                                    fontSize: fontSize1,
                                   ),
                                 ),
                               ),
@@ -134,7 +137,7 @@ class _FinishState extends State<Finish> {
                                   "正解　：",
                                   textAlign: TextAlign.right,
                                   style: TextStyle(
-                                    fontSize: fontsizeNormal,
+                                    fontSize: fontSize2,
                                   ),
                                 ),
                               ),
@@ -143,7 +146,7 @@ class _FinishState extends State<Finish> {
                                 child: Text(
                                   "  ${correctNumber.toString()}".substring((correctNumber.toString()).length-1,(correctNumber.toString()).length+2),
                                   style: TextStyle(
-                                    fontSize: fontsizeNormal,
+                                    fontSize: fontSize2,
                                   ),
                                 ),
                               ),
