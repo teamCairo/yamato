@@ -196,7 +196,7 @@ class _QuestionState extends State<Question> {
                                         child: Text(
                                           outputtext,
                                           style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: 20*adjustsizeh,
                                           ),
                                         ),
                                       ),
@@ -247,16 +247,20 @@ class _QuestionState extends State<Question> {
               child: ElevatedButton.icon(
                 onPressed: () {
                   if (widget.argumentMode == 2 || tryingListNo == 1) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Result(
-                                  widget.argumentMode,
-                                  null,
-                                  null,
-                                  null,
-                                  widget.argumentTryingListNo,
-                                )));
+                    if (widget.argumentMode == 2) {
+                      Navigator.of(context).pop();
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Result(
+                                widget.argumentMode,
+                                null,
+                                null,
+                                null,
+                                widget.argumentTryingListNo,
+                              )));
+                    }
                   } else {
                     print("2個目");
                     Navigator.push(

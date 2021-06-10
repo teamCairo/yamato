@@ -45,6 +45,7 @@ class _RootWidgetState extends State<RootWidget> {
     final double iconsize = btnHeight/2.5;
     //TODO パラメータが一つも入力されていないときは強制的にパラメータ入力画面を出す。（入力されないと操作できない（もしくはシリアルコード入力ボタンしか使えない）ようにする。）
 
+    initialDataSet();
 
     return Scaffold(
       backgroundColor: Colors.cyan[100],
@@ -94,25 +95,11 @@ class _RootWidgetState extends State<RootWidget> {
                 }
               });
             },
-          ),
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Finish()),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.play_arrow),
-            onPressed: () {
-              startStudy();
-            },
-          ),
+          )
         ],
       ),
-      body: Center(
+      body:SingleChildScrollView(
+    child: Center(
         //child: Container(
         //padding: const EdgeInsets.all(32),
         //margin: EdgeInsets.all(32),
@@ -299,7 +286,16 @@ class _RootWidgetState extends State<RootWidget> {
         ]),
       ),
       //),
+    )
     );
+  }
+
+  void initialDataSet() async{
+    List<QuestionHeader> qhl= await MyDatabase().getAllquestionheaders();
+    if(qhl.length==0){
+      DataMigrant dataMigrant = DataMigrant();
+      dataMigrant.dataReset();
+    }
   }
 
   void moveToStudyStatus() async {

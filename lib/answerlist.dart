@@ -14,29 +14,18 @@ class _AnswerListState extends State<AnswerList> {
   final double elev = 20;
   bool initialDataRead = false;
   List<AnswerListInfo> answerListInfoList = [];
-  final fav = Set<String>();
+  final favManager = Set<String>();
 
   @override
   void initState(){
     super.initState();
-    favoriteget();
   }
 
-  Future favoriteget() async{
-    MyDatabase db = MyDatabase();
-    this.answerListInfoList = await db.selectAnswerListInfoAll();
-    for(var i=0; i<answerListInfoList.length; i++){
-      if(answerListInfoList[i].favorite == false){} else{
-        fav.add(answerListInfoList[i].businessYear.toString()
-            +answerListInfoList[i].period.toString()
-            +answerListInfoList[i].questionNo);}}
-    print(fav);
-    print('ka');
-  }
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final adjustsizeh = MediaQuery.of(context).size.height*0.0011;
 
     List<Widget> questionInfoElements = [];
     if (initialDataRead == false) {
@@ -44,188 +33,195 @@ class _AnswerListState extends State<AnswerList> {
     } else {}
 
 
-    Widget ListElement(int businessYear, int period, String questionNo,
-        int subjectId, String questionText, int correctType) {
-      final onoff = fav.contains(businessYear.toString()+period.toString()+questionNo);
+    Widget ListElement(int year, int period, String questionNo, String subject,
+        String text, int correctType, int pedType, int ordernumber){
+      final onoff = favManager.contains(year.toString()+period.toString()+questionNo);
+
+      Icon correctIcon;
+      if(correctType==0){
+        correctIcon=Icon(Icons.close, color: Colors.indigo, size: 30*adjustsizeh);
+
+      }else if(correctType==1){
+        correctIcon=Icon(Icons.radio_button_off, color: Colors.red, size: 30*adjustsizeh);
+
+      }else{
+        correctIcon=null;
+
+      }
+
+      print(correctIcon);
+
+
       return InkWell(
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => Question(
                   argumentMode: 2,
-                  argumentBusinessYear: businessYear,
+                  argumentBusinessYear: year,
                   argumentPeriod: period,
                   argumentQuestionNo: questionNo,
-                  argumentTryingListNo: null),
+                  argumentTryingListNo: null
+              ),
             ),
           );
         },
         child: Card(
           child: Container(
-            height: height * 0.11,
-            //0.097
+            height: height*0.12,
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
                       child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(width: width * 0.012),
-                            initialDataRead == false
-                                ? Container()
-                                : Container(
-                                    width: width * 0.25,
-                                    child: initialDataRead == false
-                                        ? Text('')
-                                        : Text(
-                                            "第" +
-                                                period.toString() +
-                                                "回" +
-                                                '/' +
-                                                questionNo,
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.black54)),
-                                  ),
-                            SizedBox(
-                              width: width * 0.01,
-                            ),
-                            Container(
-                              child: initialDataRead == false
-                                  ? Text('')
-                                  : Text(
-                                      subjectId.toString(),
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment:
+                        MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Container(
+                            child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(width: width*0.012),
+                                initialDataRead == false ? Container():
+                                Container(
+                                  width: width*0.25,
+                                  child: initialDataRead == false ? Text('')
+                                      :Text("第"+period.toString()+"回"+'/'+questionNo,
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.blue),
-                                    ),
+                                          fontSize: 14*adjustsizeh,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black54)),
+                                ),
+                                SizedBox(
+                                  width: width*0.01,
+                                ),
+                                Container(
+                                  child: initialDataRead == false ? Text('')
+                                      :Text(
+                                    subject,
+                                    style: TextStyle(
+                                        fontSize: 16*adjustsizeh,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.blue),
+                                  ),
+                                ),
+                                SizedBox(width: width*0.005,),
+                                initialDataRead == false ||  pedType == 0 ? Container()
+                                    :Container(
+                                  width: width*0.2,
+                                  child: Text("（小児科）",
+                                    style: TextStyle(
+                                        fontSize: 14*adjustsizeh,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green[700]),),
+                                ),
+                              ],
                             ),
+                          ),
+                          Container(
+                            width: width*0.65,
+                            child:Column(children: <Widget>[
+                              Container(
+                                child: Row(
+                                    children: <Widget>[
+                                      SizedBox(
+                                        width: width*0.05,
+                                      ),
+                                      Flexible(
+                                        child:initialDataRead == false ? Text('')
+                                            :Text(text,
+                                          style: TextStyle(
+                                            fontSize: 16*adjustsizeh,
+                                            color: Colors.indigo[900],
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 2,
+                                        ),
+                                      )
+                                    ]),
+                              ),
+                              SizedBox(height: height*0.012,),
+                            ]),
+                          ),
+                        ],)
+                  ),
+                  initialDataRead == false ? Container()
+                      :Container(
+                    child: Row(children: <Widget>[
+                      Container(
+                        height: height*0.086,
+                        child: Column(
+                          mainAxisAlignment:
+                          MainAxisAlignment.center,
+                          children: <Widget>[
+                            //SizedBox(height: height*0.01),
+                            Container(
+                              height: height*0.06,
+                              width: width*0.15,
+                              child: Column(children: <Widget>[
+                                Text('＜結果＞',
+                                    style: TextStyle(
+                                        fontSize: 11*adjustsizeh,
+                                        color: Colors.indigo[800],
+                                        fontWeight:
+                                        FontWeight.w600)),
+                                SizedBox(height: height*0.01),
+                                correctIcon==null ? Text("ー",
+                                    style: TextStyle(
+                                        fontSize: 16*adjustsizeh,
+                                        color: Colors.indigo[800],
+                                      fontWeight: FontWeight.bold,)): correctIcon
+                              ]),
+                            ),
+                            SizedBox(height: height*0.01),
                           ],
                         ),
                       ),
-                      Container(
-                        width: width * 0.65,
-                        child: Row(children: <Widget>[
-                          SizedBox(
-                            width: width * 0.05,
-                          ),
-                          Flexible(
-                            child: initialDataRead == false
-                                ? Text('')
-                                : Text(
-                                    //qtextlist2[index],
-                                    questionText,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.indigo[900],
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                          )
-                        ]),
+                      SizedBox(width: width*0.02),
+                      GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              MyDatabase db=MyDatabase();
+                              changeFavorite(year, period, questionNo,!onoff,db);
+                              if(onoff == false){
+                                favManager.add(year.toString()+period.toString()+questionNo);
+                              }else{
+                                favManager.remove(year.toString()+period.toString()+questionNo);
+                              }
+                            });
+                          },
+                          child:onoff == false ?
+                          Icon(Icons.star_border, color: Colors.blue, size: 30,)
+                              :Icon(Icons.star,color: Colors.yellowAccent[700], size: 30,)
                       ),
-                    ],
-                  )),
-                  initialDataRead == false
-                      ? Container()
-                      : Container(
-                          child: Row(children: <Widget>[
-                            Container(
-                              height: height * 0.1,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: height * 0.01,
-                                  ),
-                                  Container(
-                                    height: height * 0.08,
-                                    width: width * 0.15,
-                                    // Visibility(
-                                    //  visible: initialDataRead == false ? false
-                                    //     :checkm[index], child:
-                                    child: Column(children: <Widget>[
-                                      Text('＜正誤＞',
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              color: Colors.indigo[800],
-                                              fontWeight: FontWeight.w600)),
-                                      SizedBox(
-                                        height: height * 0.01,
-                                      ),
-                                      correctType == 0
-                                          ? Icon(Icons.radio_button_off,
-                                              color: Colors.red, size: 30)
-                                          : Icon(Icons.close,
-                                              color: Colors.blue, size: 30),
-                                    ]),
-                                  ),
-                                  SizedBox(
-                                    height: height * 0.01,
-                                    //0.03
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              width: width * 0.02,
-                            ),
-                            GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    MyDatabase db = MyDatabase();
-                                    changeFavorite(businessYear, period, questionNo,!onoff,db);
-                                    if(onoff == false){
-                                      fav.add(businessYear.toString()+period.toString()+questionNo);
-                                    }else{
-                                      fav.remove(businessYear.toString()+period.toString()+questionNo);
-                                    }
-                                  });
-                                },
-                                child: onoff == false
-                                    ? Icon(
-                                        Icons.star_border,
-                                        //favoriteIcon
-                                        color: Colors.blue,
-                                        size: 30,
-                                      )
-                                    : Icon(
-                                        Icons.star,
-                                        color: Colors.yellowAccent,
-                                        size: 30,
-                                      )),
-                            SizedBox(
-                              width: width * 0.025,
-                            ),
-                          ]),
-                        ),
+                      SizedBox(width: width*0.025),
+                    ]),
+                  ),
                 ]),
           ),
         ),
-      );
-    }
+      );}
 
     questionInfoElements = [];
     if (answerListInfoList != null) {
       for (var i = 0; i < answerListInfoList.length; i++) {
+        print("QTID："+answerListInfoList[i].id.toString());
+        print("Subject："+answerListInfoList[i].subjectName);
+        print("ped："+answerListInfoList[i].pediatricsType.toString());
+        print("correct："+answerListInfoList[i].correctType.toString());
         questionInfoElements.add(ListElement(
             answerListInfoList[i].businessYear,
             answerListInfoList[i].period,
             answerListInfoList[i].questionNo,
-            answerListInfoList[i].subjectId,
+            answerListInfoList[i].subjectName,
             answerListInfoList[i].questionText,
-            answerListInfoList[i].correctType));
+            answerListInfoList[i].correctType,
+            answerListInfoList[i].pediatricsType,
+            i+1));
       }
 
     } else {}
@@ -252,6 +248,8 @@ class _AnswerListState extends State<AnswerList> {
           actions: [],
         ),
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Expanded(
                 child: answerListInfoList == null
@@ -277,7 +275,7 @@ class _AnswerListState extends State<AnswerList> {
                     child: Text(
                       "ホームに戻る",
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 20*adjustsizeh,
                       ),
                     ),
                   ),
@@ -292,6 +290,16 @@ class _AnswerListState extends State<AnswerList> {
     MyDatabase db = MyDatabase();
 
     this.answerListInfoList = await db.selectAnswerListInfoAll();
+
+    for(var i = 0; i < answerListInfoList.length; i++) {
+      if(answerListInfoList[i].favorite == false){
+        if(favManager.contains(answerListInfoList[i].businessYear.toString()+answerListInfoList[i].period.toString()+answerListInfoList[i].questionNo)){
+          favManager.remove(answerListInfoList[i].businessYear.toString()+answerListInfoList[i].period.toString()+answerListInfoList[i].questionNo);
+        } else{}
+      }else{
+        favManager.add(answerListInfoList[i].businessYear.toString()+answerListInfoList[i].period.toString()+answerListInfoList[i].questionNo);
+      }
+    }
 
     setState(() {
       initialDataRead = true;

@@ -5962,31 +5962,29 @@ class DataMigrant {
     db.insertquestionfile(qf260);
 
 
-
-
     Subject subject1 = Subject(
         id:1
-        ,subjectName:'循環');
+        ,subjectName:'産科');
     db.insertsubject(subject1);
     Subject subject2 = Subject(
         id:2
-        ,subjectName:'呼吸');
+        ,subjectName:'婦人科');
     db.insertsubject(subject2);
     Subject subject3 = Subject(
         id:3
-        ,subjectName:'消化');
+        ,subjectName:'呼吸器');
     db.insertsubject(subject3);
     Subject subject4 = Subject(
         id:4
-        ,subjectName:'腎臓');
+        ,subjectName:'循環器');
     db.insertsubject(subject4);
     Subject subject5 = Subject(
         id:5
-        ,subjectName:'内代');
+        ,subjectName:'消化管');
     db.insertsubject(subject5);
     Subject subject6 = Subject(
         id:6
-        ,subjectName:'神経');
+        ,subjectName:'肝胆膵');
     db.insertsubject(subject6);
     Subject subject7 = Subject(
         id:7
@@ -5994,72 +5992,88 @@ class DataMigrant {
     db.insertsubject(subject7);
     Subject subject8 = Subject(
         id:8
-        ,subjectName:'免疫');
+        ,subjectName:'腎');
     db.insertsubject(subject8);
     Subject subject9 = Subject(
         id:9
-        ,subjectName:'感染');
+        ,subjectName:'神経');
     db.insertsubject(subject9);
     Subject subject10 = Subject(
         id:10
-        ,subjectName:'中毒');
+        ,subjectName:'内分泌');
     db.insertsubject(subject10);
     Subject subject11 = Subject(
         id:11
-        ,subjectName:'救急');
+        ,subjectName:'代謝');
     db.insertsubject(subject11);
     Subject subject12 = Subject(
         id:12
-        ,subjectName:'小児');
+        ,subjectName:'アレ膠');
     db.insertsubject(subject12);
     Subject subject13 = Subject(
         id:13
-        ,subjectName:'産科');
+        ,subjectName:'免疫');
     db.insertsubject(subject13);
     Subject subject14 = Subject(
         id:14
-        ,subjectName:'婦人');
+        ,subjectName:'感染症');
     db.insertsubject(subject14);
     Subject subject15 = Subject(
         id:15
-        ,subjectName:'泌尿');
+        ,subjectName:'中毒');
     db.insertsubject(subject15);
     Subject subject16 = Subject(
         id:16
-        ,subjectName:'眼科');
+        ,subjectName:'救急');
     db.insertsubject(subject16);
     Subject subject17 = Subject(
         id:17
-        ,subjectName:'耳鼻');
+        ,subjectName:'複合');
     db.insertsubject(subject17);
     Subject subject18 = Subject(
         id:18
-        ,subjectName:'皮膚');
+        ,subjectName:'小児科複合');
     db.insertsubject(subject18);
     Subject subject19 = Subject(
         id:19
-        ,subjectName:'精神');
+        ,subjectName:'精神科');
     db.insertsubject(subject19);
     Subject subject20 = Subject(
         id:20
-        ,subjectName:'整形');
+        ,subjectName:'皮膚科');
     db.insertsubject(subject20);
     Subject subject21 = Subject(
         id:21
-        ,subjectName:'麻酔');
+        ,subjectName:'眼科');
     db.insertsubject(subject21);
     Subject subject22 = Subject(
         id:22
-        ,subjectName:'放射');
+        ,subjectName:'耳鼻咽喉科');
     db.insertsubject(subject22);
     Subject subject23 = Subject(
         id:23
-        ,subjectName:'公衛');
+        ,subjectName:'泌尿器科');
     db.insertsubject(subject23);
     Subject subject24 = Subject(
         id:24
-        ,subjectName:'医総');
+        ,subjectName:'整形外科');
     db.insertsubject(subject24);
+    Subject subject25 = Subject(
+        id:25
+        ,subjectName:'放射線科');
+    db.insertsubject(subject25);
+    Subject subject26 = Subject(
+        id:26
+        ,subjectName:'麻酔科');
+    db.insertsubject(subject26);
+    Subject subject27 = Subject(
+        id:27
+        ,subjectName:'公衆衛生');
+    db.insertsubject(subject27);
+    Subject subject28 = Subject(
+        id:28
+        ,subjectName:'一般教養');
+    db.insertsubject(subject28);
 
 
   }
