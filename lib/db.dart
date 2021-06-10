@@ -221,8 +221,14 @@ class MyDatabase extends _$MyDatabase {
     //Variable.withInt(period),Variable.withInt(subjectId),Variable.withInt(compulsoryType),
     String _select = 'SELECT *'
         + ' From question_Headers '
-        + ' WHERE correct_type1 = ? '
-        + ' AND ';
+        + ' WHERE correct_type1 ';
+
+    if(correctType == 0){
+      _select += 'IN(0, 1) AND ';
+    } else {
+      _select += 'IN(1) AND ';
+    }
+
 
     if(subject.length == 0 && pediatrics == true){
     _select += 'pediatrics_type IN(1)';
@@ -293,7 +299,7 @@ class MyDatabase extends _$MyDatabase {
     return
       customSelect(
         _select,
-        variables: [ Variable.withInt(correctType)],
+       // variables: [ Variable.withInt(correctType)],
         readsFrom: {questionHeaders },
       ).map((row) => QuestionHeader(
           businessYear:row.readInt('business_year')

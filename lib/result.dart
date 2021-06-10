@@ -283,7 +283,7 @@ class _ResultState extends State<Result> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                   overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
+                                  maxLines: 1,
                                 ),
                               )
                             ]),
@@ -358,19 +358,6 @@ class _ResultState extends State<Result> {
             null, null , null , null , 0));
       }
 
-      if(initialDataRead == true && questions.length == 0) {
-       Future.delayed(Duration(milliseconds: 600), () => showDialog(context: context,
-           builder: (context) =>AlertDialog(
-             title: Text("検索結果：0件"),
-             content: Text("検索条件に当てはまる問題が見つかりませんでした。"),
-             actions: [
-              TextButton(child: Text("OK"),
-               onPressed: () {int count =0;
-               Navigator.popUntil(context, (_) => count++ >=2);}),
-         ],
-       )));
-      }
-
       return Scaffold(
         backgroundColor: Colors.cyan[100],
         appBar: AppBar(
@@ -385,6 +372,7 @@ class _ResultState extends State<Result> {
                     ,maintainState:false)
             );
           },),
+          centerTitle: true,
           title: initialDataRead == null ? Text('') :Text("検索結果：${questions.length}問"),
           backgroundColor: Colors.lightBlue[400],
           actions: [
@@ -496,7 +484,7 @@ class _ResultState extends State<Result> {
           ,period:questions[i].period
           ,questionNo:questions[i].questionNo
           ,endFlg:false
-          ,correctType:null
+          ,correctType:9
           ,singleAnswer:null
           ,multipleAnswer:null
           ,numberAnswer:null);

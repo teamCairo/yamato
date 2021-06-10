@@ -30,7 +30,7 @@ class _FilterState extends State<Filter> {
     SubjectFilter("神経",9,),
     SubjectFilter("内分",10),
     SubjectFilter("代謝",11),
-    SubjectFilter("アレ",12,),
+    SubjectFilter("ア膠",12,),
     SubjectFilter("免疫",13,),
     SubjectFilter("感染",14,),
     SubjectFilter("中毒",15,),
@@ -65,7 +65,7 @@ class _FilterState extends State<Filter> {
   List<bool> btnflagList = [];
   List<String> subjectTextList =
   ["産科","婦人","呼吸","循環","消化","肝胆","血液","腎臓","神経","内分","代謝",
-    "アレ","免疫","感染","中毒","救急","複合","小複","精神","皮膚","眼科","耳鼻",
+    "ア膠","免疫","感染","中毒","救急","複合","小複","精神","皮膚","眼科","耳鼻",
     "泌尿","整形","放射","麻酔","公衆","一般"];
 
   Color btncolorPed = Colors.blueAccent; Color btnsubcolorPed = Colors.white;
@@ -133,13 +133,25 @@ class _FilterState extends State<Filter> {
   void filtercondition1() async{
     MyDatabase db = MyDatabase();
     await filtercondition(db);
-   Navigator.push(
-     context,
-     MaterialPageRoute(builder: (context) =>
-     _questions == null ? Result(4, null, null, null, null)
-         :Result(4, yearlist, periodlist, numberlist , null)
-     ),
-   );
+    if(_questions.length == 0){
+      showDialog(context: context,
+        builder: (context) =>AlertDialog(
+          title: Text("検索結果：0件"),
+          content: Text("検索条件に当てはまる問題が見つかりませんでした。"),
+          actions: [
+            TextButton(child: Text("OK"),
+                onPressed: () {
+                Navigator.pop(context);}),
+          ],
+        ));} else{
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) =>
+            Result(4, yearlist, periodlist, numberlist , null)
+        ),
+      );
+    }
+
   }
 
   void btnonoff(int btnNumber){
@@ -271,10 +283,13 @@ class _FilterState extends State<Filter> {
 
     return Scaffold(
       backgroundColor: Colors.cyan[100],
-      appBar: AppBar(
+      appBar:
+        PreferredSize(
+         preferredSize: Size.fromHeight(height*0.06),
+        child:AppBar(
         elevation: 8,
         leading:IconButton(
-          icon:Icon(Icons.home_sharp)
+          icon:Icon(Icons.home_sharp, size: 24*adjustsizeh)
           ,onPressed:() {
           Navigator.push(
               context,
@@ -283,13 +298,14 @@ class _FilterState extends State<Filter> {
                   ,maintainState:false)
           );
         },),
-        title: Text("検索条件"),
+        centerTitle: true,
+        title: Text("検索条件", style: TextStyle(fontSize: 20*adjustsizeh),),
         backgroundColor: Colors.blueAccent,
         actions: [
           Padding(
             padding: const EdgeInsets.all(4.0),
             child: IconButton(
-              icon: Icon(Icons.close),
+              icon: Icon(Icons.close, size: 24*adjustsizeh,),
               onPressed: () => {
               Navigator.of(context).pop()
                 },
@@ -297,12 +313,12 @@ class _FilterState extends State<Filter> {
           ),
         ],
       ),
+    ),
       body:Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               Container(
-                //constraints: BoxConstraints.expand(),
                 height: height*0.55,
                 width: width*0.98,
                 decoration: BoxDecoration(
@@ -316,7 +332,7 @@ class _FilterState extends State<Filter> {
 
                 child: Column( mainAxisAlignment: MainAxisAlignment.start,
                     children:<Widget>[
-                      Text('＜カテゴリー選択＞', style: TextStyle(fontSize: 16, color: Colors.indigo[900])),
+                      Text('＜カテゴリー選択＞', style: TextStyle(fontSize: 16*adjustsizeh, color: Colors.indigo[900])),
                       SizedBox(height: height*0.015,),
                       Container(
                         child: Row(
@@ -362,19 +378,13 @@ class _FilterState extends State<Filter> {
                       Container(
                         height: height*0.44,
                         alignment: Alignment.center,
-                        //TODO MediaQueryの値
                         padding: EdgeInsets.all(MediaQuery.of(context).size.height*0),
                         margin: EdgeInsets.all(MediaQuery.of(context).size.height*0),
                         child: Padding(
                           padding:EdgeInsets.all(MediaQuery.of(context).size.height*0),
                           child: Wrap(
                             spacing: width*0.018,
-                            //0.02
-                            //25.0
                             runSpacing: height*0.02,
-                            //0.018
-                            //0.027
-                            //3.5
                             children:filterButtonList,
                           ),
                         ),
@@ -395,7 +405,7 @@ class _FilterState extends State<Filter> {
                         ),
                       ),
                       child: Column(children:<Widget>[
-                        Text('＜必修/必修以外＞', style: TextStyle(color: Colors.indigo[900]),),
+                        Text('＜必修/必修以外＞', style: TextStyle(fontSize: 14*adjustsizeh,color: Colors.indigo[900]),),
                         SizedBox(height: height*0.012),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -500,11 +510,10 @@ class _FilterState extends State<Filter> {
                         ),
                       ),
                       child: Column(children:<Widget>[
-                        Text('＜お気に入り＞' ,style: TextStyle(color: Colors.indigo[900])),
+                        Text('＜お気に入り＞' ,style: TextStyle(fontSize: 14*adjustsizeh, color: Colors.indigo[900])),
                         SizedBox(height: height*0.012,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
@@ -623,7 +632,7 @@ class _FilterState extends State<Filter> {
                           ),
                         ),
                         child: Column(children:<Widget>[
-                          Text('＜模試の正誤＞', style: TextStyle(color: Colors.indigo[900])),
+                          Text('＜模試の正誤＞', style: TextStyle(fontSize: 14*adjustsizeh, color: Colors.indigo[900])),
                           SizedBox(height: height*0.01,),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -741,7 +750,7 @@ class _FilterState extends State<Filter> {
                           ),
                         ),
                         child: Column(children:<Widget>[
-                          Text('＜出題回＞', style: TextStyle(color: Colors.indigo[900])),
+                          Text('＜出題回＞', style: TextStyle(color: Colors.indigo[900],fontSize: 14*adjustsizeh)),
                           SizedBox(height: height*0.01,),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.center,
