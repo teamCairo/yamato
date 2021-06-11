@@ -34,7 +34,7 @@ class _ResultState extends State<Result> {
   List<bool> moshiMissCheck = [];
   List<String> subjectNameList = [];
   List<bool> pediaticsCheck =[];
-  List<QuestionHeader> questionAgain;
+  List<QuestionForSearch> questionAgain;
   List tryHistory;
   bool _ordercheck = false;
   bool initialDataRead = false;
@@ -89,15 +89,15 @@ class _ResultState extends State<Result> {
         moshiMissCheck.add(true);
       } else {}
     } }
-    if(subjectList == null){}else{
-     for(var i = 0;i<subjectList.length; i++){
-      for(final Subjects list in _taisyohyo){
-        if(list.num == subjectList[i]) {
-          subjectNameList.add(list.name);
-        }else{}
-        }
-      }
-    }
+    //if(subjectList == null){}else{
+     //for(var i = 0;i<subjectList.length; i++){
+      //for(final Subjects list in _taisyohyo){
+        //if(list.num == subjectList[i]) {
+         // subjectNameList.add(list.name);
+        //}else{}
+       // }
+    //  }
+    //}
     if(pediatricsList == null){}else{
     for(var i=0; i<pediatricsList.length; i++){
       if(pediatricsList[i] == 0){
@@ -139,7 +139,7 @@ class _ResultState extends State<Result> {
       MyDatabase db = MyDatabase();
       questions = [];
     for(var i=0; i<widget.questionYear.length; i++){
-      List<QuestionHeader> question1 = await db.selectQuestionHeaderByKey(widget.questionYear[i],
+      List<QuestionForSearch> question1 = await db.selectQuestionForSearchByKey(widget.questionYear[i],
     widget.questionPeriod[i], widget.questionNo[i]);
     if(questions.contains(question1[0])){}else{
       questions.add(question1[0]);
@@ -152,7 +152,7 @@ class _ResultState extends State<Result> {
   Future dataget(MyDatabase db) async{
     tryHistory = await db.getAllquestiontryings();
     for(var i=0; i<tryHistory.length; i++){
-      questionAgain = await db.selectQuestionHeaderByKey(
+      questionAgain = await db.selectQuestionForSearchByKey(
           tryHistory[i].businessYear, tryHistory[i].period, tryHistory[i].questionNo
     );
       if(questionAgain[0].favorite == false){}else{
@@ -347,12 +347,12 @@ class _ResultState extends State<Result> {
         ),
       );}
 
-      if(questions != null && subjectNameList != null && moshiMissCheck != null && pediaticsCheck != null
-      && questions.length == subjectNameList.length
+      if(questions != null && moshiMissCheck != null && pediaticsCheck != null
+
       ){
     for(var i=0; i<questions.length; i++){
       Elements.add(ListElement(questions[i].businessYear, questions[i].period, questions[i].questionNo,
-          subjectNameList[i],questions[i].questionText,moshiMissCheck[i], pediaticsCheck[i], i));
+          questions[i].subjectName,questions[i].questionText,moshiMissCheck[i], pediaticsCheck[i], i));
     }}else{
         Elements.add(ListElement(null , null, null,
             null, null , null , null , 0));
@@ -395,7 +395,7 @@ class _ResultState extends State<Result> {
         body: Column(
           children: <Widget>[
             Expanded(
-              child:questions == null || subjectNameList == null ||
+              child:questions == null ||
                   moshiMissCheck == null || pediaticsCheck == null
                   ? Container()
                   :ListView(

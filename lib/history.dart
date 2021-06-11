@@ -84,7 +84,7 @@ class _History extends State<History> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final adjustsizeh = MediaQuery.of(context).size.height * 0.0011;
-    Future tryingData() async{
+    void tryingData() async{
       Set<String> qList = selectedQuestions;
       final List<String> selectedList = qList.toList();
       selectedList.sort((a, b) => a.compareTo(b));
@@ -108,8 +108,8 @@ class _History extends State<History> {
         db.insertquestiontrying(qt);
         print(qt);
       }
-      return new Future.delayed(Duration(seconds: 5), (){
-        return print("1minute");});
+     // return new Future.delayed(Duration(seconds: 1), (){
+       // return print("1minute");});
     }
 
     void qTryingInsert() async {

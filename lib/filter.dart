@@ -55,7 +55,7 @@ class _FilterState extends State<Filter> {
   List<String> _period = <String>[];
   bool _pediatrics;
   int _moshi = 0;
-  List<QuestionHeader>  _questions = [];
+  List<QuestionForSearch>  _questions = [];
   List<int> yearlist = [];
   List<int> periodlist = [];
   List<String> numberlist = [];

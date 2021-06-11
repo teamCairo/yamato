@@ -217,7 +217,7 @@ class MyDatabase extends _$MyDatabase {
       )).get();
   }
 
-  Future<List<QuestionHeader>> selectQuestionFilesForFilter(List<int> subject, List<int> compulsory , List<int> period, List<int> favorite, int correctType, bool pediatrics) {
+  Future<List<QuestionForSearch>> selectQuestionFilesForFilter(List<int> subject, List<int> compulsory , List<int> period, List<int> favorite, int correctType, bool pediatrics) {
     //Variable.withInt(period),Variable.withInt(subjectId),Variable.withInt(compulsoryType),
     String _select = 'SELECT *'
         + ' From question_Headers '
@@ -228,7 +228,6 @@ class MyDatabase extends _$MyDatabase {
     } else {
       _select += 'IN(1) AND ';
     }
-
 
     if(subject.length == 0 && pediatrics == true){
     _select += 'pediatrics_type IN(1)';
@@ -259,8 +258,6 @@ class MyDatabase extends _$MyDatabase {
     }
     _select += ')';
   }
-
-
 
     _select += ' AND compulsory_type ';
     if(compulsory.length == 1) {
@@ -299,9 +296,8 @@ class MyDatabase extends _$MyDatabase {
     return
       customSelect(
         _select,
-       // variables: [ Variable.withInt(correctType)],
-        readsFrom: {questionHeaders },
-      ).map((row) => QuestionHeader(
+        readsFrom: {questionHeaders, subjects},
+      ).map((row) => QuestionForSearch(
           businessYear:row.readInt('business_year')
           ,period:row.readInt('period')
           ,questionNo:row.readString('question_no')
@@ -315,6 +311,7 @@ class MyDatabase extends _$MyDatabase {
           ,correctType2:row.readInt('correct_type2')
           ,correctType3:row.readInt('correct_type3')
           ,favorite:row.readBool('favorite')
+          ,subjectName:row.readString('subject_name')
       )).get();
   }
 
@@ -501,6 +498,38 @@ class MyDatabase extends _$MyDatabase {
       )).get();
   }
 
+  Future<List<QuestionForSearch>> selectQuestionForSearchByKey(int businessYear,int period, String questionNo) {
+    return
+      customSelect(
+        'SELECT *'
+            +'From question_Headers '
+            +'LEFT OUTER JOIN subjects sb '
+            +'ON subject_id = sb.id '
+            +'WHERE business_year = ? '
+            +'AND period = ? '
+            +'AND question_no = ?;',
+        variables: [Variable.withInt(businessYear),Variable.withInt(period),Variable.withString(questionNo)],
+        readsFrom: {questionHeaders, subjects},
+      ).map((row) => QuestionForSearch(
+          businessYear:row.readInt('business_year')
+          ,period:row.readInt('period')
+          ,questionNo:row.readString('question_no')
+          ,subjectId:row.readInt('subject_id')
+          ,subjectName:row.readString('subject_name')
+          ,pediatricsType:row.readInt('pediatrics_type')
+          ,compulsoryType:row.readInt('compulsory_type')
+          ,answerType:row.readInt('answer_type')
+          ,questionText:row.readString('question_text')
+          ,numberAnswer:row.readInt('number_answer')
+          ,correctType1:row.readInt('correct_type1')
+          ,correctType2:row.readInt('correct_type2')
+          ,correctType3:row.readInt('correct_type3')
+          ,favorite:row.readBool('favorite')
+
+      )).get();
+  }
+
+
 }
 
 class AnswerListInfo{final int businessYear;
@@ -576,5 +605,40 @@ QuestionListForCheck({
   , this.favorite
 });
 
+
+}
+
+class QuestionForSearch {
+  final int businessYear;
+  final int period;
+  final String questionNo;
+  final int pediatricsType;
+  final int subjectId;
+  final int compulsoryType;
+  final int answerType;
+  final String questionText;
+  final int numberAnswer;
+  final int correctType1;
+  final int correctType2;
+  final int correctType3;
+  final bool favorite;
+  final String subjectName;
+
+  QuestionForSearch({
+    this.businessYear
+    , this.period
+    , this.questionNo
+    , this.subjectId
+    , this.pediatricsType
+    , this.compulsoryType
+    , this.answerType
+    , this.questionText
+    , this.numberAnswer
+    , this.correctType1
+    , this.correctType2
+    , this.correctType3
+    , this.favorite
+    , this.subjectName
+  });
 
 }
