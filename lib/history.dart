@@ -48,14 +48,14 @@ class _History extends State<History> {
     MyDatabase db = MyDatabase();
     fQHList = await db.getAllquestionheaders();
     for (var i = 0; i < fQHList.length; i++) {
-      questionNoList.add(fQHList[i].questionNo);
-      questionCorrectType1.add(fQHList[i].correctType1);
-      questionCorrectType2.add(fQHList[i].correctType2);
-      questionCorrectType3.add(fQHList[i].correctType3);
-      //_isCheckboxChecked = List<bool>.filled(fQHList.length, selectedQuestions.contains(fQHList[i].questionNo));
-      _isCheckboxChecked.add(false);
-      kao.add(false);
-    } checkboxManager = List<bool>.filled(fQHList.length, false);
+            if(fQHList[i].correctType1 == 0){
+              _isCheckboxChecked.add(true);
+            }else{
+              _isCheckboxChecked.add(false);
+            }
+
+
+    }
   }
   void wait() async{
     await allData();
@@ -165,14 +165,12 @@ class _History extends State<History> {
     }
 
     List<QuestionHeader> hqList = [];
-    //List<bool> _isCheckboxChecked;
 
 
     if (hqList.length == 0 && fQHList != null && initialData == true) {
 
         setState(() {
           hqList = fQHList;
-          //_isCheckboxChecked = List<bool>.filled(fQHList.length, false);
           print(_isCheckboxChecked);
         });
 
@@ -185,9 +183,10 @@ class _History extends State<History> {
     Widget QuestionList() {
     return
       Container(
+          padding: EdgeInsets.all(0),
           height: height*0.72,
-          width: double.infinity,
-          child: ListView.builder(
+          width: width,
+          child: Center(child: ListView.builder(
               itemBuilder: (_, index) {
                 return Container(
                     decoration: BoxDecoration(
@@ -200,7 +199,7 @@ class _History extends State<History> {
                     child: Row(children: [
                       SizedBox(
                           height: height*0.06,
-                          width: width*0.21,
+                          width: width*0.205,
                           child: Center(
                               child: Text(
                                 hqList[index].questionNo.toString(),
@@ -214,44 +213,47 @@ class _History extends State<History> {
                                 ),
                               ))),
                       Container(
+                          width: width*0.05,
                           height: height*0.04,
                           child: VerticalDivider(color: Colors.black)),
                       SizedBox(
                           height: height*0.04,
-                          width: width*0.157,
+                          width: width*0.15,
                           child: Center(
                               child: hqList[index].correctType1 == 1
-                                  ? Icon(Icons.close,
+                                  ? Icon(Icons.radio_button_off, size: 35*adjustsizeh, color: Colors.red,)
+                                  :hqList[index].correctType1 == 0 ? Icon(Icons.close,
                                   size: 35*adjustsizeh, color: Colors.indigo)
-                                  :hqList[index].correctType1 == 0 ? Icon(Icons.horizontal_rule, size: 35*adjustsizeh, color: Colors.black,)
-                                  :Icon(Icons.horizontal_rule, size: 35*adjustsizeh, color: Colors.red,))),
+                                  :Icon(Icons.horizontal_rule, size: 35*adjustsizeh, color: Colors.black,))),
                       Container(
                           height: height*0.04,
+                          width: width*0.05,
                           child: VerticalDivider(color: Colors.black)),
                       SizedBox(
                           height: height*0.04,
                           width: width*0.165,
                           child: Center(
                               child: hqList[index].correctType2 == 1
-                                  ? Icon(Icons.close,
-                                  size: 35*adjustsizeh, color: Colors.red)
-                                  :hqList[index].correctType2 == 0 ? Icon(Icons.horizontal_rule, size: 35*adjustsizeh, color: Colors.black,)
-                                  :Icon (Icons.radio_button_off, size: 35*adjustsizeh, color: Colors.red,) )),
+                                  ? Icon (Icons.radio_button_off, size: 35*adjustsizeh, color: Colors.red,)
+                                  :hqList[index].correctType2 == 0 ? Icon(Icons.close,
+                              size: 35*adjustsizeh, color: Colors.red)
+                                  :Icon(Icons.horizontal_rule, size: 35*adjustsizeh, color: Colors.black,) )),
                       SizedBox(
                           height: height*0.04,
-                          width: width*0.15,
+                          width: width*0.14,
                           child: Center(
                               child: hqList[index].correctType3 == 1
-                                  ? Icon(Icons.close,
+                                  ? Icon(Icons.radio_button_off, size: 35*adjustsizeh, color: Colors.red,)
+                                  :hqList[index].correctType3 == 0 ? Icon(Icons.close,
                                   size: 35*adjustsizeh, color: Colors.indigo)
-                                  :hqList[index].correctType3 == 0 ? Icon(Icons.horizontal_rule, size: 35*adjustsizeh, color: Colors.black,)
-                                  : Icon(Icons.radio_button_off, size: 35*adjustsizeh, color: Colors.red,))),
+                                  :Icon(Icons.horizontal_rule, size: 35*adjustsizeh, color: Colors.black,) )),
                       Container(
                           height: height*0.04,
+                          width: width*0.05,
                           child: VerticalDivider(color: Colors.black)),
                       SizedBox(
                           height: height*0.06,
-                          width: width*0.2,
+                          width: width*0.19,
                           child: Checkbox(
                             activeColor: Colors.blueAccent,
                             value: _isCheckboxChecked[index],
@@ -266,7 +268,7 @@ class _History extends State<History> {
                     ])
                 );
               },
-              itemCount: hqList.length));}
+              itemCount: hqList.length)));}
 
 
 
@@ -307,8 +309,8 @@ class _History extends State<History> {
               child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
-                      width: width * 0.2,
                       height: height * 0.06,
+                      width: width * 0.2,
                       child: Center(
                           child: Text(
                             "問題番号",
@@ -322,12 +324,14 @@ class _History extends State<History> {
                             ),
                           )),
                     ),
-                    Container(height: height * 0.06,
+                    Container(
+                        height: height * 0.06,
+                        width: width*0.05,
                         child: VerticalDivider(
                             color: Colors.white, thickness: 1)),
                     SizedBox(
-                      width: width * 0.15,
                       height: height * 0.06,
+                      width: width * 0.15,
                       child: Center(
                           child: Text(
                             "模試",
@@ -340,16 +344,22 @@ class _History extends State<History> {
                             ),
                           )),
                     ),
-                    Container(height: height * 0.06,
+                    Container(
+                        height: height * 0.06,
+                        width: width*0.05,
                         child: VerticalDivider(
                           color: Colors.white, thickness: 1,)),
                     SizedBox(
-                      width: width * 0.3,
                       height: height * 0.06,
+                      width: width * 0.3,
                       child: Center(
                           child: Column(
                               children: <Widget>[
-                                Text(
+                                Container(
+                                  height: height*0.03,
+                                  width: width*0.3,
+                                  alignment: Alignment.center,
+                                  child:Text(
                                   "直近の成績",
                                   style: TextStyle(
                                     color: Colors.white,
@@ -358,9 +368,12 @@ class _History extends State<History> {
                                     fontFamily: "Hiragino Sans",
                                     locale: Locale("ja", "JP"),
                                   ),
-                                ),
-                                SizedBox(height: height * 0.015),
-                                Container(child: Row(
+                                ),),
+                                //SizedBox(height: height * 0.015),
+                                Container(
+                                    height: height*0.03,
+                                    width: width*0.3,
+                                    child: Row(
                                     mainAxisAlignment: MainAxisAlignment
                                         .spaceEvenly,
                                     children: <Widget>[
@@ -374,12 +387,14 @@ class _History extends State<History> {
                                     ]))
                               ])),
                     ),
-                    Container(height: height * 0.06,
+                    Container(
+                        height: height * 0.06,
+                        width: width*0.05,
                         child: VerticalDivider(
                             color: Colors.white, thickness: 1)),
                     Container(
-                      width: width * 0.19,
                       height: height * 0.06,
+                      width: width * 0.19,
                       alignment: Alignment.center,
                       child: Center(child: Text("選択", style: TextStyle(
                           fontSize: 18 * adjustsizeh, color: Colors.white),),),
@@ -389,9 +404,12 @@ class _History extends State<History> {
           )
       ),
       body: SingleChildScrollView(child: initialData == true ? Container(
+          padding: EdgeInsets.all(0),
           height: height * 0.72,
-          width: double.infinity,
-          child:  QuestionList(),
+          width: width,
+          alignment: Alignment.center,
+          //double.infinity,
+          child: Center(child: QuestionList(),),
           ): Container()),
       bottomNavigationBar:
       Container(
