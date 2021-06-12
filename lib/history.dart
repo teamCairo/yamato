@@ -97,7 +97,7 @@ class _History extends State<History> {
       for (var i = 0; i < selectedList.length; i++) {
         QuestionTrying qt = QuestionTrying(
             id: null,
-            businessYear: 2020,
+            businessYear: 2021,
             period: 1,
             questionNo: selectedList[i],
             endFlg: false,
@@ -282,7 +282,7 @@ class _History extends State<History> {
             Navigator.pop(context);
           },),
           centerTitle: true,
-          title: Text("学習状況(2020/第1回)"),
+          title: Text("学習状況(2021/第1回)"),
           backgroundColor: Colors.blueAccent,
           actions: [
             Padding(
