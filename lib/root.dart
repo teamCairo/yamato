@@ -342,10 +342,10 @@ class _RootWidgetState extends State<RootWidget> {
 
   void restart() async {
     List<int> nextNumberList = await MyDatabase().selectQuestionTryingNextNo();
+    List<int> MaxNumberList = await MyDatabase().selectQuestionTryingMaxNo();
 
-    //TODO　途中未回答である事を考えると、最小の未解答のNoをとるのではなく、最大の回答済みNo+1にすべき。　ただ、全て回答済みだった場合の処理を忘れない。
     print("Size:Size:Size:"+nextNumberList.length.toString());
-    if (nextNumberList[0] == null) {
+    if (nextNumberList[0] == MaxNumberList[0]) {
       showDialog(
         context: context,
         builder: (_) {
@@ -363,6 +363,13 @@ class _RootWidgetState extends State<RootWidget> {
         },
       );
     } else {
+      int nextNo;
+      if (nextNumberList[0] == null){
+        nextNo=1;
+      }else{
+        nextNo=nextNumberList[0]+1;
+
+      }
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -371,7 +378,7 @@ class _RootWidgetState extends State<RootWidget> {
                   argumentBusinessYear: null,
                   argumentPeriod: null,
                   argumentQuestionNo: null,
-                  argumentTryingListNo: nextNumberList[0])));
+                  argumentTryingListNo: nextNo)));
     }
   }
 
@@ -449,80 +456,6 @@ class _RootWidgetState extends State<RootWidget> {
       );
     }
   }
-
-
-  void startStudy() async{
-
-    MyDatabase db = MyDatabase();
-
-    List<QuestionTrying> questiontryingsList = await db.getAllquestiontryings();
-    for(var questiontrying in questiontryingsList){
-      await db.deletequestiontrying(questiontrying);
-    }
-
-
-    //TODO 一旦サンプルデータを追加。実際のデータに修正が必要。
-
-
-    QuestionTrying qt0 = QuestionTrying(
-        id:1
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'A01'
-        ,endFlg:false
-        ,correctType:9
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt0);
-
-    QuestionTrying qt1 = QuestionTrying(
-        id:2
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'B02'
-        ,endFlg:false
-        ,correctType:9
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt1);
-
-    QuestionTrying qt2 = QuestionTrying(
-        id:3
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'C02'
-        ,endFlg:false
-        ,correctType:9
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt2);
-
-    QuestionTrying qt3 = QuestionTrying(
-        id:4
-        ,businessYear:2021
-        ,period:1
-        ,questionNo:'F02'
-        ,endFlg:false
-        ,correctType:9
-        ,singleAnswer:null
-        ,multipleAnswer:null
-        ,numberAnswer:null);
-    db.insertquestiontrying(qt3);
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Question(
-                argumentMode: 1,
-                argumentBusinessYear: null,
-                argumentPeriod: null,
-                argumentQuestionNo: null,
-                argumentTryingListNo: 1)));
-  }
-
 }
 
 enum _DialogActionType {

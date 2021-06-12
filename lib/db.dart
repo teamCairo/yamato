@@ -389,7 +389,7 @@ class MyDatabase extends _$MyDatabase {
       ).get();
   }
 
-
+/*
   Future<List<int>> selectQuestionTryingNextNo() {
     return
       customSelect(
@@ -400,7 +400,31 @@ class MyDatabase extends _$MyDatabase {
       ).map((row) => row.readInt('M')
       ).get();
   }
+ */
 
+
+  Future<List<int>> selectQuestionTryingNextNo() {
+    return
+      customSelect(
+        'SELECT MAX(id) as M '
+            +'From question_Tryings '
+            +"WHERE end_Flg = 1 ;",
+        readsFrom: {questionTryings},
+      ).map((row) => row.readInt('M')
+      ).get();
+  }
+
+
+
+  Future<List<int>> selectQuestionTryingMaxNo() {
+    return
+      customSelect(
+        'SELECT MAX(id) as M '
+            +'From question_Tryings ;',
+        readsFrom: {questionTryings},
+      ).map((row) => row.readInt('M')
+      ).get();
+  }
 
 
   Future<List<AnswerListInfo>> selectAnswerListInfoAll() {
