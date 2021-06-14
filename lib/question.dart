@@ -491,11 +491,8 @@ class _QuestionState extends State<Question> {
       if (mode == 2 || qt[0].endFlg == false) {
         int correctType2ForUpdate;
         int correctType3ForUpdate;
-        if (qh[0].correctType2 == 9) {
-          correctType2ForUpdate = correctType;
-          correctType3ForUpdate = 9;
-        } else if (qh[0].correctType3 == 9) {
-          correctType2ForUpdate = qh[0].correctType2;
+        if (qh[0].correctType3 == 9) {
+          correctType2ForUpdate = 9;
           correctType3ForUpdate = correctType;
         } else {
           correctType2ForUpdate = qh[0].correctType3;
