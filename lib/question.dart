@@ -485,6 +485,7 @@ class _QuestionState extends State<Question> {
               numberAnswer: nmberAnswer);
           await db.updatequestiontrying(qtForUpdate);
         }
+
       }
 
       if (mode == 2 || qt[0].endFlg == false) {
@@ -506,6 +507,7 @@ class _QuestionState extends State<Question> {
             period: qh[0].period,
             questionNo: qh[0].questionNo,
             subjectId: qh[0].subjectId,
+            pediatricsType: qh[0].pediatricsType,
             compulsoryType: qh[0].compulsoryType,
             answerType: qh[0].answerType,
             questionText: qh[0].questionText,
