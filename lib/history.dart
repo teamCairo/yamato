@@ -45,10 +45,10 @@ class _History extends State<History> {
     for (var i = 0; i < fQHList.length; i++) {
             if(fQHList[i].correctType3 == 0){
               _isCheckboxChecked.add(true);
-            }else if(fQHList[i].correctType3 == null && fQHList[i].correctType2 == 0){
+            }else if(fQHList[i].correctType3 == 9 && fQHList[i].correctType2 == 0){
               _isCheckboxChecked.add(true);
-            }else if(fQHList[i].correctType3 == null &&
-            fQHList[i].correctType2 == null && fQHList[i].correctType1 == 0){
+            }else if(fQHList[i].correctType3 == 9 &&
+            fQHList[i].correctType2 == 9 && fQHList[i].correctType1 == 0){
               _isCheckboxChecked.add(true);
             }else{
               _isCheckboxChecked.add(false);
@@ -410,15 +410,17 @@ class _History extends State<History> {
           alignment: Alignment.center,
           //double.infinity,
           child: Center(child: QuestionList(),),
-          ): Container()),
+          ): Container(
+          padding: EdgeInsets.all(0),
+          height: height * 0.72,
+          width: width,)),
       //bottomNavigationBar:
        Expanded(child:
         Container(
         decoration: BoxDecoration(
             color: Colors.cyan[100] //この行を追加
         ),
-        padding: EdgeInsets.fromLTRB(
-            width * 0.15, height * 0.03, width * 0.15, height * 0.03),
+        padding: EdgeInsets.fromLTRB(50,25,50,25),
         margin: EdgeInsets.all(0),
         child: SizedBox(
           height: height * 0.07,
