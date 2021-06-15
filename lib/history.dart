@@ -67,14 +67,10 @@ class _History extends State<History> {
 
   void onSelect(String questionNo) {
     selectedQuestions.add(questionNo);
-    print('on');
-    print(selectedQuestions);
   }
 
   void offSelect(String questionNo) {
     selectedQuestions.remove(questionNo);
-    print('off');
-    print(selectedQuestions);
   }
 
 
@@ -106,10 +102,7 @@ class _History extends State<History> {
             multipleAnswer: null,
             numberAnswer: null);
         db.insertquestiontrying(qt);
-        print(qt);
       }
-     // return new Future.delayed(Duration(seconds: 1), (){
-       // return print("1minute");});
     }
 
     void qTryingInsert() async {
@@ -132,9 +125,7 @@ class _History extends State<History> {
                 argumentQuestionNo: null,
                 argumentTryingListNo: 1)));
 
-        print(selectedQuestions);
-        print(checkboxManager);
-        print('here');
+
       } else {
         showDialog(
           context: context,
@@ -171,15 +162,10 @@ class _History extends State<History> {
 
         setState(() {
           hqList = fQHList;
-          print(_isCheckboxChecked);
         });
 
     }
 
-
-
-    //print("調査通ってる");
-    //print("調査" + value.length.toString());
     Widget QuestionList() {
     return
       Container(
@@ -274,7 +260,10 @@ class _History extends State<History> {
 
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: PreferredSize(
+       preferredSize: Size.fromHeight(height*0.135),
+        child:
+          AppBar(
           elevation: 8,
           leading: IconButton(
             icon: Icon(Icons.home_sharp)
@@ -402,31 +391,27 @@ class _History extends State<History> {
             ),
           )
       ),
+    ),
       body:Column(children:<Widget>[
         SingleChildScrollView(child: initialData == true ? Container(
           padding: EdgeInsets.all(0),
           height: height * 0.72,
           width: width,
           alignment: Alignment.center,
-          //double.infinity,
           child: Center(child: QuestionList(),),
           ): Container(
           padding: EdgeInsets.all(0),
           height: height * 0.72,
           width: width,)),
-      //bottomNavigationBar:
        Expanded(child:
         Container(
+          height: height * 0.118,
+          width: width,
         decoration: BoxDecoration(
             color: Colors.cyan[100] //この行を追加
         ),
-        padding: EdgeInsets.fromLTRB(50,25,50,25),
+        padding: EdgeInsets.fromLTRB(width*0.125,height*0.025,width*0.125,height*0.025),
         margin: EdgeInsets.all(0),
-        child: SizedBox(
-          height: height * 0.07,
-          //0.065,
-          width: width,
-          //*0.7,
           child: ElevatedButton(
             onPressed: () {
               qTryingInsert();
@@ -446,7 +431,7 @@ class _History extends State<History> {
           ),
         ),
       ),
-       )]),
+      ]),
     );
   }
 }
