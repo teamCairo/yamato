@@ -438,7 +438,7 @@ class _ResultState extends State<Result> {
                ),
                SizedBox(height: height*0.013),
                Container(
-                 padding:  EdgeInsets.fromLTRB(20, 5, 20, 20),
+                 padding:  EdgeInsets.fromLTRB(width*0.05, height*0.0055,width*0.05,height*0.022),
                  margin: EdgeInsets.all(4),
                  child: SizedBox(
                    height: height*0.065,

@@ -68,6 +68,12 @@ class _FilterState extends State<Filter> {
     "ア膠","免疫","感染","中毒","救急","複合","小複","精神","皮膚","眼科","耳鼻",
     "泌尿","整形","放射","麻酔","公衆","一般"];
 
+  final double btnLineWidth = 0.0025;
+  final double filterBtnHeight = 0.046;
+  final double filterBtnWidth = 0.16;
+  final double fontSize = 15;
+  final double choiceBtnHeight = 0.04;
+  final double choiceBtnWidth = 0.17;
   Color btncolorPed = Colors.blueAccent; Color btnsubcolorPed = Colors.white;
   Color hissyucol1 = Colors.blue;Color hissyubcol1 = Colors.white;
   Color hissyucol2 = Colors.blue;Color hissyubcol2 = Colors.white;
@@ -200,25 +206,25 @@ class _FilterState extends State<Filter> {
           btnonoff(num);
         },
         child: Container(
-          height: height * 0.046,
-          width: width * 0.16,
+          height: height * filterBtnHeight,
+          width: width *filterBtnWidth,
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
                 color: color,
-                width: width * 0.0025,
+                width: width * btnLineWidth,
               ),
               top: BorderSide(
                 color: color,
-                width: width * 0.0025,
+                width: width * btnLineWidth,
               ),
               left: BorderSide(
                 color: color,
-                width: width * 0.0025,
+                width: width * btnLineWidth,
               ),
               right: BorderSide(
                 color: color,
-                width: width * 0.0025,
+                width: width * btnLineWidth,
               ),
             ),
             color: bcolor,
@@ -226,7 +232,7 @@ class _FilterState extends State<Filter> {
           ),
           alignment: Alignment.center,
           child: Text(
-            text, style: TextStyle(fontSize: 15*adjustsizeh, color: color),
+            text, style: TextStyle(fontSize: fontSize*adjustsizeh, color: color),
           ),
         ),
       );}
@@ -238,25 +244,25 @@ class _FilterState extends State<Filter> {
           btnforped();
         },
         child: Container(
-          height: height * 0.046,
-          width: width * 0.16,
+          height: height * filterBtnHeight,
+          width: width * filterBtnWidth,
           decoration: BoxDecoration(
             border: Border(
               bottom: BorderSide(
                 color: btncolorPed,
-                width: width * 0.0025,
+                width: width * btnLineWidth,
               ),
               top: BorderSide(
                 color: btncolorPed,
-                width: width * 0.0025,
+                width: width * btnLineWidth,
               ),
               left: BorderSide(
                 color: btncolorPed,
-                width: width * 0.0025,
+                width: width * btnLineWidth,
               ),
               right: BorderSide(
                 color: btncolorPed,
-                width: width * 0.0025,
+                width: width * btnLineWidth,
               ),
             ),
             color: btnsubcolorPed,
@@ -264,7 +270,7 @@ class _FilterState extends State<Filter> {
           ),
           alignment: Alignment.center,
           child: Text(
-            "小児", style: TextStyle(fontSize: 15*adjustsizeh, color: btncolorPed),
+            "小児", style: TextStyle(fontSize: fontSize*adjustsizeh, color: btncolorPed),
           ),
         ),
       );}
@@ -325,7 +331,7 @@ class _FilterState extends State<Filter> {
                   border: Border(
                     bottom: BorderSide(
                       color: Colors.indigo[700],
-                      width: width*0.0025,
+                      width: width*btnLineWidth,
                     ),
                   ),
                 ),
@@ -348,7 +354,7 @@ class _FilterState extends State<Filter> {
                                 style: OutlinedButton.styleFrom(
                                     primary: Colors.lightBlue,
                                     backgroundColor: Colors.lightBlue,
-                                    side: BorderSide(color: Colors.blue, width: width*0.0025),
+                                    side: BorderSide(color: Colors.blue, width: width*btnLineWidth),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(40),
                                     )),
@@ -367,7 +373,7 @@ class _FilterState extends State<Filter> {
                                 style: OutlinedButton.styleFrom(
                                     primary: Colors.lightBlue,
                                     backgroundColor: Colors.lightBlue,
-                                    side: BorderSide(color: Colors.blue, width: width*0.0025),
+                                    side: BorderSide(color: Colors.blue, width: width*btnLineWidth),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(40),
                                     )),
@@ -400,7 +406,7 @@ class _FilterState extends State<Filter> {
                         border: Border(
                           bottom: BorderSide(
                             color: Colors.indigo[700],
-                            width: width*0.0025,
+                            width: width*btnLineWidth,
                           ),
                         ),
                       ),
@@ -425,25 +431,25 @@ class _FilterState extends State<Filter> {
                                   });
                                 },
                                 child:Container(
-                                  height: height*0.04,
-                                  width: width*0.17,
+                                  height: height*choiceBtnHeight,
+                                  width: width*choiceBtnWidth,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: hissyucol1,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       top: BorderSide(
                                         color: hissyucol1,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       left:  BorderSide(
                                         color: hissyucol1,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       right: BorderSide(
                                         color: hissyucol1,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                     ),
                                     color: hissyubcol1,
@@ -468,25 +474,25 @@ class _FilterState extends State<Filter> {
                                   });
                                 },
                                 child:Container(
-                                  height: height*0.04,
+                                  height: height*choiceBtnHeight,
                                   width: width*0.22,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: hissyucol2,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       top: BorderSide(
                                         color: hissyucol2,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       left:  BorderSide(
                                         color: hissyucol2,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       right: BorderSide(
                                         color: hissyucol2,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                     ),
                                     color: hissyubcol2,
@@ -505,7 +511,7 @@ class _FilterState extends State<Filter> {
                         border: Border(
                           bottom: BorderSide(
                             color: Colors.indigo[700],
-                            width: width*0.0025,
+                            width: width*btnLineWidth,
                           ),
                         ),
                       ),
@@ -530,25 +536,25 @@ class _FilterState extends State<Filter> {
                                 });
                               },
                               child:Container(
-                                height: height*0.04,
-                                width: width*0.17,
+                                height: height*choiceBtnHeight,
+                                width: width*choiceBtnWidth,
                                 decoration: BoxDecoration(
                                   border: Border(
                                     bottom:  BorderSide(
                                       color: favocol1,
-                                      width: width*0.0025,
+                                      width: width*btnLineWidth,
                                     ),
                                     top: BorderSide(
                                       color: favocol1,
-                                      width: width*0.0025,
+                                      width: width*btnLineWidth,
                                     ),
                                     left:  BorderSide(
                                       color: favocol1,
-                                      width: width*0.0025,
+                                      width: width*btnLineWidth,
                                     ),
                                     right: BorderSide(
                                       color: favocol1,
-                                      width: width*0.0025,
+                                      width: width*btnLineWidth,
                                     ),
                                   ),
                                   color: favobcol1,
@@ -577,25 +583,25 @@ class _FilterState extends State<Filter> {
                                 });
                               },
                               child:Container(
-                                height: height*0.04,
-                                width: width*0.17,
+                                height: height*choiceBtnHeight,
+                                width: width*choiceBtnWidth,
                                 decoration: BoxDecoration(
                                   border: Border(
                                     bottom:  BorderSide(
                                       color: favocol2,
-                                      width: width*0.0025,
+                                      width: width*btnLineWidth,
                                     ),
                                     top: BorderSide(
                                       color: favocol2,
-                                      width: width*0.0025,
+                                      width: width*btnLineWidth,
                                     ),
                                     left:  BorderSide(
                                       color: favocol2,
-                                      width: width*0.0025,
+                                      width: width*btnLineWidth,
                                     ),
                                     right: BorderSide(
                                       color: favocol2,
-                                      width: width*0.0025,
+                                      width: width*btnLineWidth,
                                     ),
                                   ),
                                   color: favobcol2,
@@ -627,7 +633,7 @@ class _FilterState extends State<Filter> {
                           border: Border(
                             bottom: BorderSide(
                               color: Colors.indigo[700],
-                              width: width*0.0025,
+                              width: width*btnLineWidth,
                             ),
                           ),
                         ),
@@ -656,25 +662,25 @@ class _FilterState extends State<Filter> {
                                   });
                                 },
                                 child:Container(
-                                  height: height*0.04,
+                                  height: height*choiceBtnHeight,
                                   width: width*0.25,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: gotoucol1,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       top: BorderSide(
                                         color: gotoucol1,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       left:  BorderSide(
                                         color: gotoucol1,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       right: BorderSide(
                                         color: gotoucol1,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                     ),
                                     color: gotoubcol1,
@@ -712,19 +718,19 @@ class _FilterState extends State<Filter> {
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: gotoucol2,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       top: BorderSide(
                                         color: gotoucol2,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       left:  BorderSide(
                                         color: gotoucol2,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       right: BorderSide(
                                         color: gotoucol2,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                     ),
                                     color: gotoubcol2,
@@ -745,7 +751,7 @@ class _FilterState extends State<Filter> {
                           border: Border(
                             bottom: BorderSide(
                               color: Colors.indigo[700],
-                              width: width*0.0025,
+                              width: width*btnLineWidth,
                             ),
                           ),
                         ),
@@ -777,19 +783,19 @@ class _FilterState extends State<Filter> {
                                       border: Border(
                                         bottom:  BorderSide(
                                           color: kaicol1,
-                                          width: width*0.0025,
+                                          width: width*btnLineWidth,
                                         ),
                                         top: BorderSide(
                                           color: kaicol1,
-                                          width: width*0.0025,
+                                          width: width*btnLineWidth,
                                         ),
                                         left:  BorderSide(
                                           color: kaicol1,
-                                          width: width*0.0025,
+                                          width: width*btnLineWidth,
                                         ),
                                         right: BorderSide(
                                           color: kaicol1,
-                                          width: width*0.0025,
+                                          width: width*btnLineWidth,
                                         ),
                                       ),
                                       color: kaibcol1,
@@ -820,19 +826,19 @@ class _FilterState extends State<Filter> {
                                       border: Border(
                                         bottom:  BorderSide(
                                           color: kaicol2,
-                                          width: width*0.0025,
+                                          width: width*btnLineWidth,
                                         ),
                                         top: BorderSide(
                                           color: kaicol2,
-                                          width: width*0.0025,
+                                          width: width*btnLineWidth,
                                         ),
                                         left:  BorderSide(
                                           color: kaicol2,
-                                          width: width*0.0025,
+                                          width: width*btnLineWidth,
                                         ),
                                         right: BorderSide(
                                           color: kaicol2,
-                                          width: width*0.0025,
+                                          width: width*btnLineWidth,
                                         ),
                                       ),
                                       color: kaibcol2,
@@ -861,25 +867,25 @@ class _FilterState extends State<Filter> {
                                   });
                                 },
                                 child:Container(
-                                  height: height*0.04,
+                                  height: height*choiceBtnHeight,
                                   width: width*0.185,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: kaicol3,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       top: BorderSide(
                                         color: kaicol3,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       left:  BorderSide(
                                         color: kaicol3,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       right: BorderSide(
                                         color: kaicol3,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                     ),
                                     color: kaibcol3,
@@ -904,25 +910,25 @@ class _FilterState extends State<Filter> {
                                   });
                                 },
                                 child:Container(
-                                  height: height*0.04,
+                                  height: height*choiceBtnHeight,
                                   width: width*0.185,
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom:  BorderSide(
                                         color: kaicol4,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       top: BorderSide(
                                         color: kaicol4,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       left:  BorderSide(
                                         color: kaicol4,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                       right: BorderSide(
                                         color: kaicol4,
-                                        width: width*0.0025,
+                                        width: width*btnLineWidth,
                                       ),
                                     ),
                                     color: kaibcol4,
