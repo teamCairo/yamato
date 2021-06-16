@@ -393,6 +393,7 @@ class _History extends State<History> {
       ),
     ),
       body:Column(children:<Widget>[
+        Expanded(child:
         SingleChildScrollView(child: initialData == true ? Container(
           padding: EdgeInsets.all(0),
           height: height * 0.72,
@@ -402,10 +403,9 @@ class _History extends State<History> {
           ): Container(
           padding: EdgeInsets.all(0),
           height: height * 0.72,
-          width: width,)),
-       Expanded(child:
+          width: width,)),),
         Container(
-          height: height * 0.118,
+          height: height * 0.12,
           width: width,
         decoration: BoxDecoration(
             color: Colors.cyan[100] //この行を追加
@@ -430,7 +430,6 @@ class _History extends State<History> {
             ),
           ),
         ),
-      ),
       ]),
     );
   }

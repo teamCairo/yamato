@@ -26,6 +26,7 @@ class _RootWidgetState extends State<RootWidget> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    final adjustsizeh = MediaQuery.of(context).size.height*0.0011;
 
     print(screenHeight);
     print(screenWidth);
@@ -136,11 +137,11 @@ class _RootWidgetState extends State<RootWidget> {
                             borderRadius: BorderRadius.circular(radius),
                           )),
                       child: Column(mainAxisSize: MainAxisSize.min, children: [
-                        Icon(Icons.replay, size: iconsize),
+                        Icon(Icons.replay, size: iconsize*adjustsizeh),
                         Text(
                           "続きから",
                           style: TextStyle(
-                              fontSize: fontSize, fontWeight: FontWeight.w100),
+                              fontSize: fontSize*adjustsizeh, fontWeight: FontWeight.w100),
                         ),
                       ])),
                 ),
@@ -166,11 +167,11 @@ class _RootWidgetState extends State<RootWidget> {
                             borderRadius: BorderRadius.circular(radius),
                           )),
                       child: Column(mainAxisSize: MainAxisSize.min, children: [
-                        Icon(Icons.search, size: iconsize),
+                        Icon(Icons.search, size: iconsize*adjustsizeh),
                         Text(
                           "問題検索",
                           style: TextStyle(
-                              fontSize: fontSize, fontWeight: FontWeight.w100),
+                              fontSize: fontSize*adjustsizeh, fontWeight: FontWeight.w100),
                         ),
                       ])),
                 ),
@@ -198,11 +199,11 @@ class _RootWidgetState extends State<RootWidget> {
                             borderRadius: BorderRadius.circular(radius),
                           )),
                       child: Column(mainAxisSize: MainAxisSize.min, children: [
-                        Icon(Icons.leaderboard, size: iconsize),
+                        Icon(Icons.leaderboard, size: iconsize*adjustsizeh),
                         Text(
                           "学習状況",
                           style: TextStyle(
-                              fontSize: fontSize, fontWeight: FontWeight.w100),
+                              fontSize: fontSize*adjustsizeh, fontWeight: FontWeight.w100),
                         ),
                       ])),
                 ),
@@ -272,11 +273,11 @@ class _RootWidgetState extends State<RootWidget> {
                             borderRadius: BorderRadius.circular(radius),
                           )),
                       child: Column(mainAxisSize: MainAxisSize.min, children: [
-                        Icon(Icons.qr_code_scanner, size: iconsize),
+                        Icon(Icons.qr_code_scanner, size: iconsize*adjustsizeh),
                         Text(
                           "コード入力",
                           style: TextStyle(
-                              fontSize: fontSize, fontWeight: FontWeight.w100),
+                              fontSize: fontSize*adjustsizeh, fontWeight: FontWeight.w100),
                         ),
                       ])),
                 ),
