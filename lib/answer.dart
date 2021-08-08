@@ -132,16 +132,13 @@ class _AnswerState extends State<Answer> {
       }else{
         mainButtonText = "一覧へもどる";
       }
-
-
     }
-
 
 
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
-        title: Text(initialDataRead==false ? "" :"${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo.toString()}"),
+        title: Text(initialDataRead==false ? "" :"${questionCountHeader}　第${period.toString()}回 No.${questionNo.toString()}"),
         leading: IconButton(
           icon:Icon(Icons.home_sharp)
           ,onPressed:() {

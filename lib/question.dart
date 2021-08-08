@@ -147,7 +147,7 @@ class _QuestionState extends State<Question> {
       appBar: AppBar(
         title: Text(initialDataRead == false
             ? ""
-            : "${questionCountHeader}　${businessYear.toString().substring(2)}年 第${period.toString()}回 No.${questionNo}"),
+            : "${questionCountHeader}　第${period.toString()}回 No.${questionNo}"),
         leading: IconButton(
           icon: Icon(Icons.home_sharp),
           onPressed: () {
@@ -581,7 +581,6 @@ class _QuestionState extends State<Question> {
 
     this.qfQuestionImg = await db.selectQuestionFilesForUse(
         businessYear, period, questionNo, 1, 2);
-    print(qfQuestionImg[0]);
 
     List<QuestionFile> qfAnswerTxt = await db.selectQuestionFilesForUse(
         businessYear, period, questionNo, 2, 1);
@@ -593,12 +592,13 @@ class _QuestionState extends State<Question> {
         await rootBundle.loadString("assets/text/${qfQuestionTxt[0].filePath}");
 
     this.outputimgList = [];
-    for (int i = 0; i < qfQuestionImg.length; i++) {
-      await this.outputimgList.add(Image.asset(
-          'assets/image/' + qfQuestionImg[i].filePath,
-          fit: BoxFit.contain));
+    if(qfQuestionImg.length>0) {
+      for (int i = 0; i < qfQuestionImg.length; i++) {
+        await this.outputimgList.add(Image.asset(
+            'assets/image/' + qfQuestionImg[i].filePath,
+            fit: BoxFit.contain));
+      }
     }
-
     setState(() {
       initialDataRead = true;
       this.outputtext = value;
